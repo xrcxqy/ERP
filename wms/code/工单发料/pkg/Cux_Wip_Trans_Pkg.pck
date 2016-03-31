@@ -1,20 +1,25 @@
-CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
+ï»¿CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
 
+       
+  TYPE CUX_DOC_CLASS_TYPE IS RECORD(       
+                            EMPTY_RETURN_FLAG  VARCHAR2(1)
+	);  
+     
   /*===============================================================
     *    Program Name:   create_preparation_doc
     *    Author      :   LGF
     *    Date        :   2015-07-11
-    *    Purpose     :   ´´½¨±¸ÁÏµ¥
+    *    Purpose     :   åˆ›å»ºå¤‡æ–™å•
     *    Parameters  :
-    *             in      p_organization_id      ×éÖ¯ID
-    *             In       p_wip_name            ¹¤µ¥name
-                  in       p_wip_type            µ¥¾İÀàĞÍ
-    *             In       p_doc_date            ÈÕÆÚ
-                  in       p_now_qty             ÏÂ´ïÊıÁ¿
-                  in       p_sub                 ×Ó¿â
-                  in       p_loc                 »õÎ»
-                  out      p_return_status       ·µ»Ø(S/E)
-                  out      p_error_mess          ·µ»ØĞÅÏ¢
+    *             in      p_organization_id      ç»„ç»‡ID
+    *             In       p_wip_name            å·¥å•name
+                  in       p_wip_type            å•æ®ç±»å‹
+    *             In       p_doc_date            æ—¥æœŸ
+                  in       p_now_qty             ä¸‹è¾¾æ•°é‡
+                  in       p_sub                 å­åº“
+                  in       p_loc                 è´§ä½
+                  out      p_return_status       è¿”å›(S/E)
+                  out      p_error_mess          è¿”å›ä¿¡æ¯
     *    Update History
     *    Version    Date         Name            Description
     *    --------  ----------  ---------------  --------------------
@@ -30,6 +35,7 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
                                    p_Sub             VARCHAR2,
                                    p_Loc             VARCHAR2,
                                    p_Operation_Code  VARCHAR2,
+                                   p_param           CUX_DOC_CLASS_TYPE,
                                    p_Return_Status   OUT VARCHAR2,
                                    p_Return_Msg      OUT VARCHAR2);
 
@@ -37,17 +43,17 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
     *    Program Name:   create_preparation_doc
     *    Author      :   LGF
     *    Date        :   2015-07-11
-    *    Purpose     :   ´´½¨±¸ÁÏµ¥( Ö¸¶¨²Ö¿âÏÂ´ï )
+    *    Purpose     :   åˆ›å»ºå¤‡æ–™å•( æŒ‡å®šä»“åº“ä¸‹è¾¾ )
     *    Parameters  :
-    *             in      p_organization_id      ×éÖ¯ID
-    *             In       p_wip_name            ¹¤µ¥name
-                  in       p_wip_type            µ¥¾İÀàĞÍ
-    *             In       p_doc_date            ÈÕÆÚ
-                  in       p_now_qty             ÏÂ´ïÊıÁ¿
-                  in       p_sub                 ×Ó¿â
-                  in       p_loc                 »õÎ»
-                  out      p_return_status       ·µ»Ø(S/E)
-                  out      p_error_mess          ·µ»ØĞÅÏ¢
+    *             in      p_organization_id      ç»„ç»‡ID
+    *             In       p_wip_name            å·¥å•name
+                  in       p_wip_type            å•æ®ç±»å‹
+    *             In       p_doc_date            æ—¥æœŸ
+                  in       p_now_qty             ä¸‹è¾¾æ•°é‡
+                  in       p_sub                 å­åº“
+                  in       p_loc                 è´§ä½
+                  out      p_return_status       è¿”å›(S/E)
+                  out      p_error_mess          è¿”å›ä¿¡æ¯
     *    Update History
     *    Version    Date         Name            Description
     *    --------  ----------  ---------------  --------------------
@@ -63,6 +69,7 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
                                           p_Sub             VARCHAR2,
                                           p_Loc             VARCHAR2,
                                           p_Operation_Code  VARCHAR2,
+                                          p_param           CUX_DOC_CLASS_TYPE,
                                           p_Return_Status   OUT VARCHAR2,
                                           p_Return_Msg      OUT VARCHAR2);
 
@@ -70,13 +77,13 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
     *    Program Name:   Post_Preparation_Doc
     *    Author      :   LGF
     *    Date        :   2015-07-11
-    *    Purpose     :   ¹ıÕËµ¥
+    *    Purpose     :   è¿‡è´¦å•
     *    Parameters  :
-    *             in      p_organization_id      ×éÖ¯ID
-    *             In      p_doc_no               ¹¤µ¥Ãû
-                  in      p_doc_type             µ¥¾İÀàĞÍ
-                  out      p_return_status       ·µ»Ø(S/E)
-                  out      p_error_mess          ·µ»ØĞÅÏ¢
+    *             in      p_organization_id      ç»„ç»‡ID
+    *             In      p_doc_no               å·¥å•å
+                  in      p_doc_type             å•æ®ç±»å‹
+                  out      p_return_status       è¿”å›(S/E)
+                  out      p_error_mess          è¿”å›ä¿¡æ¯
     *    Update History
     *    Version    Date         Name            Description
     *    --------  ----------  ---------------  --------------------
@@ -93,17 +100,17 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
     *    Program Name:   create_feeding_doc
     *    Author      :   LGF
     *    Date        :   2015-07-11
-    *    Purpose     :   ´´½¨²¹ÁÏµ¥
+    *    Purpose     :   åˆ›å»ºè¡¥æ–™å•
     *    Parameters  :
-    *             in      p_organization_id      ×éÖ¯ID
-    *             In       p_wip_name            ¹¤µ¥name
-    *             in       p_wip_type            µ¥¾İÀàĞÍ
-    *             In       p_doc_date            ÈÕÆÚ
-    *             in       p_now_qty             ÏÂ´ïÊıÁ¿
-                  in       p_sub                 ×Ó¿â
-                  in       p_loc                 »õÎ»
-                  out      p_return_status       ·µ»Ø(S/E)
-                  out      p_error_mess          ·µ»ØĞÅÏ¢
+    *             in      p_organization_id      ç»„ç»‡ID
+    *             In       p_wip_name            å·¥å•name
+    *             in       p_wip_type            å•æ®ç±»å‹
+    *             In       p_doc_date            æ—¥æœŸ
+    *             in       p_now_qty             ä¸‹è¾¾æ•°é‡
+                  in       p_sub                 å­åº“
+                  in       p_loc                 è´§ä½
+                  out      p_return_status       è¿”å›(S/E)
+                  out      p_error_mess          è¿”å›ä¿¡æ¯
     *    Update History
     *    Version    Date         Name            Description
     *    --------  ----------  ---------------  --------------------
@@ -119,6 +126,7 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
                                p_Sub             VARCHAR2,
                                p_Loc             VARCHAR2,
                                p_Operation_Code  VARCHAR2,
+                               p_param           CUX_DOC_CLASS_TYPE,
                                p_Return_Status   OUT VARCHAR2,
                                p_Return_Msg      OUT VARCHAR2);
 
@@ -126,17 +134,17 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
     *    Program Name:   create_feeding_doc
     *    Author      :   LGF
     *    Date        :   2015-07-11
-    *    Purpose     :   ´´½¨²¹ÁÏµ¥( Ö¸¶¨²Ö¿â )
+    *    Purpose     :   åˆ›å»ºè¡¥æ–™å•( æŒ‡å®šä»“åº“ )
     *    Parameters  :
-    *             in      p_organization_id      ×éÖ¯ID
-    *             In       p_wip_name            ¹¤µ¥name
-    *             in       p_wip_type            µ¥¾İÀàĞÍ
-    *             In       p_doc_date            ÈÕÆÚ
-    *             in       p_now_qty             ÏÂ´ïÊıÁ¿
-                  in       p_sub                 ×Ó¿â
-                  in       p_loc                 »õÎ»
-                  out      p_return_status       ·µ»Ø(S/E)
-                  out      p_error_mess          ·µ»ØĞÅÏ¢
+    *             in      p_organization_id      ç»„ç»‡ID
+    *             In       p_wip_name            å·¥å•name
+    *             in       p_wip_type            å•æ®ç±»å‹
+    *             In       p_doc_date            æ—¥æœŸ
+    *             in       p_now_qty             ä¸‹è¾¾æ•°é‡
+                  in       p_sub                 å­åº“
+                  in       p_loc                 è´§ä½
+                  out      p_return_status       è¿”å›(S/E)
+                  out      p_error_mess          è¿”å›ä¿¡æ¯
     *    Update History
     *    Version    Date         Name            Description
     *    --------  ----------  ---------------  --------------------
@@ -152,6 +160,7 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
                                       p_Sub             VARCHAR2,
                                       p_Loc             VARCHAR2,
                                       p_Operation_Code  VARCHAR2,
+                                      p_param           CUX_DOC_CLASS_TYPE,
                                       p_Return_Status   OUT VARCHAR2,
                                       p_Return_Msg      OUT VARCHAR2);
 
@@ -159,17 +168,17 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
     *    Program Name:   Create_Return_Doc
     *    Author      :   LGF
     *    Date        :   2015-08-20
-    *    Purpose     :   ´´½¨ÍËÁÏµ¥
+    *    Purpose     :   åˆ›å»ºé€€æ–™å•
     *    Parameters  :
-    *             in       p_organization_id      ×éÖ¯ID
-    *             In       p_wip_name            ¹¤µ¥name
-    *             in       p_wip_type            µ¥¾İÀàĞÍ
-    *             In       p_doc_date            ÈÕÆÚ
-    *             in       p_now_qty             ÏÂ´ïÊıÁ¿
-                  in       p_sub                 ×Ó¿â
-                  in       p_loc                 »õÎ»
-                  out      p_return_status       ·µ»Ø(S/E)
-                  out      p_error_mess          ·µ»ØĞÅÏ¢
+    *             in       p_organization_id      ç»„ç»‡ID
+    *             In       p_wip_name            å·¥å•name
+    *             in       p_wip_type            å•æ®ç±»å‹
+    *             In       p_doc_date            æ—¥æœŸ
+    *             in       p_now_qty             ä¸‹è¾¾æ•°é‡
+                  in       p_sub                 å­åº“
+                  in       p_loc                 è´§ä½
+                  out      p_return_status       è¿”å›(S/E)
+                  out      p_error_mess          è¿”å›ä¿¡æ¯
     *    Update History
     *    Version    Date         Name            Description
     *    --------  ----------  ---------------  --------------------
@@ -191,17 +200,17 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
     *    Program Name:   create_feeding_doc
     *    Author      :   Felix.Liu
     *    Date        :   2015-07-30
-    *    Purpose     :   ´´½¨Íê¹¤Èë¿âµ¥
+    *    Purpose     :   åˆ›å»ºå®Œå·¥å…¥åº“å•
     *    Parameters  :
-    *             in       p_organization_id      ×éÖ¯ID
-    *             In       p_wip_name            ¹¤µ¥name
-    *             in       p_wip_type            µ¥¾İÀàĞÍ
-    *             In       p_doc_date            ÈÕÆÚ
-    *             in       p_now_qty             ÏÂ´ïÊıÁ¿
-                  in       p_sub                 ×Ó¿â
-                  in       p_loc                 »õÎ»
-                  out      p_return_status       ·µ»Ø(S/E)
-                  out      p_error_mess          ·µ»ØĞÅÏ¢
+    *             in       p_organization_id      ç»„ç»‡ID
+    *             In       p_wip_name            å·¥å•name
+    *             in       p_wip_type            å•æ®ç±»å‹
+    *             In       p_doc_date            æ—¥æœŸ
+    *             in       p_now_qty             ä¸‹è¾¾æ•°é‡
+                  in       p_sub                 å­åº“
+                  in       p_loc                 è´§ä½
+                  out      p_return_status       è¿”å›(S/E)
+                  out      p_error_mess          è¿”å›ä¿¡æ¯
     *    Update History
     *    Version    Date         Name            Description
     *    --------  ----------  ---------------  --------------------
@@ -221,13 +230,13 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
   *    Program Name:   process_trx
   *    Author      :   Felix.Liu
   *    Date        :   2014-08-12
-  *    Purpose     :   ¹ıÕÊÍê¹¤Èë¿âµ¥
+  *    Purpose     :   è¿‡å¸å®Œå·¥å…¥åº“å•
   *    Parameters  :
-  *             in       p_organization_id    ×éÖ¯ID
-  *             In       p_doc_no            µ¥¾İºÅ
-                in       p_doc_type          µ¥¾İÀàĞÍ
-  *             out      p_return_status     ´¦Àí½á¹û
-                out      p_return_msg         ´¦ÀíĞÅÏ¢
+  *             in       p_organization_id    ç»„ç»‡ID
+  *             In       p_doc_no            å•æ®å·
+                in       p_doc_type          å•æ®ç±»å‹
+  *             out      p_return_status     å¤„ç†ç»“æœ
+                out      p_return_msg         å¤„ç†ä¿¡æ¯
   *    Update History
   *    Version    Date         Name            Description
   *    --------  ----------  ---------------  --------------------
@@ -283,44 +292,49 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                    p_Sub             VARCHAR2,
                                    p_Loc             VARCHAR2,
                                    p_Operation_Code  VARCHAR2,
+                                   p_param           CUX_DOC_CLASS_TYPE,
                                    p_Return_Status   OUT VARCHAR2,
                                    p_Return_Msg      OUT VARCHAR2) AS
   
     l_lot varchar2(100);
     CURSOR c_Line IS
-    -- ÍÆÊ½±¸ÁÏ  À­Ê½±¸ÁÏ
-      SELECT a.Organization_Id, -- ×éÖ¯ID
-             a.Wip_Entity_Id, -- ¹¤µ¥ID
-             a.Wip_Entity_Name, -- ¹¤µ¥
-             a.Primary_Item_Id, -- ×°Åä¼ş
-             a.Ws_Code, -- ³µ¼ä
-             a.Start_Quantity, -- Éú²úÊıÁ¿
-             a.Inventory_Item_Id, -- ×é¼şID
-             a.Com_Item_Code, -- ×é¼ş
-             a.Item_Primary_Uom_Code, -- µ¥Î»
-             a.Operation_Seq_Num, -- ¹¤ĞòID
-             a.Operation_Code, -- ¹¤Ğò
-             a.Quantity_Per_Assembly, -- µ¥»úÓÃÁ¿
-             a.Component_Yield_Factor, -- ²ú³öÂÊ
-             a.Required_Quantity, -- ĞèÇóÊıÁ¿
-             a.Quantity_Issued, -- ÒÑ·¢·ÅÊıÁ¿
-             Decode(Sign(a.Iss_Ready_Qty), -- sign ´óÓÚ0 ·µ»Ø 1,Ğ¡ÓÚ0 ·µ»Ø -1,µÈÓÚ0 ·µ»Ø 0
+    -- æ¨å¼å¤‡æ–™  æ‹‰å¼å¤‡æ–™
+      SELECT a.Organization_Id, -- ç»„ç»‡ID
+             a.Wip_Entity_Id, -- å·¥å•ID
+             a.Wip_Entity_Name, -- å·¥å•
+             a.Primary_Item_Id, -- è£…é…ä»¶
+             a.Ws_Code, -- è½¦é—´
+             a.Start_Quantity, -- ç”Ÿäº§æ•°é‡
+             a.Inventory_Item_Id, -- ç»„ä»¶ID
+             a.Com_Item_Code, -- ç»„ä»¶
+             a.Item_Primary_Uom_Code, -- å•ä½
+             a.Operation_Seq_Num, -- å·¥åºID
+             a.Operation_Code, -- å·¥åº
+             a.Quantity_Per_Assembly, -- å•æœºç”¨é‡
+             a.Component_Yield_Factor, -- äº§å‡ºç‡
+             a.Required_Quantity, -- éœ€æ±‚æ•°é‡
+             a.Quantity_Issued, -- å·²å‘æ”¾æ•°é‡
+             a.MATERIAL_BATCH1,
+             a.MATERIAL_BATCH2,
+             a.SPECIAL_ORDER,
+             a.SPECIAL_NUMBER,
+             Decode(Sign(a.Iss_Ready_Qty), -- sign å¤§äº0 è¿”å› 1,å°äº0 è¿”å› -1,ç­‰äº0 è¿”å› 0
                     1,
                     a.Iss_Ready_Qty,
                     0,
                     0,
                     -1,
                     0) Iss_Ready_Qty, --
-             Cws.Sub, -- ×Ó¿â
-             Cws.Loc_Code Loc, -- »õÎ»
+             Cws.Sub, -- å­åº“
+             Cws.Loc_Code Loc, -- è´§ä½
              Cws.Location_Id Inventory_Location_Id,
              To_Char(Systimestamp, 'YYYYMMDDHH24MISSFF4') Create_Lot,
-             a.Replace_Flag -- ÊÇ·ñÌæ´ú
+             a.Replace_Flag -- æ˜¯å¦æ›¿ä»£
         FROM (SELECT Wdj.Organization_Id,
                      Wdj.Wip_Entity_Id,
                      Wdj.Wip_Entity_Name,
                      Wdj.Primary_Item_Id,
-                     Wdj.Attribute3 Ws_Code, --³µ¼ä
+                     Wdj.Attribute3 Ws_Code, --è½¦é—´
                      Wdj.Start_Quantity,
                      Wro.Inventory_Item_Id,
                      Msi.Segment1 Com_Item_Code,
@@ -331,6 +345,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      Wro.Component_Yield_Factor,
                      Wro.Required_Quantity,
                      Wro.Quantity_Issued,
+                     wro.attribute1 MATERIAL_BATCH1,
+                     wro.attribute2 MATERIAL_BATCH2,
+                     wro.attribute3 SPECIAL_ORDER,
+                     wro.attribute4 SPECIAL_NUMBER,
                      Ceil(Wro.Quantity_Per_Assembly * p_Now_Qty /
                           Cux_Wip_Transactions_Pkg.Get_Component_Yield_Factor(p_Org_Id                 => Wro.Organization_Id,
                                                                               p_Wip_Id                 => Wro.Wip_Entity_Id,
@@ -358,7 +376,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                  AND Nvl(Wro.Repetitive_Schedule_Id, '-1') =
                      Nvl(Wov.Repetitive_Schedule_Id, '-1')
                  AND Wro.Wip_Supply_Meaning LIKE
-                     '%' || Substr(p_Wip_Type, 1, 2) || '%' -- ÍÆÊ½,À­Ê½
+                     '%' || Substr(p_Wip_Type, 1, 2) || '%' -- æ¨å¼,æ‹‰å¼
               ) a,
              Cux_Sub_Loc_Set_b Cws
        WHERE 1 = 1
@@ -369,11 +387,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
             
          AND Nvl(Cws.Sub, '1') = Nvl(p_Sub, Nvl(Cws.Sub, '1'))
          AND Nvl(Cws.Loc_Code, '1') = Nvl(p_Loc, Nvl(Cws.Loc_Code, '1'))
-            -- Ö¸¶¨¹¤ĞòÏÂ´ï
+            -- æŒ‡å®šå·¥åºä¸‹è¾¾
          AND Nvl(a.Operation_Code, -1) =
              Nvl(p_Operation_Code, Nvl(a.Operation_Code, -1))
       
-      --and (a.iss_ready_qty <> 0 and p_wip_type not in ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') or p_wip_type in ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì'));
+      --and (a.iss_ready_qty <> 0 and p_wip_type not in ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') or p_wip_type in ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†'));
       
        ORDER BY Operation_Code, Sub, Replace_Flag;
   
@@ -394,7 +412,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     v_Sy_Qty           NUMBER;
     v_Count            NUMBER := 0;
   
-    -- ÊÇ·ñÆôÓÃÖ¸¶¨»õÎ»
+    -- æ˜¯å¦å¯ç”¨æŒ‡å®šè´§ä½
     l_Appoint_Sub VARCHAR2(1) := 'N';
   
     v_onhand_msg   varchar2(2000);
@@ -402,30 +420,30 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   
     l_inv_sys_flag varchar2(10);
   BEGIN
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    --Cux_Time_Used_Pkg.create_time_used('ĞÂÏÂ´ï,ÀàĞÍ : ' || p_Wip_Type  
-    --                                    || ' ¹¤µ¥ºÅ : '|| p_Wip_Name ,l_time_id);  
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    --Cux_Time_Used_Pkg.create_time_used('æ–°ä¸‹è¾¾,ç±»å‹ : ' || p_Wip_Type  
+    --                                    || ' å·¥å•å· : '|| p_Wip_Name ,l_time_id);  
   
     SELECT Cux.Cux_Doc_Line_Seq.Nextval INTO v_Seq FROM Dual;
   
-    -- ¼ì²é1 £º Ä¬ÈÏ×Ó¿â
+    -- æ£€æŸ¥1 ï¼š é»˜è®¤å­åº“
     FOR C0 IN c_Line LOOP
       Is_Have := 0;
     
-      --¼ì²é¹¤µ¥×é¼ş×Ó¿â
+      --æ£€æŸ¥å·¥å•ç»„ä»¶å­åº“
       IF C0.Sub IS NULL THEN
         Is_Next         := 'N';
         p_Return_Status := 'E';
       
         IF p_Return_Msg IS NULL THEN
-          p_Return_Msg := 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş×Ó¿âÎª¿Õ,Çë¼ì²é:' || Chr(10);
+          p_Return_Msg := 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶å­åº“ä¸ºç©º,è¯·æ£€æŸ¥:' || Chr(10);
         END IF;
         p_Return_Msg := p_Return_Msg || '[' || C0.Com_Item_Code || ']' ||
                         Chr(10);
       
       ELSE
       
-        -- ×Ó¿â´æÔÚ,ÔÚ¼ì²é»õÎ»
+        -- å­åº“å­˜åœ¨,åœ¨æ£€æŸ¥è´§ä½
         BEGIN
           SELECT Locator_Type
             INTO l_Is_Loc_Con
@@ -437,14 +455,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
             l_Is_Loc_Con := 0;
         END;
       
-        -- ÊÇ·ñ¿ªÆô»õÎ»¿ØÖÆ
+        -- æ˜¯å¦å¼€å¯è´§ä½æ§åˆ¶
         IF l_Is_Loc_Con <> 1 AND C0.Inventory_Location_Id IS NULL THEN
         
           Is_Next         := 'N';
           p_Return_Status := 'E';
         
           IF l_Index = 0 THEN
-            p_Return_Msg := 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş»õÎ»Îª¿Õ,Çë¼ì²é:' || Chr(10);
+            p_Return_Msg := 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶è´§ä½ä¸ºç©º,è¯·æ£€æŸ¥:' || Chr(10);
             l_Index      := 1;
           END IF;
         
@@ -456,7 +474,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       END IF;
     END LOOP;
   
-    -- ¼ì²é2 £º ÅĞ¶ÏÊÇ·ñÓĞ»õÎ»£¬µ«ÊÇÏµÍ³ÓÖÎ´Ö¸¶¨
+    -- æ£€æŸ¥2 ï¼š åˆ¤æ–­æ˜¯å¦æœ‰è´§ä½ï¼Œä½†æ˜¯ç³»ç»ŸåˆæœªæŒ‡å®š
     IF p_Sub IS NOT NULL AND l_Appoint_Sub = 'Y' THEN
     
       SELECT COUNT(*)
@@ -467,21 +485,21 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     
       IF v_Count > 0 AND p_Loc IS NULL THEN
         p_Return_Status := 'E';
-        p_Return_Msg    := '²Ö¿â:' || p_Sub || ' ÓĞ»õÎ»,ÇëÖ¸¶¨»õÎ»';
+        p_Return_Msg    := 'ä»“åº“:' || p_Sub || ' æœ‰è´§ä½,è¯·æŒ‡å®šè´§ä½';
         RETURN;
       END IF;
     END IF;
   
-    -- ¼ì²é3 
-    -- À­Ê½±¸ÁÏ¶ÔÓ¦µÄ½ÓÊÕÁÏ×Ó¿âÎªÏß±ß²Ö GX01 Óë HX01 »õÎ»Îª¶ÔÓ¦µÄ¹¤µ¥Ãû
-    -- ÍÆÊ½±¸ÁÏÎŞ½ÓÊÕ×Ó¿âºÍ»õÎ»,Ö±½Ó·¢»õ³öÈ¥,ÎŞÄ¿±ê¿â
-    IF p_Wip_Type = 'À­Ê½±¸ÁÏ' THEN
+    -- æ£€æŸ¥3 
+    -- æ‹‰å¼å¤‡æ–™å¯¹åº”çš„æ¥æ”¶æ–™å­åº“ä¸ºçº¿è¾¹ä»“ GX01 ä¸ HX01 è´§ä½ä¸ºå¯¹åº”çš„å·¥å•å
+    -- æ¨å¼å¤‡æ–™æ— æ¥æ”¶å­åº“å’Œè´§ä½,ç›´æ¥å‘è´§å‡ºå»,æ— ç›®æ ‡åº“
+    IF p_Wip_Type = 'æ‹‰å¼å¤‡æ–™' THEN
     
       IF p_Organization_Id = 84 THEN
-        --¸£½¨Èñ½İ
+        --ç¦å»ºé”æ·
         l_To_Sub := 'GX01';
       ELSIF p_Organization_Id = 83 THEN
-        --±±¾©Èñ½İ
+        --åŒ—äº¬é”æ·
         l_To_Sub := 'HX01';
       END IF;
     
@@ -496,32 +514,32 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       IF Is_Have < 1 THEN
         Is_Next         := 'N';
         p_Return_Status := 'E';
-        p_Return_Msg    := p_Return_Msg || 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş×Ó¿â[' || l_To_Sub ||
-                           ']»ò»õÎ»[' || p_Wip_Name || ']Îª¿Õ,Çë¼ì²é:' || Chr(10);
+        p_Return_Msg    := p_Return_Msg || 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶å­åº“[' || l_To_Sub ||
+                           ']æˆ–è´§ä½[' || p_Wip_Name || ']ä¸ºç©º,è¯·æ£€æŸ¥:' || Chr(10);
         RETURN;
       END IF;
     END IF;
   
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    -- Cux_Time_Used_Pkg.add_time_used('¼ì²éÍê³É',l_time_id);
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    -- Cux_Time_Used_Pkg.add_time_used('æ£€æŸ¥å®Œæˆ',l_time_id);
   
-    -- Ğ£Ñé²»Í¨¹ı,Ö±½Óreturn
+    -- æ ¡éªŒä¸é€šè¿‡,ç›´æ¥return
     IF Is_Next = 'N' THEN
       RETURN;
     END IF;
   
-    -- ±éÀúËùÓĞÂú×ãÌõ¼şµÄĞĞ
+    -- éå†æ‰€æœ‰æ»¡è¶³æ¡ä»¶çš„è¡Œ
     FOR C1 IN c_Line LOOP
     
       l_Count          := l_Count + 1;
       l_Cux_Ready_Item := NULL;
     
-      -- È·¶¨¶¨µ¥ºÅ,¸ù¾İ ×Ó¿â , ¹¤Ğò ·Ö³ö²»Í¬µÄ±¸ÁÏµ¥.
+      -- ç¡®å®šå®šå•å·,æ ¹æ® å­åº“ , å·¥åº åˆ†å‡ºä¸åŒçš„å¤‡æ–™å•.
       IF (Old_Sub IS NULL AND Old_Operation_Code IS NULL) OR
          (Old_Sub <> C1.Sub) OR
          (Nvl(Old_Operation_Code, -1) <> Nvl(C1.Operation_Code, -1)) THEN
       
-        -- 83 ¸£Íø £¬84 ¾©Íø
+        -- 83 ç¦ç½‘ ï¼Œ84 äº¬ç½‘
         IF p_Organization_Id = 83 THEN
           l_Cux_Ready_Item.Doc_No := 'RD' || Cux_Doc_No_Seq_Jw.Nextval;
         
@@ -544,7 +562,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_Cux_Ready_Item.Organization_Id := C1.Organization_Id;
       l_Cux_Ready_Item.Doc_Type        := p_Wip_Type;
       l_Cux_Ready_Item.Doc_Date        := p_Doc_Date;
-      l_Cux_Ready_Item.Doc_Status      := 'Î´¹ıÕË';
+      l_Cux_Ready_Item.Doc_Status      := 'æœªè¿‡è´¦';
       l_Cux_Ready_Item.Wip_Entity_Id   := C1.Wip_Entity_Id;
       l_Cux_Ready_Item.Wip_Entity_Name := C1.Wip_Entity_Name;
       l_Cux_Ready_Item.Primary_Item_Id := C1.Primary_Item_Id;
@@ -552,11 +570,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_Cux_Ready_Item.Supply_Subinventory := C1.Sub;
       l_Cux_Ready_Item.Supply_Locator_Id   := C1.Inventory_Location_Id;
       l_Cux_Ready_Item.Supply_Loc_Code     := C1.Loc;
-      -- Ö¸¶¨²Ö¿â
+      -- æŒ‡å®šä»“åº“
       IF p_Sub IS NOT NULL AND l_Appoint_Sub = 'Y' THEN
         l_Cux_Ready_Item.Supply_Subinventory := p_Sub;
       
-        -- Ö¸¶¨»õÎ»
+        -- æŒ‡å®šè´§ä½
         IF p_Loc IS NOT NULL THEN
           l_Cux_Ready_Item.Supply_Loc_Code := p_Loc;
         
@@ -569,16 +587,16 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         END IF;
       END IF;
     
-      l_Cux_Ready_Item.Now_Qty                := p_Now_Qty; -- ÏÂ´ïÊı
-      l_Cux_Ready_Item.Inventory_Item_Id      := C1.Inventory_Item_Id; -- ÎïÁÏID
-      l_Cux_Ready_Item.Item_Primary_Uom_Code  := C1.Item_Primary_Uom_Code; -- ÎïÁÏµ¥Î»
-      l_Cux_Ready_Item.Operation_Seq_Num      := C1.Operation_Seq_Num; -- ¹¤Ğò±àºÅ
-      l_Cux_Ready_Item.Operation_Code         := C1.Operation_Code; -- ¹¤Ğò´úÂë
-      l_Cux_Ready_Item.Quantity_Per_Assembly  := C1.Quantity_Per_Assembly; -- µ¥Î»ĞèÇó
-      l_Cux_Ready_Item.Component_Yield_Factor := C1.Component_Yield_Factor; -- ²ú³öÂÊ
-      l_Cux_Ready_Item.Required_Quantity      := C1.Required_Quantity; -- ±ØĞèÁ¿
-      l_Cux_Ready_Item.Quantity_Issued        := C1.Quantity_Issued; -- ÒÑÍê³ÉÁ¿
-      l_Cux_Ready_Item.Iss_Ready_Qty          := C1.Iss_Ready_Qty; -- È±ÁÏ
+      l_Cux_Ready_Item.Now_Qty                := p_Now_Qty; -- ä¸‹è¾¾æ•°
+      l_Cux_Ready_Item.Inventory_Item_Id      := C1.Inventory_Item_Id; -- ç‰©æ–™ID
+      l_Cux_Ready_Item.Item_Primary_Uom_Code  := C1.Item_Primary_Uom_Code; -- ç‰©æ–™å•ä½
+      l_Cux_Ready_Item.Operation_Seq_Num      := C1.Operation_Seq_Num; -- å·¥åºç¼–å·
+      l_Cux_Ready_Item.Operation_Code         := C1.Operation_Code; -- å·¥åºä»£ç 
+      l_Cux_Ready_Item.Quantity_Per_Assembly  := C1.Quantity_Per_Assembly; -- å•ä½éœ€æ±‚
+      l_Cux_Ready_Item.Component_Yield_Factor := C1.Component_Yield_Factor; -- äº§å‡ºç‡
+      l_Cux_Ready_Item.Required_Quantity      := C1.Required_Quantity; -- å¿…éœ€é‡
+      l_Cux_Ready_Item.Quantity_Issued        := C1.Quantity_Issued; -- å·²å®Œæˆé‡
+      l_Cux_Ready_Item.Iss_Ready_Qty          := C1.Iss_Ready_Qty; -- ç¼ºæ–™
       l_Cux_Ready_Item.Creation_Date          := SYSDATE;
       l_Cux_Ready_Item.Created_By             := Fnd_Global.User_Id;
       l_Cux_Ready_Item.Last_Update_Date       := SYSDATE;
@@ -587,9 +605,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_Cux_Ready_Item.Create_Lot             := C1.Create_Lot;
       l_lot                                   := C1.Create_Lot; --added by bruce on 20151028
       l_Cux_Ready_Item.Transfer_Status        := 'WAITING';
-    
-      -- À­Ê½ÎïÁÏ¶ÔÓ¦µÄÏß±ß²Ö¶ÔÓ¦µÄ»õÎ»ÊÇÃ¿¸ö¹¤µ¥½øĞĞÃüÃû
-      IF p_Wip_Type = 'À­Ê½±¸ÁÏ' THEN
+      
+      l_Cux_Ready_Item.Material_Batch1        := C1.Material_Batch1;
+      l_Cux_Ready_Item.Material_Batch2        := C1.Material_Batch2;
+      l_Cux_Ready_Item.Special_Number         := C1.Special_Number;
+      l_Cux_Ready_Item.Special_Order          := C1.Special_Order;
+      l_Cux_Ready_Item.Empty_Return_Flag      := p_param.EMPTY_RETURN_FLAG;
+      -- æ‹‰å¼ç‰©æ–™å¯¹åº”çš„çº¿è¾¹ä»“å¯¹åº”çš„è´§ä½æ˜¯æ¯ä¸ªå·¥å•è¿›è¡Œå‘½å
+      IF p_Wip_Type = 'æ‹‰å¼å¤‡æ–™' THEN
         IF p_Organization_Id = 84 THEN
           l_Cux_Ready_Item.To_Sub := 'GX01';
         
@@ -611,7 +634,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         END;
       END IF;
     
-      --¼ÆËã±¸ÁÏÊı
+      --è®¡ç®—å¤‡æ–™æ•°
     
       l_Onhand_Qty := Cux_Wip_Transactions_Pkg.Get_Available_Qty(C1.Organization_Id,
                                                                  C1.Inventory_Item_Id,
@@ -627,9 +650,9 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                         x_onhand_count      => v_onhand_count);
     
       l_Ready_Qty := 0;
-      --ÏÖÓĞÁ¿È¡×îĞ¡ÕûÊı
+      --ç°æœ‰é‡å–æœ€å°æ•´æ•°
     
-      -- ÅĞ¶ÏÏÖÓĞÁ¿¹»²»¹»È«²¿±¸ÁÏ
+      -- åˆ¤æ–­ç°æœ‰é‡å¤Ÿä¸å¤Ÿå…¨éƒ¨å¤‡æ–™
       IF l_Onhand_Qty >= C1.Iss_Ready_Qty THEN
         l_Ready_Qty := C1.Iss_Ready_Qty;
       ELSIF l_Onhand_Qty > 0 THEN
@@ -640,7 +663,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     
       l_Cux_Ready_Item.Ready_Qty := l_Ready_Qty;
     
-      --»ñÈ¡¿ÉÒÔÏÂ´ïÊıÁ¿
+      --è·å–å¯ä»¥ä¸‹è¾¾æ•°é‡
       Cux_Wip_Transactions_Pkg.Get_Wip_Qt_Qty(p_Org_Id                => C1.Organization_Id,
                                               p_Wip_Id                => C1.Wip_Entity_Id,
                                               p_Operation_Seq_Num     => C1.Operation_Seq_Num,
@@ -667,7 +690,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                C1.Component_Yield_Factor);
         INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
       END IF;
-      --±£Áô
+      --ä¿ç•™
     
       Cux_Wip_Transactions_Pkg.Create_Save(l_Cux_Ready_Item.Line_Id,
                                            p_Return_Status,
@@ -682,15 +705,15 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     /* delete from CUX.CUX_WIP_ITEM_CHECK where seq = v_seq;*/
     COMMIT;
     p_Return_Status := 'S';
-    p_Return_Msg    := 'ÏÂ´ï³É¹¦';
+    p_Return_Msg    := 'ä¸‹è¾¾æˆåŠŸ';
   
     IF l_Count = 0 THEN
       p_Return_Status := 'E';
-      p_Return_Msg    := 'ÎŞÃ÷Ï¸Êı¾İ»òÎŞ¿â´æÊıÁ¿,µ¥¾İÎ´Éú³É£¡';
+      p_Return_Msg    := 'æ— æ˜ç»†æ•°æ®æˆ–æ— åº“å­˜æ•°é‡,å•æ®æœªç”Ÿæˆï¼';
     
-      -- ÏÖÓĞÁ¿²»×ãÌáÊ¾
+      -- ç°æœ‰é‡ä¸è¶³æç¤º
       if v_onhand_count > 0 then
-        p_Return_Msg := '´æÔÚ' || v_onhand_count || '¸öÎïÁÏ¶ÔÓ¦µÄ²Ö¿â»õÎïÎŞ¿ÉÓÃÁ¿:' ||
+        p_Return_Msg := 'å­˜åœ¨' || v_onhand_count || 'ä¸ªç‰©æ–™å¯¹åº”çš„ä»“åº“è´§ç‰©æ— å¯ç”¨é‡:' ||
                         v_onhand_msg;
       end if;
     END IF;
@@ -719,8 +742,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     end if;
     --end of add by bruce on 20151028
   
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    -- Cux_Time_Used_Pkg.add_time_used('ÏÂ´ïÍê³É',l_time_id);
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    -- Cux_Time_Used_Pkg.add_time_used('ä¸‹è¾¾å®Œæˆ',l_time_id);
   
   END;
 
@@ -733,6 +756,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                           p_Sub             VARCHAR2,
                                           p_Loc             VARCHAR2,
                                           p_Operation_Code  VARCHAR2,
+                                          p_param           CUX_DOC_CLASS_TYPE,
                                           p_Return_Status   OUT VARCHAR2,
                                           p_Return_Msg      OUT VARCHAR2) AS
     --added by bruce on 20151029
@@ -742,39 +766,43 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     --end of add by bruce on 20151029
   
     CURSOR c_Line IS
-    -- ÍÆÊ½±¸ÁÏ  À­Ê½±¸ÁÏ
-      SELECT a.Organization_Id, -- ×éÖ¯ID
-             a.Wip_Entity_Id, -- ¹¤µ¥ID
-             a.Wip_Entity_Name, -- ¹¤µ¥
-             a.Primary_Item_Id, -- ×°Åä¼ş
-             a.Ws_Code, -- ³µ¼ä
-             a.Start_Quantity, -- Éú²úÊıÁ¿
-             a.Inventory_Item_Id, -- ×é¼şID
-             a.Com_Item_Code, -- ×é¼ş
-             a.Item_Primary_Uom_Code, -- µ¥Î»
-             a.Operation_Seq_Num, -- ¹¤ĞòID
-             a.Operation_Code, -- ¹¤Ğò
-             a.Quantity_Per_Assembly, -- µ¥»úÓÃÁ¿
-             a.Component_Yield_Factor, -- ²ú³öÂÊ
-             a.Required_Quantity, -- ĞèÇóÊıÁ¿
-             a.Quantity_Issued, -- ÒÑ·¢·ÅÊıÁ¿
-             Decode(Sign(a.Iss_Ready_Qty), -- sign ´óÓÚ0 ·µ»Ø 1,Ğ¡ÓÚ0 ·µ»Ø -1,µÈÓÚ0 ·µ»Ø 0
+    -- æ¨å¼å¤‡æ–™  æ‹‰å¼å¤‡æ–™
+      SELECT a.Organization_Id, -- ç»„ç»‡ID
+             a.Wip_Entity_Id, -- å·¥å•ID
+             a.Wip_Entity_Name, -- å·¥å•
+             a.Primary_Item_Id, -- è£…é…ä»¶
+             a.Ws_Code, -- è½¦é—´
+             a.Start_Quantity, -- ç”Ÿäº§æ•°é‡
+             a.Inventory_Item_Id, -- ç»„ä»¶ID
+             a.Com_Item_Code, -- ç»„ä»¶
+             a.Item_Primary_Uom_Code, -- å•ä½
+             a.Operation_Seq_Num, -- å·¥åºID
+             a.Operation_Code, -- å·¥åº
+             a.Quantity_Per_Assembly, -- å•æœºç”¨é‡
+             a.Component_Yield_Factor, -- äº§å‡ºç‡
+             a.Required_Quantity, -- éœ€æ±‚æ•°é‡
+             a.Quantity_Issued, -- å·²å‘æ”¾æ•°é‡
+             a.MATERIAL_BATCH1,
+             a.MATERIAL_BATCH2,
+             a.SPECIAL_ORDER,
+             a.SPECIAL_NUMBER,
+             Decode(Sign(a.Iss_Ready_Qty), -- sign å¤§äº0 è¿”å› 1,å°äº0 è¿”å› -1,ç­‰äº0 è¿”å› 0
                     1,
                     a.Iss_Ready_Qty,
                     0,
                     0,
                     -1,
                     0) Iss_Ready_Qty, --
-             Cws.Sub, -- ×Ó¿â
-             Cws.Loc_Code Loc, -- »õÎ»
+             Cws.Sub, -- å­åº“
+             Cws.Loc_Code Loc, -- è´§ä½
              Cws.Location_Id Inventory_Location_Id,
              To_Char(Systimestamp, 'YYYYMMDDHH24MISSFF4') Create_Lot,
-             a.Replace_Flag -- ÊÇ·ñÌæ´ú
+             a.Replace_Flag -- æ˜¯å¦æ›¿ä»£
         FROM (SELECT Wdj.Organization_Id,
                      Wdj.Wip_Entity_Id,
                      Wdj.Wip_Entity_Name,
                      Wdj.Primary_Item_Id,
-                     Wdj.Attribute3 Ws_Code, --³µ¼ä
+                     Wdj.Attribute3 Ws_Code, --è½¦é—´
                      Wdj.Start_Quantity,
                      Wro.Inventory_Item_Id,
                      Msi.Segment1 Com_Item_Code,
@@ -785,6 +813,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      Wro.Component_Yield_Factor,
                      Wro.Required_Quantity,
                      Wro.Quantity_Issued,
+                     wro.attribute1 MATERIAL_BATCH1,
+                     wro.attribute2 MATERIAL_BATCH2,
+                     wro.attribute3 SPECIAL_ORDER,
+                     wro.attribute4 SPECIAL_NUMBER,
                      Ceil(Wro.Quantity_Per_Assembly * p_Now_Qty /
                           Cux_Wip_Transactions_Pkg.Get_Component_Yield_Factor(p_Org_Id                 => Wro.Organization_Id,
                                                                               p_Wip_Id                 => Wro.Wip_Entity_Id,
@@ -811,7 +843,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                  AND Nvl(Wro.Repetitive_Schedule_Id, '-1') =
                      Nvl(Wov.Repetitive_Schedule_Id, '-1')
                  AND Wro.Wip_Supply_Meaning LIKE
-                     '%' || Substr(p_Wip_Type, 1, 2) || '%' -- ÍÆÊ½,À­Ê½
+                     '%' || Substr(p_Wip_Type, 1, 2) || '%' -- æ¨å¼,æ‹‰å¼
               ) a,
              Cux_Sub_Loc_Set_b Cws
        WHERE 1 = 1
@@ -820,11 +852,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
          AND Cws.Ws_Code(+) = a.Ws_Code
          AND a.Iss_Ready_Qty <> 0
             
-            -- Ö¸¶¨¹¤ĞòÏÂ´ï
+            -- æŒ‡å®šå·¥åºä¸‹è¾¾
          AND Nvl(a.Operation_Code, -1) =
              Nvl(p_Operation_Code, Nvl(a.Operation_Code, -1))
       
-      --and (a.iss_ready_qty <> 0 and p_wip_type not in ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') or p_wip_type in ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì'));
+      --and (a.iss_ready_qty <> 0 and p_wip_type not in ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') or p_wip_type in ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†'));
       
        ORDER BY Operation_Code, Sub, Replace_Flag;
   
@@ -843,7 +875,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     v_Seq              NUMBER;
     v_Sy_Qty           NUMBER;
   
-    -- ÊÇ·ñÆôÓÃÖ¸¶¨»õÎ»
+    -- æ˜¯å¦å¯ç”¨æŒ‡å®šè´§ä½
     l_Appoint_Sub VARCHAR2(1) := 'Y';
   
     v_onhand_msg   varchar2(2000);
@@ -851,21 +883,21 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   
   BEGIN
   
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    --Cux_Time_Used_Pkg.create_time_used('ĞÂÖ¸¶¨²Ö¿âÏÂ´ï,ÀàĞÍ : ' || p_Wip_Type  
-    --                                    || ' ¹¤µ¥ºÅ : '|| p_Wip_Name ,l_time_id);  
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    --Cux_Time_Used_Pkg.create_time_used('æ–°æŒ‡å®šä»“åº“ä¸‹è¾¾,ç±»å‹ : ' || p_Wip_Type  
+    --                                    || ' å·¥å•å· : '|| p_Wip_Name ,l_time_id);  
   
     SELECT Cux.Cux_Doc_Line_Seq.Nextval INTO v_Seq FROM Dual;
   
-    -- ÅĞ¶ÏÊÇ·ñÓĞ»õÎ»£¬µ«ÊÇÏµÍ³ÓÖÎ´Ö¸¶¨
+    -- åˆ¤æ–­æ˜¯å¦æœ‰è´§ä½ï¼Œä½†æ˜¯ç³»ç»ŸåˆæœªæŒ‡å®š
     IF p_Sub IS NULL THEN
       p_Return_Status := 'E';
-      p_Return_Msg    := 'Î´Ö¸¶¨²Ö¿â';
+      p_Return_Msg    := 'æœªæŒ‡å®šä»“åº“';
       RETURN;
     END IF;
   
     IF p_Sub IS NOT NULL AND l_Appoint_Sub = 'Y' THEN
-      -- ×Ó¿â´æÔÚ,ÔÚ¼ì²é»õÎ»
+      -- å­åº“å­˜åœ¨,åœ¨æ£€æŸ¥è´§ä½
       BEGIN
         SELECT Locator_Type
           INTO l_Is_Loc_Con
@@ -877,24 +909,24 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           l_Is_Loc_Con := 0;
       END;
     
-      -- ÊÇ·ñ¿ªÆô»õÎ»¿ØÖÆ
+      -- æ˜¯å¦å¼€å¯è´§ä½æ§åˆ¶
       IF l_Is_Loc_Con <> 1 AND p_Loc IS NULL THEN
       
         p_Return_Status := 'E';
-        p_Return_Msg    := '²Ö¿â:' || p_Sub || ' ÓĞ»õÎ»,ÇëÖ¸¶¨»õÎ»';
+        p_Return_Msg    := 'ä»“åº“:' || p_Sub || ' æœ‰è´§ä½,è¯·æŒ‡å®šè´§ä½';
         return;
       END IF;
     END IF;
   
-    -- À­Ê½±¸ÁÏ¶ÔÓ¦µÄ½ÓÊÕÁÏ×Ó¿âÎªÏß±ß²Ö GX01 Óë HX01 »õÎ»Îª¶ÔÓ¦µÄ¹¤µ¥Ãû
-    -- ÍÆÊ½±¸ÁÏÎŞ½ÓÊÕ×Ó¿âºÍ»õÎ»,Ö±½Ó·¢»õ³öÈ¥,ÎŞÄ¿±ê¿â
-    IF p_Wip_Type = 'À­Ê½±¸ÁÏ' THEN
+    -- æ‹‰å¼å¤‡æ–™å¯¹åº”çš„æ¥æ”¶æ–™å­åº“ä¸ºçº¿è¾¹ä»“ GX01 ä¸ HX01 è´§ä½ä¸ºå¯¹åº”çš„å·¥å•å
+    -- æ¨å¼å¤‡æ–™æ— æ¥æ”¶å­åº“å’Œè´§ä½,ç›´æ¥å‘è´§å‡ºå»,æ— ç›®æ ‡åº“
+    IF p_Wip_Type = 'æ‹‰å¼å¤‡æ–™' THEN
     
       IF p_Organization_Id = 84 THEN
-        --¸£½¨Èñ½İ
+        --ç¦å»ºé”æ·
         l_To_Sub := 'GX01';
       ELSIF p_Organization_Id = 83 THEN
-        --±±¾©Èñ½İ
+        --åŒ—äº¬é”æ·
         l_To_Sub := 'HX01';
       END IF;
     
@@ -909,32 +941,32 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       IF Is_Have < 1 THEN
         Is_Next         := 'N';
         p_Return_Status := 'E';
-        p_Return_Msg    := p_Return_Msg || 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş×Ó¿â[' || l_To_Sub ||
-                           ']»ò»õÎ»[' || p_Wip_Name || ']Îª¿Õ,Çë¼ì²é:' || Chr(10);
+        p_Return_Msg    := p_Return_Msg || 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶å­åº“[' || l_To_Sub ||
+                           ']æˆ–è´§ä½[' || p_Wip_Name || ']ä¸ºç©º,è¯·æ£€æŸ¥:' || Chr(10);
         RETURN;
       END IF;
     END IF;
   
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    -- Cux_Time_Used_Pkg.add_time_used('¼ì²éÍê³É',l_time_id);
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    -- Cux_Time_Used_Pkg.add_time_used('æ£€æŸ¥å®Œæˆ',l_time_id);
   
-    -- Ğ£Ñé²»Í¨¹ı,Ö±½Óreturn
+    -- æ ¡éªŒä¸é€šè¿‡,ç›´æ¥return
     IF Is_Next = 'N' THEN
       RETURN;
     END IF;
   
-    -- ±éÀúËùÓĞÂú×ãÌõ¼şµÄĞĞ
+    -- éå†æ‰€æœ‰æ»¡è¶³æ¡ä»¶çš„è¡Œ
     FOR C1 IN c_Line LOOP
     
       l_Count          := l_Count + 1;
       l_Cux_Ready_Item := NULL;
     
-      -- È·¶¨¶¨µ¥ºÅ,¸ù¾İ ×Ó¿â , ¹¤Ğò ·Ö³ö²»Í¬µÄ±¸ÁÏµ¥.
+      -- ç¡®å®šå®šå•å·,æ ¹æ® å­åº“ , å·¥åº åˆ†å‡ºä¸åŒçš„å¤‡æ–™å•.
       IF (Old_Sub IS NULL AND Old_Operation_Code IS NULL) OR
          (Old_Sub <> C1.Sub) OR
          (Nvl(Old_Operation_Code, -1) <> Nvl(C1.Operation_Code, -1)) THEN
       
-        -- 83 ¸£Íø £¬84 ¾©Íø
+        -- 83 ç¦ç½‘ ï¼Œ84 äº¬ç½‘
         IF p_Organization_Id = 83 THEN
           l_Cux_Ready_Item.Doc_No := 'RD' || Cux_Doc_No_Seq_Jw.Nextval;
         
@@ -957,21 +989,21 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_Cux_Ready_Item.Organization_Id := C1.Organization_Id;
       l_Cux_Ready_Item.Doc_Type        := p_Wip_Type;
       l_Cux_Ready_Item.Doc_Date        := p_Doc_Date;
-      l_Cux_Ready_Item.Doc_Status      := 'Î´¹ıÕË';
+      l_Cux_Ready_Item.Doc_Status      := 'æœªè¿‡è´¦';
       l_Cux_Ready_Item.Wip_Entity_Id   := C1.Wip_Entity_Id;
       l_Cux_Ready_Item.Wip_Entity_Name := C1.Wip_Entity_Name;
       l_Cux_Ready_Item.Primary_Item_Id := C1.Primary_Item_Id;
     
-      -- ¼ÓÔØÄ¬ÈÏ²Ö¿â
+      -- åŠ è½½é»˜è®¤ä»“åº“
       l_Cux_Ready_Item.Supply_Subinventory := C1.Sub;
       l_Cux_Ready_Item.Supply_Locator_Id   := C1.Inventory_Location_Id;
       l_Cux_Ready_Item.Supply_Loc_Code     := C1.Loc;
     
-      -- Ö¸¶¨²Ö¿â
+      -- æŒ‡å®šä»“åº“
       IF p_Sub IS NOT NULL AND l_Appoint_Sub = 'Y' THEN
         l_Cux_Ready_Item.Supply_Subinventory := p_Sub;
       
-        -- Ö¸¶¨»õÎ»
+        -- æŒ‡å®šè´§ä½
         IF p_Loc IS NOT NULL THEN
           l_Cux_Ready_Item.Supply_Loc_Code := p_Loc;
         
@@ -982,7 +1014,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              AND Mil.Subinventory_Code = p_Sub
              AND Mil.Segment1 = p_Loc;
         ELSE
-          -- ÅĞ¶ÏÊÇ·ñÓĞÖ¸¶¨»õÎ»
+          -- åˆ¤æ–­æ˜¯å¦æœ‰æŒ‡å®šè´§ä½
           BEGIN
             SELECT Locator_Type
               INTO l_Is_Loc_Con
@@ -994,7 +1026,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
               l_Is_Loc_Con := 0;
           END;
         
-          -- Î´ÆôÓÃ»õÎ»¿ØÖÆ
+          -- æœªå¯ç”¨è´§ä½æ§åˆ¶
           IF l_Is_Loc_Con = 1 THEN
             l_Cux_Ready_Item.Supply_Locator_Id := NULL;
             l_Cux_Ready_Item.Supply_Loc_Code   := NULL;
@@ -1002,16 +1034,16 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         END IF;
       END IF;
     
-      l_Cux_Ready_Item.Now_Qty                := p_Now_Qty; -- ÏÂ´ïÊı
-      l_Cux_Ready_Item.Inventory_Item_Id      := C1.Inventory_Item_Id; -- ÎïÁÏID
-      l_Cux_Ready_Item.Item_Primary_Uom_Code  := C1.Item_Primary_Uom_Code; -- ÎïÁÏµ¥Î»
-      l_Cux_Ready_Item.Operation_Seq_Num      := C1.Operation_Seq_Num; -- ¹¤Ğò±àºÅ
-      l_Cux_Ready_Item.Operation_Code         := C1.Operation_Code; -- ¹¤Ğò´úÂë
-      l_Cux_Ready_Item.Quantity_Per_Assembly  := C1.Quantity_Per_Assembly; -- µ¥Î»ĞèÇó
-      l_Cux_Ready_Item.Component_Yield_Factor := C1.Component_Yield_Factor; -- ²ú³öÂÊ
-      l_Cux_Ready_Item.Required_Quantity      := C1.Required_Quantity; -- ±ØĞèÁ¿
-      l_Cux_Ready_Item.Quantity_Issued        := C1.Quantity_Issued; -- ÒÑÍê³ÉÁ¿
-      l_Cux_Ready_Item.Iss_Ready_Qty          := C1.Iss_Ready_Qty; -- È±ÁÏ
+      l_Cux_Ready_Item.Now_Qty                := p_Now_Qty; -- ä¸‹è¾¾æ•°
+      l_Cux_Ready_Item.Inventory_Item_Id      := C1.Inventory_Item_Id; -- ç‰©æ–™ID
+      l_Cux_Ready_Item.Item_Primary_Uom_Code  := C1.Item_Primary_Uom_Code; -- ç‰©æ–™å•ä½
+      l_Cux_Ready_Item.Operation_Seq_Num      := C1.Operation_Seq_Num; -- å·¥åºç¼–å·
+      l_Cux_Ready_Item.Operation_Code         := C1.Operation_Code; -- å·¥åºä»£ç 
+      l_Cux_Ready_Item.Quantity_Per_Assembly  := C1.Quantity_Per_Assembly; -- å•ä½éœ€æ±‚
+      l_Cux_Ready_Item.Component_Yield_Factor := C1.Component_Yield_Factor; -- äº§å‡ºç‡
+      l_Cux_Ready_Item.Required_Quantity      := C1.Required_Quantity; -- å¿…éœ€é‡
+      l_Cux_Ready_Item.Quantity_Issued        := C1.Quantity_Issued; -- å·²å®Œæˆé‡
+      l_Cux_Ready_Item.Iss_Ready_Qty          := C1.Iss_Ready_Qty; -- ç¼ºæ–™
       l_Cux_Ready_Item.Creation_Date          := SYSDATE;
       l_Cux_Ready_Item.Created_By             := Fnd_Global.User_Id;
       l_Cux_Ready_Item.Last_Update_Date       := SYSDATE;
@@ -1020,8 +1052,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_Cux_Ready_Item.Create_Lot             := C1.Create_Lot;
       l_lot                                   := C1.Create_Lot; --added by bruce on 20151029
       l_Cux_Ready_Item.Transfer_Status        := 'WAITING';
-      -- À­Ê½ÎïÁÏ¶ÔÓ¦µÄÏß±ß²Ö¶ÔÓ¦µÄ»õÎ»ÊÇÃ¿¸ö¹¤µ¥½øĞĞÃüÃû
-      IF p_Wip_Type = 'À­Ê½±¸ÁÏ' THEN
+      
+      l_Cux_Ready_Item.Material_Batch1        := C1.Material_Batch1;
+      l_Cux_Ready_Item.Material_Batch2        := C1.Material_Batch2;
+      l_Cux_Ready_Item.Special_Number         := C1.Special_Number;
+      l_Cux_Ready_Item.Special_Order          := C1.Special_Order;
+      l_Cux_Ready_Item.Empty_Return_Flag      := p_param.EMPTY_RETURN_FLAG;
+      -- æ‹‰å¼ç‰©æ–™å¯¹åº”çš„çº¿è¾¹ä»“å¯¹åº”çš„è´§ä½æ˜¯æ¯ä¸ªå·¥å•è¿›è¡Œå‘½å
+      IF p_Wip_Type = 'æ‹‰å¼å¤‡æ–™' THEN
         IF p_Organization_Id = 84 THEN
           l_Cux_Ready_Item.To_Sub := 'GX01';
         
@@ -1043,7 +1081,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         END;
       END IF;
     
-      --¼ÆËã±¸ÁÏÊı
+      --è®¡ç®—å¤‡æ–™æ•°
     
       l_Onhand_Qty := Cux_Wip_Transactions_Pkg.Get_Available_Qty(C1.Organization_Id,
                                                                  C1.Inventory_Item_Id,
@@ -1059,9 +1097,9 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                         x_onhand_count      => v_onhand_count);
     
       l_Ready_Qty := 0;
-      --ÏÖÓĞÁ¿È¡×îĞ¡ÕûÊı
+      --ç°æœ‰é‡å–æœ€å°æ•´æ•°
     
-      -- ÅĞ¶ÏÏÖÓĞÁ¿¹»²»¹»È«²¿±¸ÁÏ
+      -- åˆ¤æ–­ç°æœ‰é‡å¤Ÿä¸å¤Ÿå…¨éƒ¨å¤‡æ–™
       IF l_Onhand_Qty >= C1.Iss_Ready_Qty THEN
         l_Ready_Qty := C1.Iss_Ready_Qty;
       ELSIF l_Onhand_Qty > 0 THEN
@@ -1072,7 +1110,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     
       l_Cux_Ready_Item.Ready_Qty := l_Ready_Qty;
     
-      --»ñÈ¡¿ÉÒÔÏÂ´ïÊıÁ¿
+      --è·å–å¯ä»¥ä¸‹è¾¾æ•°é‡
       Cux_Wip_Transactions_Pkg.Get_Wip_Qt_Qty(p_Org_Id                => C1.Organization_Id,
                                               p_Wip_Id                => C1.Wip_Entity_Id,
                                               p_Operation_Seq_Num     => C1.Operation_Seq_Num,
@@ -1099,7 +1137,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                C1.Component_Yield_Factor);
         INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
       END IF;
-      --±£Áô
+      --ä¿ç•™
     
       Cux_Wip_Transactions_Pkg.Create_Save(l_Cux_Ready_Item.Line_Id,
                                            p_Return_Status,
@@ -1114,15 +1152,15 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     /* delete from CUX.CUX_WIP_ITEM_CHECK where seq = v_seq;*/
     COMMIT;
     p_Return_Status := 'S';
-    p_Return_Msg    := 'ÏÂ´ï³É¹¦';
+    p_Return_Msg    := 'ä¸‹è¾¾æˆåŠŸ';
   
     IF l_Count = 0 THEN
       p_Return_Status := 'E';
-      p_Return_Msg    := 'ÎŞÃ÷Ï¸Êı¾İ»òÎŞ¿â´æÊıÁ¿,µ¥¾İÎ´Éú³É£¡';
+      p_Return_Msg    := 'æ— æ˜ç»†æ•°æ®æˆ–æ— åº“å­˜æ•°é‡,å•æ®æœªç”Ÿæˆï¼';
     
-      -- ÏÖÓĞÁ¿²»×ãÌáÊ¾
+      -- ç°æœ‰é‡ä¸è¶³æç¤º
       if v_onhand_count > 0 then
-        p_Return_Msg := '´æÔÚ' || v_onhand_count || '¸öÎïÁÏ¶ÔÓ¦µÄ²Ö¿â»õÎïÎŞ¿ÉÓÃÁ¿:' ||
+        p_Return_Msg := 'å­˜åœ¨' || v_onhand_count || 'ä¸ªç‰©æ–™å¯¹åº”çš„ä»“åº“è´§ç‰©æ— å¯ç”¨é‡:' ||
                         v_onhand_msg;
       end if;
     END IF;
@@ -1152,8 +1190,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   
     --end of add by bruce on 20151028
   
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    -- Cux_Time_Used_Pkg.add_time_used('ÏÂ´ïÍê³É',l_time_id);  
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    -- Cux_Time_Used_Pkg.add_time_used('ä¸‹è¾¾å®Œæˆ',l_time_id);  
   END;
 
   PROCEDURE Post_Preparation_Doc(p_Organization_Id NUMBER,
@@ -1172,7 +1210,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     l_auto_compute_final_comp NUMBER;
     l_ishave                  NUMBER := 0;
   
-    -- ¹ıÕËµ¥¾İ
+    -- è¿‡è´¦å•æ®
     CURSOR c_lines IS
       SELECT cri.organization_id,
              cri.line_id,
@@ -1194,14 +1232,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
        WHERE cri.organization_id = p_organization_id
          AND cri.doc_no = p_doc_no
          AND cri.doc_type = p_doc_type
-         AND ((cri.doc_type IN ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)') AND
+         AND ((cri.doc_type IN ('æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)') AND
              nvl(cri.attribute1, 'N') = 'Y') OR
              cri.doc_type NOT IN
-             ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)', 'ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') OR
-             (cri.doc_type IN ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') AND
+             ('æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)', 'æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') OR
+             (cri.doc_type IN ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') AND
              nvl(cri.attribute1, 'N') = 'Y'))
-         AND ((cri.ready_qty > 0 AND cri.doc_type <> 'Íê¹¤Èë¿â') OR
-             (cri.now_qty > 0 AND cri.doc_type = 'Íê¹¤Èë¿â'))
+         AND ((cri.ready_qty > 0 AND cri.doc_type <> 'å®Œå·¥å…¥åº“') OR
+             (cri.now_qty > 0 AND cri.doc_type = 'å®Œå·¥å…¥åº“'))
          AND cri.pro_trx_id IS NULL;
     v_reservation_quantity1 NUMBER;
     v_reservation_quantity  NUMBER;
@@ -1209,8 +1247,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     v_qty                   NUMBER;
   BEGIN
   
-    --mhw add 2014-10-25 Ìí¼ÓÅĞ¶ÏÍËÁÏÁ¿ÊÇ·ñ´óÓÚÍê¹¤Á¿
-    IF p_doc_type = 'ÍÆÊ½ÍËÁÏ(Áãµ¥)' THEN
+    --mhw add 2014-10-25 æ·»åŠ åˆ¤æ–­é€€æ–™é‡æ˜¯å¦å¤§äºå®Œå·¥é‡
+    IF p_doc_type = 'æ¨å¼é€€æ–™(é›¶å•)' THEN
       SELECT COUNT(1)
         INTO l_ishave
         FROM (SELECT wo.quantity_completed * cri.quantity_per_assembly /
@@ -1230,28 +1268,28 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                  AND wro.wip_entity_id = cri.wip_entity_id
                  AND cri.organization_id = p_organization_id
                  AND cri.doc_no = p_doc_no
-                 AND cri.doc_type = 'ÍÆÊ½ÍËÁÏ(Áãµ¥)') a
+                 AND cri.doc_type = 'æ¨å¼é€€æ–™(é›¶å•)') a
        WHERE a.give_qty < a.wip_com_qty;
       IF l_ishave > 0 THEN
         p_return_status := 'E';
-        p_return_msg    := '¼ì²éÓĞ×é¼şÍËÁÏÊıÁ¿´óÓÚÍê¹¤ËùĞè×îĞ¡Ì×Êı£¬²»ÄÜÍËÁÏ¡£';
+        p_return_msg    := 'æ£€æŸ¥æœ‰ç»„ä»¶é€€æ–™æ•°é‡å¤§äºå®Œå·¥æ‰€éœ€æœ€å°å¥—æ•°ï¼Œä¸èƒ½é€€æ–™ã€‚';
         RETURN;
       END IF;
     END IF;
     --mhw end 
   
-    ----Ôö¼ÓÊıÁ¿ÑéÖ¤,ÅĞ¶ÏÊÇ·ñ¶¼ÊÇ×ã¹»¹ıÕË
+    ----å¢åŠ æ•°é‡éªŒè¯,åˆ¤æ–­æ˜¯å¦éƒ½æ˜¯è¶³å¤Ÿè¿‡è´¦
     FOR c1 IN c_lines LOOP
     
-      IF c1.doc_type IN ('À­Ê½±¸ÁÏ',
-                         'À­Ê½²¹ÁÏ',
-                         'À­Ê½ÍËÁÏ',
-                         'À­Ê½³¬Áì',
-                         'ÍÆÊ½±¸ÁÏ',
-                         'ÍÆÊ½²¹ÁÏ',
-                         'ÍÆÊ½³¬Áì') THEN
+      IF c1.doc_type IN ('æ‹‰å¼å¤‡æ–™',
+                         'æ‹‰å¼è¡¥æ–™',
+                         'æ‹‰å¼é€€æ–™',
+                         'æ‹‰å¼è¶…é¢†',
+                         'æ¨å¼å¤‡æ–™',
+                         'æ¨å¼è¡¥æ–™',
+                         'æ¨å¼è¶…é¢†') THEN
       
-        --»ñÈ¡±£ÁôÊıÁ¿
+        --è·å–ä¿ç•™æ•°é‡
         SELECT nvl(SUM(mr.reservation_quantity), 0)
           INTO v_reservation_quantity
           FROM mtl_reservations mr
@@ -1260,7 +1298,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
            AND mr.demand_source_line_id = c1.line_id
            AND mr.organization_id = p_organization_id;
       
-        --»ñÈ¡¿ÉÓÃÁ¿   
+        --è·å–å¯ç”¨é‡   
         v_reservation_quantity1 := cux_wip_transactions_pkg.get_available_qty(p_organization_id   => p_organization_id,
                                                                               p_inventory_item_id => c1.inventory_item_id,
                                                                               p_subinventory_code => c1.supply_subinventory,
@@ -1269,7 +1307,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         v_qty := nvl(v_reservation_quantity, 0) +
                  nvl(v_reservation_quantity1, 0);
       
-        -- ÅĞ¶ÏÏÖÓĞÁ¿ ÊÇ·ñ×ã¹»ÏÂÁÏ                                                                     
+        -- åˆ¤æ–­ç°æœ‰é‡ æ˜¯å¦è¶³å¤Ÿä¸‹æ–™                                                                     
         IF v_qty < c1.ready_qty THEN
           SELECT msi.segment1
             INTO v_item_code
@@ -1277,8 +1315,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
            WHERE msi.inventory_item_id = c1.inventory_item_id
              AND msi.organization_id = p_organization_id;
         
-          p_return_msg    := 'ÎïÁÏ' || v_item_code || '´¦ÀíÊıÁ¿(' || c1.ready_qty ||
-                             ')´óÓÚ¿ÉÓÃÁ¿' || '(' || v_qty || ')';
+          p_return_msg    := 'ç‰©æ–™' || v_item_code || 'å¤„ç†æ•°é‡(' || c1.ready_qty ||
+                             ')å¤§äºå¯ç”¨é‡' || '(' || v_qty || ')';
           p_return_status := 'E';
           RETURN;
         END IF;
@@ -1287,12 +1325,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     END LOOP;
   
     /**
-    *   ½øĞĞ¹ıÕË²Ù×÷
-    *   1. ÏÈÊÍ·Å±£Áô
-    *   2. ¸ù¾İÊµ¼ÊÇé¿ö²åÈë½Ó¿ÚÊı¾İ
+    *   è¿›è¡Œè¿‡è´¦æ“ä½œ
+    *   1. å…ˆé‡Šæ”¾ä¿ç•™
+    *   2. æ ¹æ®å®é™…æƒ…å†µæ’å…¥æ¥å£æ•°æ®
     */
     FOR c1 IN c_lines LOOP
-      --È¡Ïû±£Áô
+      --å–æ¶ˆä¿ç•™
       DELETE mtl_reservations mr
        WHERE mr.supply_source_name = c1.doc_no
          AND mr.demand_source_header_id = c1.wip_entity_id
@@ -1307,51 +1345,51 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_iface_rec.created_by        := l_user_id;
       l_iface_rec.last_update_login := fnd_global.login_id;
     
-      -- ÉèÖÃ±ØÒªĞÅÏ¢
-      IF c1.doc_type IN ('À­Ê½±¸ÁÏ', 'À­Ê½²¹ÁÏ', 'À­Ê½ÍËÁÏ', 'À­Ê½³¬Áì') THEN
+      -- è®¾ç½®å¿…è¦ä¿¡æ¯
+      IF c1.doc_type IN ('æ‹‰å¼å¤‡æ–™', 'æ‹‰å¼è¡¥æ–™', 'æ‹‰å¼é€€æ–™', 'æ‹‰å¼è¶…é¢†') THEN
       
-        l_iface_rec.transaction_type_id   := 101; --À­Ê½ÎïÁÏ·¢·Å
+        l_iface_rec.transaction_type_id   := 101; --æ‹‰å¼ç‰©æ–™å‘æ”¾
         l_iface_rec.transfer_subinventory := c1.to_sub;
         l_iface_rec.transfer_locator      := c1.to_locator_id;
       
-      ELSIF c1.doc_type IN ('ÍÆÊ½±¸ÁÏ', 'ÍÆÊ½²¹ÁÏ', 'ÍÆÊ½³¬Áì') THEN
-        l_iface_rec.transaction_type_id := 35; --WIP ·¢·Å
+      ELSIF c1.doc_type IN ('æ¨å¼å¤‡æ–™', 'æ¨å¼è¡¥æ–™', 'æ¨å¼è¶…é¢†') THEN
+        l_iface_rec.transaction_type_id := 35; --WIP å‘æ”¾
         c1.ready_qty                    := c1.ready_qty * -1;
         l_iface_rec.operation_seq_num   := c1.operation_seq_num;
       
-      ELSIF c1.doc_type IN ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)') THEN
-        l_iface_rec.transaction_type_id := 43; --WIP ÍË»Ø
+      ELSIF c1.doc_type IN ('æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)') THEN
+        l_iface_rec.transaction_type_id := 43; --WIP é€€å›
         c1.ready_qty                    := c1.ready_qty;
         l_iface_rec.operation_seq_num   := c1.operation_seq_num;
       
       ELSE
         p_return_status := 'E';
-        p_return_msg    := 'µ¥¾İÀàĞÍÒì³££º' || c1.doc_type || SQLERRM || '´úÂëĞĞ:' ||
+        p_return_msg    := 'å•æ®ç±»å‹å¼‚å¸¸ï¼š' || c1.doc_type || SQLERRM || 'ä»£ç è¡Œ:' ||
                            dbms_utility.format_error_backtrace;
         ROLLBACK;
         RETURN;
       END IF;
     
-      -- ÉèÖÃ source_code Óë transaction_reference ĞÅÏ¢
-      IF c1.doc_type IN ('À­Ê½±¸ÁÏ', 'ÍÆÊ½±¸ÁÏ') THEN
-        l_iface_rec.source_code           := '±¸ÁÏµ¥';
-        l_iface_rec.transaction_reference := c1.doc_type || '[±¸ÁÏµ¥ºÅ:' ||
+      -- è®¾ç½® source_code ä¸ transaction_reference ä¿¡æ¯
+      IF c1.doc_type IN ('æ‹‰å¼å¤‡æ–™', 'æ¨å¼å¤‡æ–™') THEN
+        l_iface_rec.source_code           := 'å¤‡æ–™å•';
+        l_iface_rec.transaction_reference := c1.doc_type || '[å¤‡æ–™å•å·:' ||
                                              c1.doc_no || ']';
-      ELSIF c1.doc_type IN ('ÍÆÊ½²¹ÁÏ', 'À­Ê½²¹ÁÏ') THEN
-        l_iface_rec.source_code           := '²¹ÁÏµ¥';
-        l_iface_rec.transaction_reference := c1.doc_type || '[²¹ÁÏµ¥ºÅ:' ||
+      ELSIF c1.doc_type IN ('æ¨å¼è¡¥æ–™', 'æ‹‰å¼è¡¥æ–™') THEN
+        l_iface_rec.source_code           := 'è¡¥æ–™å•';
+        l_iface_rec.transaction_reference := c1.doc_type || '[è¡¥æ–™å•å·:' ||
                                              c1.doc_no || ']';
-      ELSIF c1.doc_type IN ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)', 'À­Ê½ÍËÁÏ') THEN
-        l_iface_rec.source_code           := 'ÍËÁÏµ¥';
-        l_iface_rec.transaction_reference := c1.doc_type || '[ÍËÁÏµ¥ºÅ:' ||
+      ELSIF c1.doc_type IN ('æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)', 'æ‹‰å¼é€€æ–™') THEN
+        l_iface_rec.source_code           := 'é€€æ–™å•';
+        l_iface_rec.transaction_reference := c1.doc_type || '[é€€æ–™å•å·:' ||
                                              c1.doc_no || ']';
-      ELSIF c1.doc_type IN ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') THEN
-        l_iface_rec.source_code           := '³¬Áìµ¥';
-        l_iface_rec.transaction_reference := c1.doc_type || '[³¬Áìµ¥ºÅ:' ||
+      ELSIF c1.doc_type IN ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') THEN
+        l_iface_rec.source_code           := 'è¶…é¢†å•';
+        l_iface_rec.transaction_reference := c1.doc_type || '[è¶…é¢†å•å·:' ||
                                              c1.doc_no || ']';
       END IF;
     
-      -- ÎïÁÏÊÂÎñ½Ó¿ÚID
+      -- ç‰©æ–™äº‹åŠ¡æ¥å£ID
       SELECT mtl_material_transactions_s.nextval
         INTO l_iface_rec.transaction_interface_id
         FROM dual;
@@ -1375,7 +1413,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_iface_rec.transaction_source_id := c1.wip_entity_id; --wip_entity_id
       l_iface_rec.source_line_id        := c1.line_id;
     
-      -- ²åÈë½Ó¿Ú±í
+      -- æ’å…¥æ¥å£è¡¨
       INSERT INTO inv.mtl_transactions_interface VALUES l_iface_rec;
     
       fnd_msg_pub.initialize;
@@ -1391,7 +1429,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                                   p_table            => 1,
                                                                   p_header_id        => l_iface_rec.transaction_header_id);
     
-      -- ½Ó¿Ú´¦ÀíÊ§°Ü
+      -- æ¥å£å¤„ç†å¤±è´¥
       IF l_return_count = -1 OR
          p_return_status <> fnd_api.g_ret_sts_success THEN
         p_return_msg := p_return_msg || l_iface_rec.transaction_header_id || ': ';
@@ -1415,7 +1453,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         END LOOP;
         ROLLBACK;
       
-        --É¾³ıÒÑ²åÈëµÄ½Ó¿Ú
+        --åˆ é™¤å·²æ’å…¥çš„æ¥å£
         /*DELETE inv.mtl_transactions_interface
          WHERE transaction_header_id = l_iface_rec.transaction_header_id;
         
@@ -1436,17 +1474,17 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     END LOOP;
   
     UPDATE cux_ready_item cri
-       SET cri.doc_status       = 'ÒÑ¹ıÕË',
+       SET cri.doc_status       = 'å·²è¿‡è´¦',
            cri.last_updated_by  = l_user_id,
            cri.last_update_date = SYSDATE
      WHERE cri.doc_no = p_doc_no
        AND cri.organization_id = p_organization_id;
   
-    p_return_msg := '¹ıÕË³É¹¦';
+    p_return_msg := 'è¿‡è´¦æˆåŠŸ';
   
     COMMIT;
   
-    --¶ş´Î´¦Àí,·ÀÖ¹ÏÖÓĞÁ¿Î´ÊÍ·Å
+    --äºŒæ¬¡å¤„ç†,é˜²æ­¢ç°æœ‰é‡æœªé‡Šæ”¾
     DELETE mtl_reservations mr
      WHERE EXISTS (SELECT 1
               FROM cux_ready_item cri
@@ -1455,13 +1493,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                AND mr.demand_source_header_id = cri.wip_entity_id
                AND mr.demand_source_line_id = cri.line_id
                AND mr.organization_id = cri.organization_id
-               AND cri.doc_status = 'ÒÑ¹ıÕË');
+               AND cri.doc_status = 'å·²è¿‡è´¦');
     COMMIT;
   
   EXCEPTION
     WHEN OTHERS THEN
       p_return_status := 'E';
-      p_return_msg    := 'ÊÂÎï´¦ÀíÒì³£' || SQLERRM || '´úÂëĞĞ:' ||
+      p_return_msg    := 'äº‹ç‰©å¤„ç†å¼‚å¸¸' || SQLERRM || 'ä»£ç è¡Œ:' ||
                          dbms_utility.format_error_backtrace;
       ROLLBACK;
   end;
@@ -1475,6 +1513,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                p_Sub             VARCHAR2,
                                p_Loc             VARCHAR2,
                                p_Operation_Code  VARCHAR2,
+                               p_param           CUX_DOC_CLASS_TYPE,
                                p_Return_Status   OUT VARCHAR2,
                                p_Return_Msg      OUT VARCHAR2) AS
   
@@ -1485,7 +1524,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              a.Wip_Entity_Id,
              a.Wip_Entity_Name,
              a.Primary_Item_Id,
-             a.Ws_Code, --³µ¼ä
+             a.Ws_Code, --è½¦é—´
              a.Start_Quantity,
              a.Inventory_Item_Id,
              a.Com_Item_Code,
@@ -1496,6 +1535,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              a.Component_Yield_Factor,
              a.Required_Quantity,
              a.Quantity_Issued,
+             a.MATERIAL_BATCH1,
+             a.MATERIAL_BATCH2,
+             a.SPECIAL_ORDER,
+             a.SPECIAL_NUMBER,
              a.Iss_Ready_Qty,
              Cws.Sub,
              Cws.Loc_Code Loc,
@@ -1506,7 +1549,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      Wdj.Wip_Entity_Id,
                      Wdj.Wip_Entity_Name,
                      Wdj.Primary_Item_Id,
-                     Wdj.Attribute3 Ws_Code, --³µ¼ä
+                     Wdj.Attribute3 Ws_Code, --è½¦é—´
                      Wdj.Start_Quantity,
                      Wro.Inventory_Item_Id,
                      Msi.Segment1 Com_Item_Code,
@@ -1517,6 +1560,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      Wro.Component_Yield_Factor,
                      Wro.Required_Quantity,
                      Wro.Quantity_Issued,
+                     wro.attribute1 MATERIAL_BATCH1,
+                     wro.attribute2 MATERIAL_BATCH2,
+                     wro.attribute3 SPECIAL_ORDER,
+                     wro.attribute4 SPECIAL_NUMBER,
                      Ceil(Wro.Quantity_Per_Assembly * p_Now_Qty /
                           Cux_Wip_Transactions_Pkg.Get_Component_Yield_Factor(p_Org_Id                 => Wro.Organization_Id,
                                                                               p_Wip_Id                 => Wro.Wip_Entity_Id,
@@ -1525,11 +1572,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                                               p_Component_Yield_Factor => Wro.Component_Yield_Factor)) -
                      
                      (SELECT Nvl(SUM(Nvl(Decode(Cri.Doc_Type,
-                                                'À­Ê½ÍËÁÏ',
+                                                'æ‹‰å¼é€€æ–™',
                                                 Cri.Ready_Qty * -1,
-                                                'ÍÆÊ½ÍËÁÏ(¸ºµ¥)',
+                                                'æ¨å¼é€€æ–™(è´Ÿå•)',
                                                 Cri.Ready_Qty * -1,
-                                                'ÍÆÊ½ÍËÁÏ(Áãµ¥)',
+                                                'æ¨å¼é€€æ–™(é›¶å•)',
                                                 Cri.Ready_Qty * -1,
                                                 Cri.Ready_Qty),
                                          0)),
@@ -1539,7 +1586,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                          AND Cri.Wip_Entity_Id = Wro.Wip_Entity_Id
                          AND Cri.Inventory_Item_Id = Wro.Inventory_Item_Id
                          AND Cri.Operation_Seq_Num = Wro.Operation_Seq_Num
-                         AND Cri.Doc_Type NOT LIKE '%³¬Áì%') Iss_Ready_Qty,
+                         AND Cri.Doc_Type NOT LIKE '%è¶…é¢†%') Iss_Ready_Qty,
                      
                      Cux_Wip_Transactions_Pkg.Get_Replace_Item(p_Org_Id  => Wro.Organization_Id,
                                                                p_Wip_Id  => Wro.Wip_Entity_Id,
@@ -1571,7 +1618,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
          AND Nvl(Cws.Sub, '1') = Nvl(p_Sub, Nvl(Cws.Sub, '1'))
          AND Nvl(Cws.Loc_Code, '1') = Nvl(p_Loc, Nvl(Cws.Loc_Code, '1'))
          AND a.Iss_Ready_Qty > 0
-            -- Ö¸¶¨¹¤ĞòÏÂ´ï
+            -- æŒ‡å®šå·¥åºä¸‹è¾¾
          AND Nvl(a.Operation_Code, -1) =
              Nvl(p_Operation_Code, Nvl(a.Operation_Code, -1))
       
@@ -1608,35 +1655,35 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     v_Create_Lot_1 VARCHAR2(100);
   
     v_temp_item varchar2(100);
-    -- ÊÇ·ñÆôÓÃÖ¸¶¨»õÎ»
+    -- æ˜¯å¦å¯ç”¨æŒ‡å®šè´§ä½
     l_Appoint_Sub VARCHAR2(1) := 'N';
-    v_Flag        VARCHAR2(1); --ÊÇ·ñ³ÉÆ·²Ö±êÊ¶
+    v_Flag        VARCHAR2(1); --æ˜¯å¦æˆå“ä»“æ ‡è¯†
   
     v_temp_qty number;
   
     v_onhand_msg   varchar2(2000);
     v_onhand_count number default 0;
   BEGIN
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    -- Cux_Time_Used_Pkg.create_time_used('ĞÂÖ¸¶¨ÏÂ´ï,ÀàĞÍ : ' || p_Wip_Type  
-    --                                    || ' ¹¤µ¥ºÅ : '|| p_Wip_Name ,l_time_id);  
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    -- Cux_Time_Used_Pkg.create_time_used('æ–°æŒ‡å®šä¸‹è¾¾,ç±»å‹ : ' || p_Wip_Type  
+    --                                    || ' å·¥å•å· : '|| p_Wip_Name ,l_time_id);  
   
     FOR C0 IN c_Line LOOP
       Is_Have := 0;
     
-      ---------------------- ÅĞ¶ÏÀ´Ô´×Ó´æ( ·¢ÁÏ×Ó¿â ) Ğ£Ñé ----------------------
+      ---------------------- åˆ¤æ–­æ¥æºå­å­˜( å‘æ–™å­åº“ ) æ ¡éªŒ ----------------------
       IF C0.Sub IS NULL THEN
         Is_Next         := 'N';
         p_Return_Status := 'E';
       
         IF p_Return_Msg IS NULL THEN
-          p_Return_Msg := 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş×Ó¿âÎª¿Õ,Çë¼ì²é:' || Chr(10);
+          p_Return_Msg := 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶å­åº“ä¸ºç©º,è¯·æ£€æŸ¥:' || Chr(10);
         END IF;
         p_Return_Msg := p_Return_Msg || '[' || C0.Com_Item_Code || ']' ||
                         Chr(10);
       
       ELSE
-        -- ´æÔÚÀ´Ô´×Ó¿â,¼ÌĞøÅĞ¶ÏÊÇ·ñÆôÓÃ»õÎ»¿ØÖÆ,Èç¹ûÆôÓÃ,±ØĞë´æÔÚ»õÎ»
+        -- å­˜åœ¨æ¥æºå­åº“,ç»§ç»­åˆ¤æ–­æ˜¯å¦å¯ç”¨è´§ä½æ§åˆ¶,å¦‚æœå¯ç”¨,å¿…é¡»å­˜åœ¨è´§ä½
         BEGIN
           SELECT Locator_Type
             INTO l_Is_Loc_Con
@@ -1654,7 +1701,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           p_Return_Status := 'E';
         
           IF l_Index = 0 THEN
-            p_Return_Msg := 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş»õÎ»Îª¿Õ,Çë¼ì²é:' || Chr(10);
+            p_Return_Msg := 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶è´§ä½ä¸ºç©º,è¯·æ£€æŸ¥:' || Chr(10);
             l_Index      := 1;
           END IF;
         
@@ -1666,7 +1713,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       END IF;
     END LOOP;
   
-    -- Èç¹ûÏµÍ³Ö¸¶¨²Ö¿â,ÔòÍ¬Ê±Ğ£Ñé»õÎ»ÊÇ·ñ±ØĞë
+    -- å¦‚æœç³»ç»ŸæŒ‡å®šä»“åº“,åˆ™åŒæ—¶æ ¡éªŒè´§ä½æ˜¯å¦å¿…é¡»
     IF p_Sub IS NOT NULL AND l_Appoint_Sub = 'Y' THEN
     
       SELECT COUNT(*)
@@ -1677,20 +1724,20 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     
       IF v_Count > 0 AND p_Loc IS NULL THEN
         p_Return_Status := 'E';
-        p_Return_Msg    := '²Ö¿âÓĞ»õÎ»,Î´Ö¸¶¨»õÎ»';
+        p_Return_Msg    := 'ä»“åº“æœ‰è´§ä½,æœªæŒ‡å®šè´§ä½';
         RETURN;
       END IF;
     END IF;
   
-    ---------------------- ÅĞ¶ÏÄ¿±ê×Ó´æ ( ½ÓÊÕ×Ó¿â ) Ğ£Ñé ----------------------
-    -- ÍÆÊ½ÁÏÎŞ½ÓÊÕ×Ó¿â,Ö±½Ó³ö¿â
-    IF p_Wip_Type = 'À­Ê½²¹ÁÏ' THEN
+    ---------------------- åˆ¤æ–­ç›®æ ‡å­å­˜ ( æ¥æ”¶å­åº“ ) æ ¡éªŒ ----------------------
+    -- æ¨å¼æ–™æ— æ¥æ”¶å­åº“,ç›´æ¥å‡ºåº“
+    IF p_Wip_Type = 'æ‹‰å¼è¡¥æ–™' THEN
     
       IF p_Organization_Id = 84 THEN
-        --¸£½¨Èñ½İ
+        --ç¦å»ºé”æ·
         l_To_Sub := 'GX01';
       ELSIF p_Organization_Id = 83 THEN
-        --±±¾©Èñ½İ
+        --åŒ—äº¬é”æ·
         l_To_Sub := 'HX01';
       END IF;
     
@@ -1705,25 +1752,25 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       IF Is_Have < 1 THEN
         Is_Next         := 'N';
         p_Return_Status := 'E';
-        p_Return_Msg    := p_Return_Msg || 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş×Ó¿â[' || l_To_Sub ||
-                           ']»ò»õÎ»[' || p_Wip_Name || ']Îª¿Õ,Çë¼ì²é:' || Chr(10);
+        p_Return_Msg    := p_Return_Msg || 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶å­åº“[' || l_To_Sub ||
+                           ']æˆ–è´§ä½[' || p_Wip_Name || ']ä¸ºç©º,è¯·æ£€æŸ¥:' || Chr(10);
       
         RETURN;
       END IF;
     END IF;
   
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    -- Cux_Time_Used_Pkg.add_time_used('¼ì²éÍê³É',l_time_id);
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    -- Cux_Time_Used_Pkg.add_time_used('æ£€æŸ¥å®Œæˆ',l_time_id);
   
     IF Is_Next = 'N' THEN
       RETURN;
     END IF;
   
-    -------------------------------------- ²¹ÁÏµÄÂß¼­ --------------------------------------
+    -------------------------------------- è¡¥æ–™çš„é€»è¾‘ --------------------------------------
     l_Count := 0;
     SELECT 'Y' || Cux.Cux_Doc_Line_Seq.Nextval INTO v_Create_Lot FROM Dual;
   
-    ----------------------------------------------- ¿ªÊ¼Ô¤²¹ÁÏ --------------------------------  
+    ----------------------------------------------- å¼€å§‹é¢„è¡¥æ–™ --------------------------------  
     FOR x IN (SELECT Wro.*,
                      Wdj.Attribute3 Ws_Code,
                      Wdj.Primary_Item_Id,
@@ -1750,32 +1797,32 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                          AND (Cws.Sub = p_Sub OR p_Sub IS NULL)
                          AND (Cws.Loc_Code = p_Loc OR p_Loc IS NULL))) LOOP
     
-      -- ¼ÆËã±¾´ÎµÄ²¹ÁÏ×ÜĞèÇóÊıÁ¿
+      -- è®¡ç®—æœ¬æ¬¡çš„è¡¥æ–™æ€»éœ€æ±‚æ•°é‡
       v_Required_Item_Qty := Cux_Wip_Item_Replace_Pkg.Get_Quantity_Required_b(p_Org_Id            => x.Organization_Id,
                                                                               p_Wip_Id            => x.Wip_Entity_Id,
                                                                               p_Item_Id           => x.Inventory_Item_Id,
                                                                               p_Operation_Seq_Num => x.Operation_Seq_Num,
                                                                               p_Now_Qty           => p_Now_Qty);
-      -- ÒÑ¾­·¢ÁÏÁ¿
+      -- å·²ç»å‘æ–™é‡
       v_Ready_Qty_New := Cux_Wip_Item_Replace_Pkg.Get_Quantity_Issued(p_Org_Id            => x.Organization_Id,
                                                                       p_Wip_Id            => x.Wip_Entity_Id,
                                                                       p_Item_Id           => x.Inventory_Item_Id,
                                                                       p_Operation_Seq_Num => x.Operation_Seq_Num,
                                                                       p_Doc_No            => v_Create_Lot);
-      -- ±¾´ÎÒÑ¾­²¹ÁÏÁ¿
+      -- æœ¬æ¬¡å·²ç»è¡¥æ–™é‡
       v_Ready_Item_b_Qty := Cux_Wip_Item_Replace_Pkg.Get_Quantity_Issued_b(p_Org_Id            => x.Organization_Id,
                                                                            p_Wip_Id            => x.Wip_Entity_Id,
                                                                            p_Item_Id           => x.Inventory_Item_Id,
                                                                            p_Operation_Seq_Num => x.Operation_Seq_Num,
                                                                            p_Doc_No            => v_Create_Lot);
-      -- ÎïÁÏ×Ô¼ºµÄ×ÜÏÂ´ïÁ¿
+      -- ç‰©æ–™è‡ªå·±çš„æ€»ä¸‹è¾¾é‡
       v_Quantity_Issued := Cux_Wip_Item_Replace_Pkg.Get_Quantity_Issued_z(p_Org_Id            => x.Organization_Id,
                                                                           p_Wip_Id            => x.Wip_Entity_Id,
                                                                           p_Item_Id           => x.Inventory_Item_Id,
                                                                           p_Operation_Seq_Num => x.Operation_Seq_Num);
     
-      -- ²¹ÁÏ×ÜĞèÇóÊıÁ¿ - ÒÑ¾­·¢ÁÏÁ¿ - ÒÑ¾­²¹ÁÏÁ¿ ¼´ »¹ĞèÒª²¹µÄÊıÁ¿
-      -- Èç¹û»¹ĞèÒª²¹µÄÊıÁ¿´óÓÚ±¾´Î²¹ÁÏÁ¿
+      -- è¡¥æ–™æ€»éœ€æ±‚æ•°é‡ - å·²ç»å‘æ–™é‡ - å·²ç»è¡¥æ–™é‡ å³ è¿˜éœ€è¦è¡¥çš„æ•°é‡
+      -- å¦‚æœè¿˜éœ€è¦è¡¥çš„æ•°é‡å¤§äºæœ¬æ¬¡è¡¥æ–™é‡
       IF v_Required_Item_Qty - v_Ready_Qty_New - v_Ready_Item_b_Qty >
          x.Required_Quantity THEN
       
@@ -1791,14 +1838,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       
       END IF;
     
-      -- ÏòÉÏÈ¡Õû
+      -- å‘ä¸Šå–æ•´
       v_Ready_Qty_s := Ceil(v_Ready_Qty_s);
     
-      -- ÕæÕıµÄĞèÒª²¹ÁÏµÄÊıÁ¿
+      -- çœŸæ­£çš„éœ€è¦è¡¥æ–™çš„æ•°é‡
       IF v_Ready_Qty_s > 0 THEN
       
-        ------------------------  ·¢ÁÏ¿âÓë»õÎ»»ñÈ¡  ------------------------
-        --»ñÈ¡Ä¬ÈÏ²Ö¿âºÍ»õÎ»
+        ------------------------  å‘æ–™åº“ä¸è´§ä½è·å–  ------------------------
+        --è·å–é»˜è®¤ä»“åº“å’Œè´§ä½
       
         BEGIN
           SELECT a.Sub, a.Loc_Code, a.Location_Id
@@ -1819,18 +1866,18 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                and msi.inventory_item_id = x.Inventory_Item_Id;
           
             p_Return_Status := 'E';
-            p_Return_Msg    := 'Ä¬ÈÏ·¢ÁÏ×Ó¿âÉèÖÃÓĞÎó:' || v_temp_item || ' ¶ÔÓ¦µÄ³µ¼ä :' ||
-                               x.Ws_Code || ' Î´ÅäÖÃ»òÅäÖÃ¶àĞĞ,Çë¼ì²é!';
+            p_Return_Msg    := 'é»˜è®¤å‘æ–™å­åº“è®¾ç½®æœ‰è¯¯:' || v_temp_item || ' å¯¹åº”çš„è½¦é—´ :' ||
+                               x.Ws_Code || ' æœªé…ç½®æˆ–é…ç½®å¤šè¡Œ,è¯·æ£€æŸ¥!';
             RETURN;
         END;
       
-        --Èç¹ûÖ¸¶¨ÁË²Ö¿âºÍ»õÎ»,ÔòÊ¹ÓÃÖ¸¶¨µÄ
+        --å¦‚æœæŒ‡å®šäº†ä»“åº“å’Œè´§ä½,åˆ™ä½¿ç”¨æŒ‡å®šçš„
         IF p_Sub IS NOT NULL AND l_Appoint_Sub = 'Y' THEN
           l_Cux_Ready_Item.Supply_Subinventory := p_Sub;
           l_Cux_Ready_Item.Supply_Loc_Code     := NULL;
           l_Cux_Ready_Item.Supply_Locator_Id   := NULL;
         
-          -- Ö¸¶¨»õÎ»,Ê¹ÓÃÖ¸¶¨µÄ»õÎ»
+          -- æŒ‡å®šè´§ä½,ä½¿ç”¨æŒ‡å®šçš„è´§ä½
           IF p_Loc IS NOT NULL THEN
             l_Cux_Ready_Item.Supply_Loc_Code := p_Loc;
             SELECT Mil.Inventory_Location_Id
@@ -1843,15 +1890,15 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         
         END IF;
       
-        ------------------------  ½ÓÊÕ×Ó¿âÓë»õÎ»  ------------------------
-        -- À­Ê½²¹ÁÏÄ¬ÈÏÄ¿±ê²Ö¿âÎªÏß±ß²Ö, ÍÆÊ½ÁÏÖ±½Ó²¹ÁÏ,ÎŞĞèÈë¿â
-        IF p_Wip_Type = 'À­Ê½²¹ÁÏ' THEN
+        ------------------------  æ¥æ”¶å­åº“ä¸è´§ä½  ------------------------
+        -- æ‹‰å¼è¡¥æ–™é»˜è®¤ç›®æ ‡ä»“åº“ä¸ºçº¿è¾¹ä»“, æ¨å¼æ–™ç›´æ¥è¡¥æ–™,æ— éœ€å…¥åº“
+        IF p_Wip_Type = 'æ‹‰å¼è¡¥æ–™' THEN
         
           IF p_Organization_Id = 84 THEN
-            --¸£½¨Èñ½İ
+            --ç¦å»ºé”æ·
             l_Cux_Ready_Item.To_Sub := 'GX01';
           ELSIF p_Organization_Id = 83 THEN
-            --±±¾©Èñ½İ
+            --åŒ—äº¬é”æ·
             l_Cux_Ready_Item.To_Sub := 'HX01';
           END IF;
         
@@ -1870,13 +1917,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         
         END IF;
       
-        -------------------------  ¿É·¢ÁÏÁ¿  -------------------------------------
+        -------------------------  å¯å‘æ–™é‡  -------------------------------------
         l_Onhand_Qty := Cux_Wip_Transactions_Pkg.Get_Available_Qty(x.Organization_Id,
                                                                    x.Inventory_Item_Id,
                                                                    l_Cux_Ready_Item.Supply_Subinventory,
                                                                    l_Cux_Ready_Item.Supply_Locator_Id);
       
-        -- TODO: ²âÊÔ,Ö¸¶¨ÏÖÓĞÁ¿Îª0                                         
+        -- TODO: æµ‹è¯•,æŒ‡å®šç°æœ‰é‡ä¸º0                                         
         -- l_Onhand_Qty := 0;
       
         Add_Available_Msg(p_organization_id   => x.organization_id,
@@ -1888,7 +1935,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                           x_onhand_count      => v_onhand_count);
         l_Ready_Qty := 0;
       
-        --ÏÖÓĞÁ¿È¡×îĞ¡ÕûÊı
+        --ç°æœ‰é‡å–æœ€å°æ•´æ•°
         IF l_Onhand_Qty >= v_Ready_Qty_s THEN
           l_Ready_Qty := v_Ready_Qty_s;
         ELSIF l_Onhand_Qty > 0 THEN
@@ -1901,7 +1948,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         l_Cux_Ready_Item.Organization_Id := x.Organization_Id;
         l_Cux_Ready_Item.Doc_Type        := p_Wip_Type;
         l_Cux_Ready_Item.Doc_Date        := p_Doc_Date;
-        l_Cux_Ready_Item.Doc_Status      := 'Î´¹ıÕË';
+        l_Cux_Ready_Item.Doc_Status      := 'æœªè¿‡è´¦';
         l_Cux_Ready_Item.Wip_Entity_Id   := x.Wip_Entity_Id;
         l_Cux_Ready_Item.Wip_Entity_Name := p_Wip_Name;
         l_Cux_Ready_Item.Primary_Item_Id := x.Primary_Item_Id;
@@ -1925,10 +1972,15 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         l_Cux_Ready_Item.Last_Update_Login      := Fnd_Global.Login_Id;
         l_Cux_Ready_Item.Create_Lot             := v_Create_Lot;
         l_Cux_Ready_Item.Doc_No                 := v_Create_Lot;
+        l_Cux_Ready_Item.Material_Batch1        := x.attribute1;
+        l_Cux_Ready_Item.Material_Batch2        := x.attribute2;
+        l_Cux_Ready_Item.Special_Number         := x.attribute4;
+        l_Cux_Ready_Item.Special_Order          := x.attribute3;
+        l_Cux_Ready_Item.Empty_Return_Flag      := p_param.EMPTY_RETURN_FLAG;
       
         IF l_Cux_Ready_Item.Ready_Qty > 0 THEN
           INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
-          ----¿ªÊ¼±£Áô
+          ----å¼€å§‹ä¿ç•™
         
           Cux_Wip_Transactions_Pkg.Create_Save(l_Cux_Ready_Item.Line_Id,
                                                p_Return_Status,
@@ -1942,22 +1994,22 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       END IF;
     END LOOP;
   
-    ----------------------------------------------Ô¤±¸ÁÏÍê³É------------------------------------------
+    ----------------------------------------------é¢„å¤‡æ–™å®Œæˆ------------------------------------------
   
     SELECT 'X' || Cux.Cux_Doc_Line_Seq.Nextval
       INTO v_Create_Lot_New
       FROM Dual;
   
-    ----------------------------------------------¿ªÊ¼¹ØÁª±¸ÁÏµ¥-----------------------------------
-    -- ½«¿ÉÒÔ½øĞĞ²¹ÁÏµÄ²¹ÁÏµ¥¹ØÁªµ½¶ÔÓ¦µÄ±¸ÁÏµ¥ÉÏ,ÉÏÔ¤²¹ÁÏµÄµ¥ÔÙ´Î½øĞĞ²ğµ¥.½øĞĞ¶ÔÓ¦
+    ----------------------------------------------å¼€å§‹å…³è”å¤‡æ–™å•-----------------------------------
+    -- å°†å¯ä»¥è¿›è¡Œè¡¥æ–™çš„è¡¥æ–™å•å…³è”åˆ°å¯¹åº”çš„å¤‡æ–™å•ä¸Š,ä¸Šé¢„è¡¥æ–™çš„å•å†æ¬¡è¿›è¡Œæ‹†å•.è¿›è¡Œå¯¹åº”
     FOR x IN (SELECT *
                 FROM Cux_Ready_Item a
                WHERE a.Doc_No = v_Create_Lot
                ORDER BY a.Operation_Seq_Num, a.Supply_Subinventory) LOOP
     
-      ------ÅĞ¶ÏÊÇ·ñÊÇ²ÄÁÏ²Ö¿â
-      -------²ÄÁÏ²Ö²¹ÁÏµ¥ĞèÒª¹ØÁª±¸ÁÏµ¥
-      -------³ÉÆ·²Ö²¹ÁÏµ¥²»ĞèÒª¹ØÁª±¸ÁÏµ¥
+      ------åˆ¤æ–­æ˜¯å¦æ˜¯ææ–™ä»“åº“
+      -------ææ–™ä»“è¡¥æ–™å•éœ€è¦å…³è”å¤‡æ–™å•
+      -------æˆå“ä»“è¡¥æ–™å•ä¸éœ€è¦å…³è”å¤‡æ–™å•
       BEGIN
         SELECT Nvl(Msa.Attribute4, 'N')
           INTO v_Flag
@@ -1971,7 +2023,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       END;
     
       IF v_Flag = 'N' THEN
-        -- ±¾´Î²¹ÁÏÊıÁ¿
+        -- æœ¬æ¬¡è¡¥æ–™æ•°é‡
         v_Qty := x.Ready_Qty;
       
         FOR y IN (SELECT *
@@ -1981,21 +2033,21 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      AND Cri.Operation_Seq_Num = x.Operation_Seq_Num
                      AND Cri.Supply_Subinventory = x.Supply_Subinventory
                      AND Cri.Inventory_Item_Id = x.Inventory_Item_Id
-                     AND Cri.Doc_Type LIKE '%±¸ÁÏ%') LOOP
+                     AND Cri.Doc_Type LIKE '%å¤‡æ–™%') LOOP
         
-          -- ±¸ÁÏµ¥µÄĞèÇóÊıÁ¿
+          -- å¤‡æ–™å•çš„éœ€æ±‚æ•°é‡
           v_Required_Item_Qty := Cux_Wip_Item_Replace_Pkg.Get_Quantity_Required_b(p_Org_Id            => x.Organization_Id,
                                                                                   p_Wip_Id            => x.Wip_Entity_Id,
                                                                                   p_Item_Id           => x.Inventory_Item_Id,
                                                                                   p_Operation_Seq_Num => x.Operation_Seq_Num,
                                                                                   p_Now_Qty           => y.Now_Qty);
-          -- ±¸ÁÏµ¥ÒÑ¾­±¸ÁÏÊıÁ¿Á¿
+          -- å¤‡æ–™å•å·²ç»å¤‡æ–™æ•°é‡é‡
           v_Ready_Item_b_Qty := Cux_Wip_Item_Replace_Pkg.Get_Quantity_Issued_b(p_Org_Id            => y.Organization_Id,
                                                                                p_Wip_Id            => y.Wip_Entity_Id,
                                                                                p_Item_Id           => y.Inventory_Item_Id,
                                                                                p_Operation_Seq_Num => y.Operation_Seq_Num,
                                                                                p_Doc_No            => y.Doc_No);
-          -- ±¸ÁÏµ¥ÒÑ¾­²¹ÁÏµÄÊıÁ¿
+          -- å¤‡æ–™å•å·²ç»è¡¥æ–™çš„æ•°é‡
           SELECT Nvl(SUM(Cri.Ready_Qty), 0)
             INTO v_Ready_Qty_b
             FROM Cux_Ready_Item Cri
@@ -2008,11 +2060,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         
           v_temp_qty := v_Required_Item_Qty - v_Ready_Item_b_Qty -
                         v_Ready_Qty_b;
-          -- ±¸ÁÏÊı >= ±¸ÁÏµ¥µÄĞèÇóÊıÁ¿ -±¸ÁÏµ¥ÒÑ¾­±¸ÁÏÊıÁ¿Á¿ - ±¸ÁÏµ¥ÒÑ¾­²¹ÁÏµÄÊıÁ¿
-          -- Èç¹ûĞ¡ÓÚ0 ±íÊ¾¸Ã±¸ÁÏµ¥ÒÑ¾­±¸Æë,ÎŞĞë¹ØÁª²¹ÁÏµ¥
+          -- å¤‡æ–™æ•° >= å¤‡æ–™å•çš„éœ€æ±‚æ•°é‡ -å¤‡æ–™å•å·²ç»å¤‡æ–™æ•°é‡é‡ - å¤‡æ–™å•å·²ç»è¡¥æ–™çš„æ•°é‡
+          -- å¦‚æœå°äº0 è¡¨ç¤ºè¯¥å¤‡æ–™å•å·²ç»å¤‡é½,æ— é¡»å…³è”è¡¥æ–™å•
           IF v_temp_qty > 0 THEN
           
-            -- µ±Ç°²¹ÁÏÊıÁ¿´óÓÚ±¸ÁÏµ¥ĞèÒª²¹ÁÏÊıÁ¿¡£·Öµ½¶à¸ö²¹ÁÏµ¥£¨±¸ÁÏ¶à´Î£¬Ò»´Î²¹ÁÏÊ±¿ÉÄÜ·¢Éú£©
+            -- å½“å‰è¡¥æ–™æ•°é‡å¤§äºå¤‡æ–™å•éœ€è¦è¡¥æ–™æ•°é‡ã€‚åˆ†åˆ°å¤šä¸ªè¡¥æ–™å•ï¼ˆå¤‡æ–™å¤šæ¬¡ï¼Œä¸€æ¬¡è¡¥æ–™æ—¶å¯èƒ½å‘ç”Ÿï¼‰
           
             IF v_Qty >= v_temp_qty THEN
             
@@ -2020,7 +2072,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
               l_Cux_Ready_Item.Organization_Id        := y.Organization_Id;
               l_Cux_Ready_Item.Doc_Type               := p_Wip_Type;
               l_Cux_Ready_Item.Doc_Date               := p_Doc_Date;
-              l_Cux_Ready_Item.Doc_Status             := 'Î´¹ıÕË';
+              l_Cux_Ready_Item.Doc_Status             := 'æœªè¿‡è´¦';
               l_Cux_Ready_Item.Wip_Entity_Id          := y.Wip_Entity_Id;
               l_Cux_Ready_Item.Wip_Entity_Name        := p_Wip_Name;
               l_Cux_Ready_Item.Primary_Item_Id        := y.Primary_Item_Id;
@@ -2050,8 +2102,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
               l_Cux_Ready_Item.Doc_No            := v_Create_Lot_New;
               l_Cux_Ready_Item.Attribute10       := y.Doc_No;
               l_Cux_Ready_Item.Attribute11       := v_Qty;
-              v_Doc_No                           := y.Doc_No; -- °ó¶¨µ¥ºÅ
-            
+              v_Doc_No                           := y.Doc_No; -- ç»‘å®šå•å·
+              
+              l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+              l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+              l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+              l_Cux_Ready_Item.Special_Order     := x.Special_Order;
+              l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+              
               v_Qty := v_Qty - v_temp_qty;
             ELSE
             
@@ -2059,7 +2117,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
               l_Cux_Ready_Item.Organization_Id        := y.Organization_Id;
               l_Cux_Ready_Item.Doc_Type               := p_Wip_Type;
               l_Cux_Ready_Item.Doc_Date               := p_Doc_Date;
-              l_Cux_Ready_Item.Doc_Status             := 'Î´¹ıÕË';
+              l_Cux_Ready_Item.Doc_Status             := 'æœªè¿‡è´¦';
               l_Cux_Ready_Item.Wip_Entity_Id          := y.Wip_Entity_Id;
               l_Cux_Ready_Item.Wip_Entity_Name        := p_Wip_Name;
               l_Cux_Ready_Item.Primary_Item_Id        := y.Primary_Item_Id;
@@ -2091,21 +2149,26 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
               l_Cux_Ready_Item.Attribute11       := v_Qty;
               v_Doc_No                           := y.Doc_No;
               v_Qty                              := 0;
-            
+              l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+              l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+              l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+              l_Cux_Ready_Item.Special_Order     := x.Special_Order;
+              l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+              
             END IF;
           
-            -- ÓĞ²¹ÁÏÊıÁ¿,²åÈë¶ÔÓ¦Öµ
+            -- æœ‰è¡¥æ–™æ•°é‡,æ’å…¥å¯¹åº”å€¼
             IF l_Cux_Ready_Item.Ready_Qty > 0 THEN
               INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
             END IF;
           END IF;
         END LOOP;
       
-        -- Î´¹ØÁªµ½¶©µ¥,Ôò¸ù¾İÒ»¶¨¹æÔò½øĞĞ¹ØÁª
+        -- æœªå…³è”åˆ°è®¢å•,åˆ™æ ¹æ®ä¸€å®šè§„åˆ™è¿›è¡Œå…³è”
         IF v_Qty > 0 THEN
-          -- ¸ù¾İĞÂÂß¼­»ñÈ¡¶©µ¥±àºÅ v_doc_no
+          -- æ ¹æ®æ–°é€»è¾‘è·å–è®¢å•ç¼–å· v_doc_no
         
-          -- 1. ¸ù¾İ¹¤Ğò , ×Ó¿â½øĞĞ¹ØÁª      
+          -- 1. æ ¹æ®å·¥åº , å­åº“è¿›è¡Œå…³è”      
           SELECT MIN(a.Doc_No)
             INTO v_Doc_No
             FROM Cux_Ready_Item a
@@ -2114,9 +2177,9 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              AND a.Operation_Seq_Num = x.Operation_Seq_Num
              AND a.Supply_Subinventory = x.Supply_Subinventory
              AND Substr(a.Doc_Type, 1, 2) = Substr(p_Wip_Type, 1, 2)
-             AND a.Doc_Type IN ('ÍÆÊ½±¸ÁÏ', 'À­Ê½±¸ÁÏ');
+             AND a.Doc_Type IN ('æ¨å¼å¤‡æ–™', 'æ‹‰å¼å¤‡æ–™');
         
-          -- 2. ²»´æÔÚ,Ôò¸ù¾İ¹¤Ğò½øĞĞ¹ØÁª
+          -- 2. ä¸å­˜åœ¨,åˆ™æ ¹æ®å·¥åºè¿›è¡Œå…³è”
           IF v_Doc_No IS NULL THEN
             SELECT MIN(a.Doc_No)
               INTO v_Doc_No
@@ -2126,10 +2189,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                AND a.Operation_Seq_Num = x.Operation_Seq_Num
                   -- AND a.supply_subinventory = x.supply_subinventory
                AND Substr(a.Doc_Type, 1, 2) = Substr(p_Wip_Type, 1, 2)
-               AND a.Doc_Type IN ('ÍÆÊ½±¸ÁÏ', 'À­Ê½±¸ÁÏ');
+               AND a.Doc_Type IN ('æ¨å¼å¤‡æ–™', 'æ‹‰å¼å¤‡æ–™');
           END IF;
         
-          --3. ²»´æÔÚ,Ôò¸ù¾İ×Ó¿â½øĞĞ¹ØÁª  
+          --3. ä¸å­˜åœ¨,åˆ™æ ¹æ®å­åº“è¿›è¡Œå…³è”  
           IF v_Doc_No IS NULL THEN
             SELECT MIN(a.Doc_No)
               INTO v_Doc_No
@@ -2139,10 +2202,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                   --  AND a.operation_seq_num = x.operation_seq_num
                AND a.Supply_Subinventory = x.Supply_Subinventory
                AND Substr(a.Doc_Type, 1, 2) = Substr(p_Wip_Type, 1, 2)
-               AND a.Doc_Type IN ('ÍÆÊ½±¸ÁÏ', 'À­Ê½±¸ÁÏ');
+               AND a.Doc_Type IN ('æ¨å¼å¤‡æ–™', 'æ‹‰å¼å¤‡æ–™');
           END IF;
         
-          --4. ¹¤Ğò×Ó¿â¶¼²»´æÔÚ,Ö±½ÓÍ¨¹ı±¸²¹µ¥½øĞĞ¹ØÁª
+          --4. å·¥åºå­åº“éƒ½ä¸å­˜åœ¨,ç›´æ¥é€šè¿‡å¤‡è¡¥å•è¿›è¡Œå…³è”
           IF v_Doc_No IS NULL THEN
             SELECT MIN(a.Doc_No)
               INTO v_Doc_No
@@ -2152,14 +2215,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                   --  AND a.operation_seq_num = x.operation_seq_num
                   --  AND a.supply_subinventory = x.supply_subinventory
                AND Substr(a.Doc_Type, 1, 2) = Substr(p_Wip_Type, 1, 2)
-               AND a.Doc_Type IN ('ÍÆÊ½±¸ÁÏ', 'À­Ê½±¸ÁÏ');
+               AND a.Doc_Type IN ('æ¨å¼å¤‡æ–™', 'æ‹‰å¼å¤‡æ–™');
           END IF;
         
           l_Cux_Ready_Item.Line_Id                := Cux.Cux_Doc_Line_Seq.Nextval;
           l_Cux_Ready_Item.Organization_Id        := x.Organization_Id;
           l_Cux_Ready_Item.Doc_Type               := p_Wip_Type;
           l_Cux_Ready_Item.Doc_Date               := p_Doc_Date;
-          l_Cux_Ready_Item.Doc_Status             := 'Î´¹ıÕË';
+          l_Cux_Ready_Item.Doc_Status             := 'æœªè¿‡è´¦';
           l_Cux_Ready_Item.Wip_Entity_Id          := x.Wip_Entity_Id;
           l_Cux_Ready_Item.Wip_Entity_Name        := p_Wip_Name;
           l_Cux_Ready_Item.Primary_Item_Id        := x.Primary_Item_Id;
@@ -2176,10 +2239,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           l_Cux_Ready_Item.Supply_Locator_Id      := x.Supply_Locator_Id;
           l_Cux_Ready_Item.Supply_Loc_Code        := x.Supply_Loc_Code;
           l_Cux_Ready_Item.Quantity_Issued        := x.Quantity_Issued;
-          --l_cux_ready_item.iss_ready_qty          := x.iss_ready_qty;     -- ²¹ÁÏÊıÁ¿
+          --l_cux_ready_item.iss_ready_qty          := x.iss_ready_qty;     -- è¡¥æ–™æ•°é‡
           l_Cux_Ready_Item.Iss_Ready_Qty     := v_Qty;
           l_Cux_Ready_Item.Creation_Date     := SYSDATE;
-          l_Cux_Ready_Item.Ready_Qty         := v_Qty; -- ²¹ÁÏÊıÁ¿
+          l_Cux_Ready_Item.Ready_Qty         := v_Qty; -- è¡¥æ–™æ•°é‡
           l_Cux_Ready_Item.Created_By        := Fnd_Global.User_Id;
           l_Cux_Ready_Item.Last_Update_Date  := SYSDATE;
           l_Cux_Ready_Item.Last_Updated_By   := Fnd_Global.User_Id;
@@ -2189,17 +2252,23 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           l_Cux_Ready_Item.Attribute10       := v_Doc_No;
           l_Cux_Ready_Item.Attribute11       := -0.0001;
         
+          l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+          l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+          l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+          l_Cux_Ready_Item.Special_Order     := x.Special_Order;
+          l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+              
           INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
         
         END IF;
       ELSE
-        -- ³ÉÆ·
+        -- æˆå“
         v_Qty                                   := x.Ready_Qty;
         l_Cux_Ready_Item.Line_Id                := Cux.Cux_Doc_Line_Seq.Nextval;
         l_Cux_Ready_Item.Organization_Id        := x.Organization_Id;
         l_Cux_Ready_Item.Doc_Type               := p_Wip_Type;
         l_Cux_Ready_Item.Doc_Date               := p_Doc_Date;
-        l_Cux_Ready_Item.Doc_Status             := 'Î´¹ıÕË';
+        l_Cux_Ready_Item.Doc_Status             := 'æœªè¿‡è´¦';
         l_Cux_Ready_Item.Wip_Entity_Id          := x.Wip_Entity_Id;
         l_Cux_Ready_Item.Wip_Entity_Name        := p_Wip_Name;
         l_Cux_Ready_Item.Primary_Item_Id        := x.Primary_Item_Id;
@@ -2226,14 +2295,19 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         l_Cux_Ready_Item.Create_Lot             := v_Create_Lot_New;
         l_Cux_Ready_Item.Doc_No                 := v_Create_Lot_New;
         l_Cux_Ready_Item.Attribute11            := v_Qty;
-        l_Cux_Ready_Item.Attribute10            := NULL; ---±¸ÁÏµ¥ºÅ
+        l_Cux_Ready_Item.Attribute10            := NULL; ---å¤‡æ–™å•å·
       
+        l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+        l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+        l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+        l_Cux_Ready_Item.Special_Order     := x.Special_Order;
+        l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;      
         INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
       END IF;
     END LOOP;
-    ---------------------------------------------±¸ÁÏµ¥·ÖÅäÍê³É---------------------------
+    ---------------------------------------------å¤‡æ–™å•åˆ†é…å®Œæˆ---------------------------
   
-    ----------------------------------------¸üĞÂ²¹ÁÏµ¥ºÅ----------------------------------
+    ----------------------------------------æ›´æ–°è¡¥æ–™å•å·----------------------------------
     SELECT To_Char(Systimestamp, 'YYYYMMDDHH24MISSFF4')
       INTO v_Create_Lot_1
       FROM Dual;
@@ -2242,7 +2316,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                               a.Supply_Subinventory,
                               a.Operation_Seq_Num,
                               a.Organization_Id,
-                              Nvl(a.Attribute10, 'ASDFG') Attribute10 -- ¹ØÁª±¸ÁÏµ¥
+                              Nvl(a.Attribute10, 'ASDFG') Attribute10 -- å…³è”å¤‡æ–™å•
                 FROM Cux_Ready_Item a
                WHERE a.Create_Lot = v_Create_Lot_New) LOOP
     
@@ -2284,21 +2358,21 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     
     end loop;
     --end of added by bruce on 20151130
-    -------------------------É¾³ıÔ¤²¹ÁÏµÄÎïÁÏÕ¼ÓÃ-----------------------------
+    -------------------------åˆ é™¤é¢„è¡¥æ–™çš„ç‰©æ–™å ç”¨-----------------------------
     DELETE FROM Mtl_Reservations a
      WHERE a.Supply_Source_Name = v_Create_Lot;
   
-    -- É¾³ıÓĞ¿ÉÄÜµ¼ÖÂÉÏÃæÉ¾³ı±£ÁôÊ§°Ü 
+    -- åˆ é™¤æœ‰å¯èƒ½å¯¼è‡´ä¸Šé¢åˆ é™¤ä¿ç•™å¤±è´¥ 
     l_onhand_qty := cux_wip_transactions_pkg.get_available_qty(84,
                                                                18852,
                                                                'G106',
                                                                16055);
     dbms_output.put_line(l_onhand_qty);
   
-    -- É¾³ıÔ¤Ô¤ÁÏµ¥
+    -- åˆ é™¤é¢„é¢„æ–™å•
     DELETE FROM Cux_Ready_Item a WHERE a.Create_Lot = v_Create_Lot;
   
-    ---------------------------------------¿ªÊ¼ÎïÁÏÕ¼ÓÃ-------------------------
+    ---------------------------------------å¼€å§‹ç‰©æ–™å ç”¨-------------------------
     l_Count := 0;
     FOR x IN (SELECT a.Line_Id
                 FROM Cux_Ready_Item a
@@ -2318,15 +2392,15 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   
     COMMIT;
     p_Return_Status := 'S';
-    p_Return_Msg    := 'ÏÂ´ï³É¹¦';
+    p_Return_Msg    := 'ä¸‹è¾¾æˆåŠŸ';
   
     IF l_Count = 0 THEN
       p_Return_Status := 'E';
-      p_Return_Msg    := 'ÎŞÃ÷Ï¸Êı¾İ»òÎŞ¿â´æÊıÁ¿,µ¥¾İÎ´Éú³É£¡';
+      p_Return_Msg    := 'æ— æ˜ç»†æ•°æ®æˆ–æ— åº“å­˜æ•°é‡,å•æ®æœªç”Ÿæˆï¼';
     
-      -- ÏÖÓĞÁ¿²»×ãÌáÊ¾
+      -- ç°æœ‰é‡ä¸è¶³æç¤º
       if v_onhand_count > 0 then
-        p_Return_Msg := '´æÔÚ' || v_onhand_count || '¸öÎïÁÏ¶ÔÓ¦µÄ²Ö¿â»õÎïÎŞ¿ÉÓÃÁ¿:' ||
+        p_Return_Msg := 'å­˜åœ¨' || v_onhand_count || 'ä¸ªç‰©æ–™å¯¹åº”çš„ä»“åº“è´§ç‰©æ— å¯ç”¨é‡:' ||
                         v_onhand_msg;
       end if;
     END IF;
@@ -2356,8 +2430,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   
     --end of add by bruce on 20151028
   
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    -- Cux_Time_Used_Pkg.add_time_used('²¹ÁÏÍê³É',l_time_id);
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    -- Cux_Time_Used_Pkg.add_time_used('è¡¥æ–™å®Œæˆ',l_time_id);
   END;
 
   PROCEDURE Create_Feeding_Doc_Ap_Sub(p_Organization_Id NUMBER,
@@ -2369,6 +2443,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                       p_Sub             VARCHAR2,
                                       p_Loc             VARCHAR2,
                                       p_Operation_Code  VARCHAR2,
+                                      p_param           CUX_DOC_CLASS_TYPE,
                                       p_Return_Status   OUT VARCHAR2,
                                       p_Return_Msg      OUT VARCHAR2) AS
     l_lot varchar2(100);
@@ -2377,7 +2452,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              a.Wip_Entity_Id,
              a.Wip_Entity_Name,
              a.Primary_Item_Id,
-             a.Ws_Code, --³µ¼ä
+             a.Ws_Code, --è½¦é—´
              a.Start_Quantity,
              a.Inventory_Item_Id,
              a.Com_Item_Code,
@@ -2398,7 +2473,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      Wdj.Wip_Entity_Id,
                      Wdj.Wip_Entity_Name,
                      Wdj.Primary_Item_Id,
-                     Wdj.Attribute3 Ws_Code, --³µ¼ä
+                     Wdj.Attribute3 Ws_Code, --è½¦é—´
                      Wdj.Start_Quantity,
                      Wro.Inventory_Item_Id,
                      Msi.Segment1 Com_Item_Code,
@@ -2416,11 +2491,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                                               p_Item_Id                => Wro.Inventory_Item_Id,
                                                                               p_Component_Yield_Factor => Wro.Component_Yield_Factor)) -
                      (SELECT Nvl(SUM(Nvl(Decode(Cri.Doc_Type,
-                                                'À­Ê½ÍËÁÏ',
+                                                'æ‹‰å¼é€€æ–™',
                                                 Cri.Ready_Qty * -1,
-                                                'ÍÆÊ½ÍËÁÏ(¸ºµ¥)',
+                                                'æ¨å¼é€€æ–™(è´Ÿå•)',
                                                 Cri.Ready_Qty * -1,
-                                                'ÍÆÊ½ÍËÁÏ(Áãµ¥)',
+                                                'æ¨å¼é€€æ–™(é›¶å•)',
                                                 Cri.Ready_Qty * -1,
                                                 Cri.Ready_Qty),
                                          0)),
@@ -2430,7 +2505,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                          AND Cri.Wip_Entity_Id = Wro.Wip_Entity_Id
                          AND Cri.Inventory_Item_Id = Wro.Inventory_Item_Id
                          AND Cri.Operation_Seq_Num = Wro.Operation_Seq_Num
-                         AND Cri.Doc_Type NOT LIKE '%³¬Áì%') Iss_Ready_Qty,
+                         AND Cri.Doc_Type NOT LIKE '%è¶…é¢†%') Iss_Ready_Qty,
                      Cux_Wip_Transactions_Pkg.Get_Replace_Item(p_Org_Id  => Wro.Organization_Id,
                                                                p_Wip_Id  => Wro.Wip_Entity_Id,
                                                                p_Item_Id => Wro.Inventory_Item_Id) Replace_Flag
@@ -2489,13 +2564,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     v_onhand_msg   varchar2(2000);
     v_onhand_count number default 0;
   BEGIN
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    --Cux_Time_Used_Pkg.create_time_used('ĞÂ²Ö¿âÖ¸¶¨ÏÂ´ï,ÀàĞÍ : ' || p_Wip_Type  
-    --                                    || ' ¹¤µ¥ºÅ : '|| p_Wip_Name ,l_time_id);  
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    --Cux_Time_Used_Pkg.create_time_used('æ–°ä»“åº“æŒ‡å®šä¸‹è¾¾,ç±»å‹ : ' || p_Wip_Type  
+    --                                    || ' å·¥å•å· : '|| p_Wip_Name ,l_time_id);  
   
     IF p_sub IS NULL THEN
       p_return_status := 'E';
-      p_return_msg    := 'Î´Ö¸¶¨²Ö¿â';
+      p_return_msg    := 'æœªæŒ‡å®šä»“åº“';
       RETURN;
     END IF;
   
@@ -2512,17 +2587,17 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       END;
       IF l_is_loc_con <> 1 AND p_loc IS NULL THEN
         p_return_status := 'E';
-        p_return_msg    := '²Ö¿âÓĞ»õÎ»,Î´Ö¸¶¨»õÎ»';
+        p_return_msg    := 'ä»“åº“æœ‰è´§ä½,æœªæŒ‡å®šè´§ä½';
         RETURN;
       END IF;
     
-      --ÅĞ¶ÏÄ¿±ê×Ó´æºÍ»õÎ»
-      IF p_wip_type = 'À­Ê½²¹ÁÏ' THEN
+      --åˆ¤æ–­ç›®æ ‡å­å­˜å’Œè´§ä½
+      IF p_wip_type = 'æ‹‰å¼è¡¥æ–™' THEN
         IF p_organization_id = 84 THEN
-          --¸£½¨Èñ½İ
+          --ç¦å»ºé”æ·
           l_to_sub := 'GX01';
         ELSIF p_organization_id = 83 THEN
-          --±±¾©Èñ½İ
+          --åŒ—äº¬é”æ·
           l_to_sub := 'HX01';
         END IF;
       
@@ -2537,29 +2612,29 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         IF is_have < 1 THEN
           is_next         := 'N';
           p_return_status := 'E';
-          p_return_msg    := p_return_msg || 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş×Ó¿â[' || l_to_sub ||
-                             ']»ò»õÎ»[' || p_wip_name || ']Îª¿Õ,Çë¼ì²é:' || chr(10);
+          p_return_msg    := p_return_msg || 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶å­åº“[' || l_to_sub ||
+                             ']æˆ–è´§ä½[' || p_wip_name || ']ä¸ºç©º,è¯·æ£€æŸ¥:' || chr(10);
           RETURN;
         END IF;
       END IF;
     
-      -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-      -- Cux_Time_Used_Pkg.add_time_used('Ğ£ÑéÍê³É',l_time_id);
+      -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+      -- Cux_Time_Used_Pkg.add_time_used('æ ¡éªŒå®Œæˆ',l_time_id);
     
       IF is_next = 'N' THEN
         p_return_status := 'E';
-        p_return_msg    := 'Ğ£Ñé²»Í¨¹ı';
+        p_return_msg    := 'æ ¡éªŒä¸é€šè¿‡';
         RETURN;
       END IF;
     
-      --²¹ÁÏµÄÂß¼­ 
+      --è¡¥æ–™çš„é€»è¾‘ 
       l_count := 0;
     
       SELECT 'Y' || cux.cux_doc_line_seq.nextval
         INTO v_create_lot
         FROM dual;
     
-      -----------------------------------------------¿ªÊ¼Ô¤²¹ÁÏ------------------------------------------------
+      -----------------------------------------------å¼€å§‹é¢„è¡¥æ–™------------------------------------------------
       FOR x IN (SELECT wro.*,
                        wdj.attribute3 ws_code,
                        wdj.primary_item_id,
@@ -2578,26 +2653,26 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                    AND wro.wip_supply_meaning LIKE
                        '%' || substr(p_wip_type, 1, 2) || '%') LOOP
       
-        --¼ÆËã±¾´ÎµÄ²¹ÁÏ×ÜĞèÇóÊıÁ¿
+        --è®¡ç®—æœ¬æ¬¡çš„è¡¥æ–™æ€»éœ€æ±‚æ•°é‡
         v_required_item_qty := cux_wip_item_replace_pkg.get_quantity_required_b(p_org_id            => x.organization_id,
                                                                                 p_wip_id            => x.wip_entity_id,
                                                                                 p_item_id           => x.inventory_item_id,
                                                                                 p_operation_seq_num => x.operation_seq_num,
                                                                                 p_now_qty           => p_now_qty);
       
-        -----ÒÑ¾­·¢ÁÏÁ¿
+        -----å·²ç»å‘æ–™é‡
         v_ready_qty_new := cux_wip_item_replace_pkg.get_quantity_issued(p_org_id            => x.organization_id,
                                                                         p_wip_id            => x.wip_entity_id,
                                                                         p_item_id           => x.inventory_item_id,
                                                                         p_operation_seq_num => x.operation_seq_num,
                                                                         p_doc_no            => v_create_lot);
-        ------±¾´ÎÒÑ¾­²¹ÁÏÁ¿
+        ------æœ¬æ¬¡å·²ç»è¡¥æ–™é‡
         v_ready_item_b_qty := cux_wip_item_replace_pkg.get_quantity_issued_b(p_org_id            => x.organization_id,
                                                                              p_wip_id            => x.wip_entity_id,
                                                                              p_item_id           => x.inventory_item_id,
                                                                              p_operation_seq_num => x.operation_seq_num,
                                                                              p_doc_no            => v_create_lot);
-        -----ÎïÁÏ×Ô¼ºµÄ×ÜÏÂ´ïÁ¿
+        -----ç‰©æ–™è‡ªå·±çš„æ€»ä¸‹è¾¾é‡
         v_quantity_issued := cux_wip_item_replace_pkg.get_quantity_issued_z(p_org_id            => x.organization_id,
                                                                             p_wip_id            => x.wip_entity_id,
                                                                             p_item_id           => x.inventory_item_id,
@@ -2616,7 +2691,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         v_ready_qty_s := ceil(v_ready_qty_s);
       
         IF v_ready_qty_s > 0 THEN
-          ---»ñÈ¡Ä¬ÈÏ²Ö¿âºÍ»õÎ»
+          ---è·å–é»˜è®¤ä»“åº“å’Œè´§ä½
         
           BEGIN
             SELECT a.sub, a.loc_code, a.location_id
@@ -2636,12 +2711,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                  and msi.inventory_item_id = x.Inventory_Item_Id;
             
               p_Return_Status := 'E';
-              p_Return_Msg    := 'Ä¬ÈÏ·¢ÁÏ×Ó¿âÉèÖÃÓĞÎó:' || v_temp_item || ' ¶ÔÓ¦µÄ³µ¼ä :' ||
-                                 x.Ws_Code || ' Î´ÅäÖÃ»òÅäÖÃ¶àĞĞ,Çë¼ì²é!';
+              p_Return_Msg    := 'é»˜è®¤å‘æ–™å­åº“è®¾ç½®æœ‰è¯¯:' || v_temp_item || ' å¯¹åº”çš„è½¦é—´ :' ||
+                                 x.Ws_Code || ' æœªé…ç½®æˆ–é…ç½®å¤šè¡Œ,è¯·æ£€æŸ¥!';
               RETURN;
           END;
         
-          --Èç¹ûÖ¸¶¨ÁË²Ö¿âºÍ»õÎ»
+          --å¦‚æœæŒ‡å®šäº†ä»“åº“å’Œè´§ä½
           IF p_sub IS NOT NULL THEN
             l_cux_ready_item.supply_subinventory := p_sub;
             l_cux_ready_item.supply_loc_code     := null;
@@ -2659,12 +2734,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                AND mil.segment1 = p_loc;
           END IF;
           ----------
-          IF p_wip_type IN ('À­Ê½²¹ÁÏ') THEN
+          IF p_wip_type IN ('æ‹‰å¼è¡¥æ–™') THEN
             IF p_organization_id = 84 THEN
-              --¸£½¨Èñ½İ
+              --ç¦å»ºé”æ·
               l_cux_ready_item.to_sub := 'GX01';
             ELSIF p_organization_id = 83 THEN
-              --±±¾©Èñ½İ
+              --åŒ—äº¬é”æ·
               l_cux_ready_item.to_sub := 'HX01';
             END IF;
           
@@ -2682,7 +2757,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
             END;
           
           END IF;
-          --------»ñÈ¡ÏÖÓĞÁ¿
+          --------è·å–ç°æœ‰é‡
           l_onhand_qty := cux_wip_transactions_pkg.get_available_qty(x.organization_id,
                                                                      x.inventory_item_id,
                                                                      l_cux_ready_item.supply_subinventory,
@@ -2697,7 +2772,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                             x_onhand_count      => v_onhand_count);
         
           l_ready_qty := 0;
-          --ÏÖÓĞÁ¿È¡×îĞ¡ÕûÊı
+          --ç°æœ‰é‡å–æœ€å°æ•´æ•°
           /*            l_onhand_qty := trunc(l_onhand_qty);*/
           IF l_onhand_qty >= v_ready_qty_s THEN
             l_ready_qty := v_ready_qty_s;
@@ -2712,7 +2787,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           l_cux_ready_item.organization_id        := x.organization_id;
           l_cux_ready_item.doc_type               := p_wip_type;
           l_cux_ready_item.doc_date               := p_doc_date;
-          l_cux_ready_item.doc_status             := 'Î´¹ıÕË';
+          l_cux_ready_item.doc_status             := 'æœªè¿‡è´¦';
           l_cux_ready_item.wip_entity_id          := x.wip_entity_id;
           l_cux_ready_item.wip_entity_name        := p_wip_name;
           l_cux_ready_item.primary_item_id        := x.primary_item_id;
@@ -2734,10 +2809,15 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           l_cux_ready_item.create_lot             := v_create_lot;
           l_cux_ready_item.doc_no                 := v_create_lot;
         
+          l_Cux_Ready_Item.Material_Batch1        := x.attribute1; -- å±æ€§å·1
+          l_Cux_Ready_Item.Material_Batch2        := x.attribute2; -- å±æ€§å·2
+          l_Cux_Ready_Item.Special_Number         := x.attribute4; -- ç‰¹åˆ¶å•å·
+          l_Cux_Ready_Item.Special_Order          := x.attribute3; -- ç‰¹åˆ¶æ•°é‡
+          l_Cux_Ready_Item.Empty_Return_Flag      := p_param.EMPTY_RETURN_FLAG;
           ----
           IF l_cux_ready_item.ready_qty > 0 THEN
             INSERT INTO cux_ready_item VALUES l_cux_ready_item;
-            ----¿ªÊ¼±£Áô   
+            ----å¼€å§‹ä¿ç•™   
             Cux_Wip_Transactions_Pkg.create_save(l_cux_ready_item.line_id,
                                                  p_return_status,
                                                  p_return_msg);
@@ -2747,21 +2827,21 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           END IF;
         END IF;
       END LOOP;
-      ----------------------------------------------Ô¤±¸ÁÏÍê³É------------------------------------------
+      ----------------------------------------------é¢„å¤‡æ–™å®Œæˆ------------------------------------------
     
       SELECT 'X' || cux.cux_doc_line_seq.nextval --TO_CHAR(systimestamp, 'YYYYMMDDHH24MISSFF4')
         INTO v_create_lot_new
         FROM dual;
     
-      ----------------------------------------------¿ªÊ¼·ÖÅäµ½±¸ÁÏµ¥-----------------------------------
+      ----------------------------------------------å¼€å§‹åˆ†é…åˆ°å¤‡æ–™å•-----------------------------------
       FOR x IN (SELECT *
                   FROM cux_ready_item a
                  WHERE a.doc_no = v_create_lot
                  ORDER BY a.operation_seq_num, a.supply_subinventory) LOOP
         ------
-        ------ÅĞ¶ÏÊÇ·ñÊÇ²ÄÁÏ²Ö¿â
-        -------²ÄÁÏ²Ö²¹ÁÏµ¥ĞèÒª¹ØÁª±¸ÁÏµ¥
-        -------³ÉÆ·²Ö²¹ÁÏµ¥²»ĞèÒª¹ØÁª±¸ÁÏµ¥
+        ------åˆ¤æ–­æ˜¯å¦æ˜¯ææ–™ä»“åº“
+        -------ææ–™ä»“è¡¥æ–™å•éœ€è¦å…³è”å¤‡æ–™å•
+        -------æˆå“ä»“è¡¥æ–™å•ä¸éœ€è¦å…³è”å¤‡æ–™å•
         BEGIN
           SELECT nvl(msa.attribute4, 'N')
             INTO v_flag
@@ -2773,9 +2853,9 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
             v_flag := 'N';
         END;
         IF v_flag = 'N' THEN
-          ---²ÄÁÏ²Ö
+          ---ææ–™ä»“
           v_qty := x.ready_qty;
-          ---¿ªÊ¼²éÕÒ±¸ÁÏµ¥
+          ---å¼€å§‹æŸ¥æ‰¾å¤‡æ–™å•
           FOR y IN (SELECT *
                       FROM cux_ready_item cri
                      WHERE cri.organization_id = x.organization_id
@@ -2783,20 +2863,20 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                        AND cri.operation_seq_num = x.operation_seq_num
                        AND cri.supply_subinventory = x.supply_subinventory
                        AND cri.inventory_item_id = x.inventory_item_id
-                       AND cri.doc_type LIKE '%±¸ÁÏ%') LOOP
-            ----±¸ÁÏµ¥µÄĞèÇóÊıÁ¿
+                       AND cri.doc_type LIKE '%å¤‡æ–™%') LOOP
+            ----å¤‡æ–™å•çš„éœ€æ±‚æ•°é‡
             v_required_item_qty := cux_wip_item_replace_pkg.get_quantity_required_b(p_org_id            => x.organization_id,
                                                                                     p_wip_id            => x.wip_entity_id,
                                                                                     p_item_id           => x.inventory_item_id,
                                                                                     p_operation_seq_num => x.operation_seq_num,
                                                                                     p_now_qty           => y.now_qty);
-            ------±¸ÁÏµ¥ÒÑ¾­±¸ÁÏÊıÁ¿Á¿
+            ------å¤‡æ–™å•å·²ç»å¤‡æ–™æ•°é‡é‡
             v_ready_item_b_qty := cux_wip_item_replace_pkg.get_quantity_issued_b(p_org_id            => y.organization_id,
                                                                                  p_wip_id            => y.wip_entity_id,
                                                                                  p_item_id           => y.inventory_item_id,
                                                                                  p_operation_seq_num => y.operation_seq_num,
                                                                                  p_doc_no            => y.doc_no);
-            ------±¸ÁÏµ¥ÒÑ¾­²¹ÁÏµÄÊıÁ¿
+            ------å¤‡æ–™å•å·²ç»è¡¥æ–™çš„æ•°é‡
             SELECT nvl(SUM(cri.ready_qty), 0)
               INTO v_ready_qty_b
               FROM cux_ready_item cri
@@ -2805,16 +2885,16 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                AND cri.operation_seq_num = y.operation_seq_num
                AND cri.inventory_item_id = y.inventory_item_id
                AND cri.attribute10 = y.doc_no
-               AND nvl(cri.attribute11, 0) <> -0.0001; --ÅÅ³ı²ÄÁÏ²ÖËæ±ã¹ØÁªµÄÊı¾İ
+               AND nvl(cri.attribute11, 0) <> -0.0001; --æ’é™¤ææ–™ä»“éšä¾¿å…³è”çš„æ•°æ®
             IF v_required_item_qty - v_ready_item_b_qty - v_ready_qty_b > 0 THEN
-              --ÓĞÊıÁ¿¿ÉÒÔ¹ØÁª
+              --æœ‰æ•°é‡å¯ä»¥å…³è”
               IF v_qty >=
                  v_required_item_qty - v_ready_item_b_qty - v_ready_qty_b THEN
                 l_cux_ready_item.line_id                := cux.cux_doc_line_seq.nextval;
                 l_cux_ready_item.organization_id        := y.organization_id;
                 l_cux_ready_item.doc_type               := p_wip_type;
                 l_cux_ready_item.doc_date               := p_doc_date;
-                l_cux_ready_item.doc_status             := 'Î´¹ıÕË';
+                l_cux_ready_item.doc_status             := 'æœªè¿‡è´¦';
                 l_cux_ready_item.wip_entity_id          := y.wip_entity_id;
                 l_cux_ready_item.wip_entity_name        := p_wip_name;
                 l_cux_ready_item.primary_item_id        := y.primary_item_id;
@@ -2830,6 +2910,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                 l_cux_ready_item.supply_subinventory    := x.supply_subinventory;
                 l_cux_ready_item.supply_locator_id      := x.supply_locator_id;
                 l_cux_ready_item.supply_loc_code        := x.supply_loc_code;
+            
+                l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+                l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+                l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+                l_Cux_Ready_Item.Special_Order     := x.Special_Order;   
+                l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+                
                 l_cux_ready_item.quantity_issued        := y.quantity_issued;
                 l_cux_ready_item.iss_ready_qty          := v_required_item_qty -
                                                            v_ready_item_b_qty -
@@ -2851,12 +2938,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                            (v_required_item_qty -
                                                            v_ready_item_b_qty -
                                                            v_ready_qty_b);
+                                                                                                 
               ELSE
                 l_cux_ready_item.line_id                := cux.cux_doc_line_seq.nextval;
                 l_cux_ready_item.organization_id        := y.organization_id;
                 l_cux_ready_item.doc_type               := p_wip_type;
                 l_cux_ready_item.doc_date               := p_doc_date;
-                l_cux_ready_item.doc_status             := 'Î´¹ıÕË';
+                l_cux_ready_item.doc_status             := 'æœªè¿‡è´¦';
                 l_cux_ready_item.wip_entity_id          := y.wip_entity_id;
                 l_cux_ready_item.wip_entity_name        := p_wip_name;
                 l_cux_ready_item.primary_item_id        := y.primary_item_id;
@@ -2872,6 +2960,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                 l_cux_ready_item.supply_subinventory    := x.supply_subinventory;
                 l_cux_ready_item.supply_locator_id      := x.supply_locator_id;
                 l_cux_ready_item.supply_loc_code        := x.supply_loc_code;
+                
+                l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+                l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+                l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+                l_Cux_Ready_Item.Special_Order     := x.Special_Order;   
+                l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+                
                 l_cux_ready_item.quantity_issued        := y.quantity_issued;
                 l_cux_ready_item.iss_ready_qty          := v_qty;
                 l_cux_ready_item.creation_date          := SYSDATE;
@@ -2895,7 +2990,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           END LOOP;
         
           IF v_qty > 0 THEN
-            ---Î´ÕÒµ½ÎïÁÏ¶ÔÓ¦±¸ÁÏµ¥
+            ---æœªæ‰¾åˆ°ç‰©æ–™å¯¹åº”å¤‡æ–™å•
             SELECT MIN(a.doc_no)
               INTO v_doc_no
               FROM cux_ready_item a
@@ -2904,12 +2999,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                AND a.operation_seq_num = x.operation_seq_num
                AND a.supply_subinventory = x.supply_subinventory
                AND substr(a.doc_type, 1, 2) = substr(p_wip_type, 1, 2)
-               AND a.doc_type IN ('ÍÆÊ½±¸ÁÏ', 'À­Ê½±¸ÁÏ');
+               AND a.doc_type IN ('æ¨å¼å¤‡æ–™', 'æ‹‰å¼å¤‡æ–™');
             l_cux_ready_item.line_id                := cux.cux_doc_line_seq.nextval;
             l_cux_ready_item.organization_id        := x.organization_id;
             l_cux_ready_item.doc_type               := p_wip_type;
             l_cux_ready_item.doc_date               := p_doc_date;
-            l_cux_ready_item.doc_status             := 'Î´¹ıÕË';
+            l_cux_ready_item.doc_status             := 'æœªè¿‡è´¦';
             l_cux_ready_item.wip_entity_id          := x.wip_entity_id;
             l_cux_ready_item.wip_entity_name        := p_wip_name;
             l_cux_ready_item.primary_item_id        := x.primary_item_id;
@@ -2938,17 +3033,23 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
             l_cux_ready_item.attribute10            := v_doc_no;
             l_cux_ready_item.attribute11            := -0.0001;
           
+            l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+            l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+            l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+            l_Cux_Ready_Item.Special_Order     := x.Special_Order;   
+            l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+                 
             INSERT INTO cux_ready_item VALUES l_cux_ready_item;
           END IF;
         
-          -- ÎŞĞë¹ØÁª±¸ÁÏµ¥      
+          -- æ— é¡»å…³è”å¤‡æ–™å•      
         ELSE
           v_qty                                   := x.ready_qty;
           l_cux_ready_item.line_id                := cux.cux_doc_line_seq.nextval;
           l_cux_ready_item.organization_id        := x.organization_id;
           l_cux_ready_item.doc_type               := p_wip_type;
           l_cux_ready_item.doc_date               := p_doc_date;
-          l_cux_ready_item.doc_status             := 'Î´¹ıÕË';
+          l_cux_ready_item.doc_status             := 'æœªè¿‡è´¦';
           l_cux_ready_item.wip_entity_id          := x.wip_entity_id;
           l_cux_ready_item.wip_entity_name        := p_wip_name;
           l_cux_ready_item.primary_item_id        := x.primary_item_id;
@@ -2975,13 +3076,20 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           l_cux_ready_item.create_lot             := v_create_lot_new;
           l_cux_ready_item.doc_no                 := v_create_lot_new;
           l_cux_ready_item.attribute11            := v_qty;
-          l_cux_ready_item.attribute10            := NULL; ---±¸ÁÏµ¥ºÅ
+          l_cux_ready_item.attribute10            := NULL; ---å¤‡æ–™å•å·
+                 
+          l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+          l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+          l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+          l_Cux_Ready_Item.Special_Order     := x.Special_Order;   
+          l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;       
+          
           INSERT INTO cux_ready_item VALUES l_cux_ready_item;
         END IF;
       END LOOP;
-      ---------------------------------------------±¸ÁÏµ¥·ÖÅäÍê³É---------------------------
+      ---------------------------------------------å¤‡æ–™å•åˆ†é…å®Œæˆ---------------------------
     
-      ----------------------------------------¸üĞÂ²¹ÁÏµ¥ºÅ----------------------------------
+      ----------------------------------------æ›´æ–°è¡¥æ–™å•å·----------------------------------
       SELECT to_char(systimestamp, 'YYYYMMDDHH24MISSFF4')
         INTO v_create_lot_1
         FROM dual;
@@ -3033,11 +3141,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       end loop;
       --end of added by bruce on 20151130
     
-      -------------------------É¾³ıÔ¤²¹ÁÏµÄÎïÁÏÕ¼ÓÃ-----------------------------
+      -------------------------åˆ é™¤é¢„è¡¥æ–™çš„ç‰©æ–™å ç”¨-----------------------------
       DELETE FROM mtl_reservations a
        WHERE a.supply_source_name = v_create_lot;
     
-      -- É¾³ıÓĞ¿ÉÄÜµ¼ÖÂÉÏÃæÉ¾³ı±£ÁôÊ§°Ü 
+      -- åˆ é™¤æœ‰å¯èƒ½å¯¼è‡´ä¸Šé¢åˆ é™¤ä¿ç•™å¤±è´¥ 
       l_onhand_qty := cux_wip_transactions_pkg.get_available_qty(84,
                                                                  18852,
                                                                  'G106',
@@ -3045,7 +3153,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       dbms_output.put_line(l_onhand_qty);
     
       DELETE FROM cux_ready_item a WHERE a.create_lot = v_create_lot;
-      ---------------------------------------¿ªÊ¼ÎïÁÏÕ¼ÓÃ-------------------------
+      ---------------------------------------å¼€å§‹ç‰©æ–™å ç”¨-------------------------
       l_count := 0;
       FOR x IN (SELECT a.line_id
                   FROM cux_ready_item a
@@ -3061,15 +3169,15 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       END LOOP;
       COMMIT;
       p_return_status := 'S';
-      p_return_msg    := 'ÏÂ´ï³É¹¦';
+      p_return_msg    := 'ä¸‹è¾¾æˆåŠŸ';
     
       IF l_count = 0 THEN
         p_return_status := 'E';
-        p_return_msg    := 'ÎŞÃ÷Ï¸Êı¾İ»òÎŞ¿â´æÊıÁ¿,µ¥¾İÎ´Éú³É£¡';
+        p_return_msg    := 'æ— æ˜ç»†æ•°æ®æˆ–æ— åº“å­˜æ•°é‡,å•æ®æœªç”Ÿæˆï¼';
       
-        -- ÏÖÓĞÁ¿²»×ãÌáÊ¾
+        -- ç°æœ‰é‡ä¸è¶³æç¤º
         if v_onhand_count > 0 then
-          p_Return_Msg := '´æÔÚ' || v_onhand_count || '¸öÎïÁÏ¶ÔÓ¦µÄ²Ö¿â»õÎïÎŞ¿ÉÓÃÁ¿:' ||
+          p_Return_Msg := 'å­˜åœ¨' || v_onhand_count || 'ä¸ªç‰©æ–™å¯¹åº”çš„ä»“åº“è´§ç‰©æ— å¯ç”¨é‡:' ||
                           v_onhand_msg;
         end if;
       END IF;
@@ -3099,8 +3207,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     end if;
   
     --end of add by bruce on 20151028
-    -- time_mark : Ìí¼Ó¼ÇÂ¼Ê±¼ä´úÂë
-    -- Cux_Time_Used_Pkg.add_time_used('²¹ÁÏÍê³É',l_time_id);
+    -- time_mark : æ·»åŠ è®°å½•æ—¶é—´ä»£ç 
+    -- Cux_Time_Used_Pkg.add_time_used('è¡¥æ–™å®Œæˆ',l_time_id);
   END;
   PROCEDURE Create_Return_Doc(p_Organization_Id NUMBER,
                               p_wip_id          number,
@@ -3130,7 +3238,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     l_line_number      number;
     v_seq              NUMBER;
     v_sy_qty           NUMBER;
-    v_flag             VARCHAR2(10); --ÊÇ·ñ³ÉÆ·²Ö±êÊ¶
+    v_flag             VARCHAR2(10); --æ˜¯å¦æˆå“ä»“æ ‡è¯†
   
     CURSOR c_line IS
     
@@ -3138,7 +3246,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              a.wip_entity_id,
              a.wip_entity_name,
              a.primary_item_id,
-             a.ws_code, --³µ¼ä
+             a.ws_code, --è½¦é—´
              a.start_quantity,
              a.inventory_item_id,
              a.com_item_code,
@@ -3154,7 +3262,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              cws.loc_code loc,
              cws.location_id inventory_location_id,
              to_char(systimestamp, 'YYYYMMDDHH24MISSFF4') create_lot,
-             a.replace_flag
+             a.replace_flag,
+             a.MATERIAL_BATCH1,
+             a.MATERIAL_BATCH2,
+             a.SPECIAL_ORDER,
+             a.SPECIAL_NUMBER
         FROM (SELECT wdj.organization_id,
                      wdj.wip_entity_id,
                      wdj.wip_entity_name,
@@ -3170,10 +3282,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      wro.component_yield_factor,
                      wro.required_quantity,
                      wro.quantity_issued,
+                     wro.attribute1 MATERIAL_BATCH1,
+                     wro.attribute2 MATERIAL_BATCH2,
+                     wro.attribute3 SPECIAL_ORDER,
+                     wro.attribute4 SPECIAL_NUMBER,
                      decode(p_wip_type
                             
                            ,
-                            'ÍÆÊ½ÍËÁÏ(¸ºµ¥)',
+                            'æ¨å¼é€€æ–™(è´Ÿå•)',
                             round((nvl(wro.quantity_issued, 0) -
                                   wro.required_quantity -
                                   (SELECT nvl(SUM(nvl(cri.ready_qty, 0)), 0)
@@ -3186,17 +3302,17 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                            wro.operation_seq_num
                                        AND cri.inventory_item_id =
                                            wro.inventory_item_id
-                                       AND ((cri.doc_status = 'Î´¹ıÕË' AND
+                                       AND ((cri.doc_status = 'æœªè¿‡è´¦' AND
                                            cri.doc_type IN
-                                           ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)',
-                                              'ÍÆÊ½ÍËÁÏ(Áãµ¥)')) OR
-                                           ((cri.doc_status = 'ÒÑ¹ıÕË') AND
+                                           ('æ¨å¼é€€æ–™(è´Ÿå•)',
+                                              'æ¨å¼é€€æ–™(é›¶å•)')) OR
+                                           ((cri.doc_status = 'å·²è¿‡è´¦') AND
                                            cri.doc_type IN
-                                           ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì'))))),
+                                           ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†'))))),
                                   6)
                             
                            ,
-                            'ÍÆÊ½ÍËÁÏ(Áãµ¥)',
+                            'æ¨å¼é€€æ–™(é›¶å•)',
                             wro.quantity_issued
                             
                            ,
@@ -3237,9 +3353,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
          AND cws.ws_code(+) = a.ws_code
          AND nvl(cws.sub, '1') = nvl(p_sub, nvl(cws.sub, '1'))
          AND nvl(cws.loc_code, '1') = nvl(p_loc, nvl(cws.loc_code, '1'))
-         AND (a.iss_ready_qty <> 0 AND
-             p_wip_type NOT IN ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') OR
-             p_wip_type IN ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì'))
+         AND (a.iss_ready_qty <> 0 AND p_wip_type NOT IN ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') OR
+              p_wip_type IN ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†'))
        ORDER BY operation_code, sub, replace_flag;
   
     v_count             NUMBER;
@@ -3263,23 +3378,23 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   BEGIN
     SELECT cux.cux_doc_line_seq.nextval INTO v_seq FROM dual;
   
-    -- ¼ì²éÒ» : Ä¬ÈÏ×Ó¿â »õÎ»
+    -- æ£€æŸ¥ä¸€ : é»˜è®¤å­åº“ è´§ä½
     FOR c0 IN c_line LOOP
       is_have := 0;
     
-      --ÅĞ¶ÏÀ´Ô´×Ó´æºÍ»õÎ»,ÏµÍ³²»ÔÊĞíÎª¿Õ
+      --åˆ¤æ–­æ¥æºå­å­˜å’Œè´§ä½,ç³»ç»Ÿä¸å…è®¸ä¸ºç©º
       IF c0.sub IS NULL THEN
         is_next         := 'N';
         p_return_status := 'E';
       
         IF p_return_msg IS NULL THEN
-          p_return_msg := 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş×Ó¿âÎª¿Õ,Çë¼ì²é:' || chr(10);
+          p_return_msg := 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶å­åº“ä¸ºç©º,è¯·æ£€æŸ¥:' || chr(10);
         END IF;
         p_return_msg := p_return_msg || '[' || c0.com_item_code || ']' ||
                         chr(10);
       
       ELSE
-        -- ÅĞ¶ÏÊÇ·ñÓĞ¿ªÆô»õÎ»¿ØÖÆ
+        -- åˆ¤æ–­æ˜¯å¦æœ‰å¼€å¯è´§ä½æ§åˆ¶
         BEGIN
           SELECT locator_type
             INTO l_is_loc_con
@@ -3296,7 +3411,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           p_return_status := 'E';
         
           IF l_index = 0 THEN
-            p_return_msg := 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş»õÎ»Îª¿Õ,Çë¼ì²é:' || chr(10);
+            p_return_msg := 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶è´§ä½ä¸ºç©º,è¯·æ£€æŸ¥:' || chr(10);
             l_index      := 1;
           END IF;
           p_return_msg := p_return_msg || '[' || c0.com_item_code || ']' ||
@@ -3305,17 +3420,17 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       END IF;
     END LOOP;
   
-    --¼ì²é¶ş : Ïß±ß²ÖÅĞ¶Ï ÅĞ¶ÏÄ¿±ê×Ó´æºÍ»õÎ»
-    IF p_wip_type IN ('À­Ê½ÍËÁÏ', 'À­Ê½³¬Áì') THEN
+    --æ£€æŸ¥äºŒ : çº¿è¾¹ä»“åˆ¤æ–­ åˆ¤æ–­ç›®æ ‡å­å­˜å’Œè´§ä½
+    IF p_wip_type IN ('æ‹‰å¼é€€æ–™', 'æ‹‰å¼è¶…é¢†') THEN
     
-      -- Ä¿±ê²Ö¿â¶¼ÊÇÏß±ß²Ö
+      -- ç›®æ ‡ä»“åº“éƒ½æ˜¯çº¿è¾¹ä»“
       IF p_organization_id = 84 THEN
         l_to_sub := 'GX01';
       ELSIF p_organization_id = 83 THEN
         l_to_sub := 'HX01';
       END IF;
     
-      -- Ïß±ß²Ö¶ÔÓ¦µÄ»õÎ»Îª¹¤µ¥Ãû
+      -- çº¿è¾¹ä»“å¯¹åº”çš„è´§ä½ä¸ºå·¥å•å
       SELECT COUNT(1)
         INTO is_have
         FROM mtl_item_locations mil
@@ -3327,13 +3442,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       IF is_have < 1 THEN
         is_next         := 'N';
         p_return_status := 'E';
-        p_return_msg    := p_return_msg || 'µ¥¾İÏÂ´ïÊ§°Ü,×é¼ş×Ó¿â[' || l_to_sub ||
-                           ']»ò»õÎ»[' || p_wip_name || ']Îª¿Õ,Çë¼ì²é:' || chr(10);
+        p_return_msg    := p_return_msg || 'å•æ®ä¸‹è¾¾å¤±è´¥,ç»„ä»¶å­åº“[' || l_to_sub ||
+                           ']æˆ–è´§ä½[' || p_wip_name || ']ä¸ºç©º,è¯·æ£€æŸ¥:' || chr(10);
         RETURN;
       END IF;
     END IF;
   
-    -- Ğ£ÑéÍ¨¹ı,¿ªÊ¼±¸ÁÏ
+    -- æ ¡éªŒé€šè¿‡,å¼€å§‹å¤‡æ–™
     IF is_next <> 'Y' THEN
       return;
     END IF;
@@ -3346,19 +3461,19 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
          (old_sub <> c1.sub) OR (old_operation_code <> c1.operation_code) THEN
       
         IF p_organization_id = 83 AND
-           p_wip_type IN ('À­Ê½ÍËÁÏ', 'ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)') THEN
+           p_wip_type IN ('æ‹‰å¼é€€æ–™', 'æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)') THEN
           l_cux_ready_item.doc_no := 'RN' || cux_doc_rn_seq_jw.nextval;
         
         ELSIF p_organization_id = 84 AND
-              p_wip_type IN ('À­Ê½ÍËÁÏ', 'ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)') THEN
+              p_wip_type IN ('æ‹‰å¼é€€æ–™', 'æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)') THEN
           l_cux_ready_item.doc_no := 'RN' || cux_doc_rn_seq_fw.nextval;
         
         ELSIF p_organization_id = 83 AND
-              p_wip_type IN ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') THEN
+              p_wip_type IN ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') THEN
           l_cux_ready_item.doc_no := 'MA' || cux_doc_ma_seq_jw.nextval;
         
         ELSIF p_organization_id = 84 AND
-              p_wip_type IN ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') THEN
+              p_wip_type IN ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') THEN
           l_cux_ready_item.doc_no := 'MA' || cux_doc_ma_seq_fw.nextval;
         END IF;
       
@@ -3377,7 +3492,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_cux_ready_item.organization_id        := c1.organization_id;
       l_cux_ready_item.doc_type               := p_wip_type;
       l_cux_ready_item.doc_date               := p_doc_date;
-      l_cux_ready_item.doc_status             := 'Î´¹ıÕË';
+      l_cux_ready_item.doc_status             := 'æœªè¿‡è´¦';
       l_cux_ready_item.wip_entity_id          := c1.wip_entity_id;
       l_cux_ready_item.wip_entity_name        := c1.wip_entity_name;
       l_cux_ready_item.primary_item_id        := c1.primary_item_id;
@@ -3402,9 +3517,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_cux_ready_item.create_lot             := c1.create_lot;
       l_lot                                   := c1.create_lot; --added by bruce on 20151029
       l_cux_ready_item.transfer_status        := 'WAITING';
-    
-      -- Ä¿±ê×Ó¿â»õÎ»ÎªÏß±ß²Ö
-      IF p_wip_type IN ('À­Ê½ÍËÁÏ', 'À­Ê½³¬Áì') THEN
+      
+      l_cux_ready_item.material_batch1        := c1.material_batch1;
+      l_cux_ready_item.material_batch2        := c1.material_batch2;
+      l_cux_ready_item.special_order          := c1.special_order;
+      l_cux_ready_item.special_number         := c1.special_number;
+      -- ç›®æ ‡å­åº“è´§ä½ä¸ºçº¿è¾¹ä»“
+      IF p_wip_type IN ('æ‹‰å¼é€€æ–™', 'æ‹‰å¼è¶…é¢†') THEN
       
         IF p_organization_id = 84 THEN
           l_cux_ready_item.to_sub := 'GX01';
@@ -3427,8 +3546,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         END;
       END IF;
     
-      -- À­Ê½ÍËÁÏÓÉÔ­ÏÈµÄÏß±ß²ÖÍË»Ø²ÄÁÏ²Ö
-      IF l_cux_ready_item.doc_type = 'À­Ê½ÍËÁÏ' THEN
+      -- æ‹‰å¼é€€æ–™ç”±åŸå…ˆçš„çº¿è¾¹ä»“é€€å›ææ–™ä»“
+      IF l_cux_ready_item.doc_type = 'æ‹‰å¼é€€æ–™' THEN
         l_cux_ready_item.supply_subinventory := l_cux_ready_item.to_sub;
         l_cux_ready_item.supply_locator_id   := l_cux_ready_item.to_locator_id;
         l_cux_ready_item.supply_loc_code     := l_cux_ready_item.to_loc_code;
@@ -3439,19 +3558,19 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       END IF;
     
       /**
-      * ¼ÆËã±¸ÁÏÊı
+      * è®¡ç®—å¤‡æ–™æ•°
       */
       IF l_cux_ready_item.doc_type IN
-         ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)') THEN
+         ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†', 'æ¨å¼é€€æ–™(é›¶å•)') THEN
         l_cux_ready_item.ready_qty := NULL;
       
       ELSE
       
-        IF l_cux_ready_item.doc_type = 'ÍÆÊ½ÍËÁÏ(¸ºµ¥)' THEN
+        IF l_cux_ready_item.doc_type = 'æ¨å¼é€€æ–™(è´Ÿå•)' THEN
           BEGIN
             SELECT nvl(wro.quantity_issued, 0)
               INTO l_onhand_qty
-              FROM wip_requirement_operations wro --ÈÎÎñÁìÁÏĞèÇó·¢·Å±í
+              FROM wip_requirement_operations wro --ä»»åŠ¡é¢†æ–™éœ€æ±‚å‘æ”¾è¡¨
              WHERE wro.organization_id = p_organization_id
                AND wro.wip_entity_id = c1.wip_entity_id
                AND wro.inventory_item_id = c1.inventory_item_id
@@ -3472,7 +3591,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         END IF;
         l_ready_qty := 0;
       
-        --ÏÖÓĞÁ¿È¡×îĞ¡ÕûÊı
+        --ç°æœ‰é‡å–æœ€å°æ•´æ•°
         IF l_onhand_qty >= c1.iss_ready_qty THEN
           l_ready_qty := c1.iss_ready_qty;
         ELSIF l_onhand_qty > 0 THEN
@@ -3503,7 +3622,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       
       END IF;
     
-      -- ÅĞ¶ÏĞèÇóÁ¿ÊÇ·ñ´óÓÚ0
+      -- åˆ¤æ–­éœ€æ±‚é‡æ˜¯å¦å¤§äº0
       IF l_cux_ready_item.ready_qty <= 0 THEN
         l_count := l_count - 1;
       ELSE
@@ -3513,8 +3632,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       
       END IF;
     
-      --±£Áô
-      IF l_cux_ready_item.doc_type = 'À­Ê½ÍËÁÏ' THEN
+      --ä¿ç•™
+      IF l_cux_ready_item.doc_type = 'æ‹‰å¼é€€æ–™' THEN
         Cux_Wip_Transactions_Pkg.create_save(l_cux_ready_item.line_id,
                                              p_return_status,
                                              p_return_msg);
@@ -3527,7 +3646,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     --added by bruce on 20151228
     delete from cux.cux_ready_item cri
      where cri.create_lot = l_lot
-       and cri.doc_type in ('ÍÆÊ½ÍËÁÏ(Áãµ¥)', 'ÍÆÊ½ÍËÁÏ(¸ºµ¥)')
+       and cri.doc_type in ('æ¨å¼é€€æ–™(é›¶å•)', 'æ¨å¼é€€æ–™(è´Ÿå•)')
        and exists
      (select 1
               from mtl_secondary_inventories msi
@@ -3540,21 +3659,21 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     COMMIT;
   
     p_return_status := 'S';
-    p_return_msg    := 'ÏÂ´ï³É¹¦';
+    p_return_msg    := 'ä¸‹è¾¾æˆåŠŸ';
   
     IF l_count = 0 THEN
       p_return_status := 'E';
-      p_return_msg    := 'ÎŞÃ÷Ï¸Êı¾İ»òÎŞ¿â´æÊıÁ¿,µ¥¾İÎ´Éú³É£¡';
+      p_return_msg    := 'æ— æ˜ç»†æ•°æ®æˆ–æ— åº“å­˜æ•°é‡,å•æ®æœªç”Ÿæˆï¼';
     END IF;
   
     --added by bruce on 20151028
   
     if (p_Return_Status = 'S' AND
-       p_Wip_Type IN ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)',
-                       'ÍÆÊ½ÍËÁÏ(Áãµ¥)',
-                       'ÍÆÊ½³¬Áì',
-                       'À­Ê½³¬Áì',
-                       'À­Ê½ÍËÁÏ')) then
+       p_Wip_Type IN ('æ¨å¼é€€æ–™(è´Ÿå•)',
+                       'æ¨å¼é€€æ–™(é›¶å•)',
+                       'æ¨å¼è¶…é¢†',
+                       'æ‹‰å¼è¶…é¢†',
+                       'æ‹‰å¼é€€æ–™')) then
     
       transfer_to_wms(p_doc_no          => '',
                       p_organization_id => p_Organization_Id,
@@ -3565,7 +3684,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     
     end if;
   
-    /*  if (p_Return_Status = 'S' AND p_Wip_Type IN ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì')) then
+    /*  if (p_Return_Status = 'S' AND p_Wip_Type IN ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†')) then
     
       process_full_prepared(p_lot             => '',
                             p_organization_id => p_Organization_Id,
@@ -3592,17 +3711,17 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     *    Program Name:   create_feeding_doc
     *    Author      :   Felix.Liu
     *    Date        :   2015-07-30
-    *    Purpose     :   ´´½¨Íê¹¤Èë¿âµ¥
+    *    Purpose     :   åˆ›å»ºå®Œå·¥å…¥åº“å•
     *    Parameters  :
-    *             in       p_organization_id      ×éÖ¯ID
-    *             In       p_wip_name            ¹¤µ¥name
-    *             in       p_wip_type            µ¥¾İÀàĞÍ
-    *             In       p_doc_date            ÈÕÆÚ
-    *             in       p_now_qty             ÏÂ´ïÊıÁ¿
-                  in       p_sub                 ×Ó¿â
-                  in       p_loc                 »õÎ»
-                  out      p_return_status       ·µ»Ø(S/E)
-                  out      p_error_mess          ·µ»ØĞÅÏ¢
+    *             in       p_organization_id      ç»„ç»‡ID
+    *             In       p_wip_name            å·¥å•name
+    *             in       p_wip_type            å•æ®ç±»å‹
+    *             In       p_doc_date            æ—¥æœŸ
+    *             in       p_now_qty             ä¸‹è¾¾æ•°é‡
+                  in       p_sub                 å­åº“
+                  in       p_loc                 è´§ä½
+                  out      p_return_status       è¿”å›(S/E)
+                  out      p_error_mess          è¿”å›ä¿¡æ¯
     *    Update History
     *    Version    Date         Name            Description
     *    --------  ----------  ---------------  --------------------
@@ -3638,7 +3757,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     v_Seq    NUMBER;
     v_Qty    NUMBER;
     v_Sy_Qty NUMBER;
-    v_Flag   VARCHAR2(10); --ÊÇ·ñ³ÉÆ·²Ö±êÊ¶
+    v_Flag   VARCHAR2(10); --æ˜¯å¦æˆå“ä»“æ ‡è¯†
   
     CURSOR c_Line IS
       SELECT Wdj.Organization_Id,
@@ -3655,7 +3774,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                 FROM Wip_Operations Wo
                WHERE Wo.Organization_Id = Wdj.Organization_Id
                  AND Wo.Wip_Entity_Id = Wdj.Wip_Entity_Id
-                 AND Wo.Next_Operation_Seq_Num IS NULL) Operation_Seq_Num, -- ¹¤Ğò
+                 AND Wo.Next_Operation_Seq_Num IS NULL) Operation_Seq_Num, -- å·¥åº
                  
              NULL Operation_Code,
              NULL Quantity_Per_Assembly,
@@ -3699,7 +3818,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
          AND Ood.Organization_Id = Wdj.Organization_Id
          AND Wdj.Wip_Entity_Name = p_Wip_Name
          AND Wdj.Organization_Id = p_Organization_Id
-         AND p_Wip_Type = 'Íê¹¤Èë¿â'
+         AND p_Wip_Type = 'å®Œå·¥å…¥åº“'
        ORDER BY Operation_Code, Sub, Replace_Flag;
   
     v_Count             NUMBER;
@@ -3723,30 +3842,30 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   BEGIN
     SELECT Cux.Cux_Doc_Line_Seq.Nextval INTO v_Seq FROM Dual;
   
-    -- Ğ£ÑéÍ¨¹ı,¿ªÊ¼±¸ÁÏ
+    -- æ ¡éªŒé€šè¿‡,å¼€å§‹å¤‡æ–™
     IF Is_Next = 'Y' THEN
     
       FOR C1 IN c_Line LOOP
         l_Count          := l_Count + 1;
         l_Cux_Ready_Item := NULL;
       
-        -- Ä¬ÈÏÊÕ»õ×Ó¿â±ØĞë´æÔÚ
+        -- é»˜è®¤æ”¶è´§å­åº“å¿…é¡»å­˜åœ¨
         IF C1.Sub IS NULL THEN
           p_Return_Status := 'E';
-          p_Return_Msg    := p_Return_Msg || 'µ¥¾İÏÂ´ïÊ§°Ü,×Ó¿â[' || C1.Sub ||
-                             ']Îª¿Õ,Çë¼ì²é:' || Chr(10);
+          p_Return_Msg    := p_Return_Msg || 'å•æ®ä¸‹è¾¾å¤±è´¥,å­åº“[' || C1.Sub ||
+                             ']ä¸ºç©º,è¯·æ£€æŸ¥:' || Chr(10);
           ROLLBACK;
           RETURN;
         END IF;
       
-        -- ¸ù¾İ ¹¤Ğò,×Ó¿â½øĞĞ·Öµ¥
+        -- æ ¹æ® å·¥åº,å­åº“è¿›è¡Œåˆ†å•
         IF (Old_Sub IS NULL AND Old_Operation_Code IS NULL) OR
            (Old_Sub <> C1.Sub) OR (Old_Operation_Code <> C1.Operation_Code) THEN
         
-          IF p_Organization_Id = 83 AND p_Wip_Type IN ('Íê¹¤Èë¿â') THEN
+          IF p_Organization_Id = 83 AND p_Wip_Type IN ('å®Œå·¥å…¥åº“') THEN
             l_Cux_Ready_Item.Doc_No := 'OR' || Cux_Doc_Or_Seq_Jw.Nextval;
           
-          ELSIF p_Organization_Id = 84 AND p_Wip_Type IN ('Íê¹¤Èë¿â') THEN
+          ELSIF p_Organization_Id = 84 AND p_Wip_Type IN ('å®Œå·¥å…¥åº“') THEN
             l_Cux_Ready_Item.Doc_No := 'OR' || Cux_Doc_Or_Seq_Fw.Nextval;
           END IF;
         
@@ -3759,26 +3878,26 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       
         l_Cux_Ready_Item.Line_Id         := Cux.Cux_Doc_Line_Seq.Nextval;
         l_Cux_Ready_Item.Organization_Id := C1.Organization_Id;
-        l_Cux_Ready_Item.Doc_Type        := p_Wip_Type;                     -- µ¥¾İÀàĞÍ
-        l_Cux_Ready_Item.Doc_Date        := p_Doc_Date;                     -- µ¥¾İÈÕÆÚ
-        l_Cux_Ready_Item.Doc_Status      := 'Î´¹ıÕË';                       -- µ¥¾İ×´Ì¬
-        l_Cux_Ready_Item.Wip_Entity_Id   := C1.Wip_Entity_Id;               -- ¹¤µ¥ID    
-        l_Cux_Ready_Item.Wip_Entity_Name := C1.Wip_Entity_Name;             -- ¹¤µ¥Ãû
-        l_Cux_Ready_Item.Primary_Item_Id := C1.Primary_Item_Id;             -- ×é¼şID
+        l_Cux_Ready_Item.Doc_Type        := p_Wip_Type;                     -- å•æ®ç±»å‹
+        l_Cux_Ready_Item.Doc_Date        := p_Doc_Date;                     -- å•æ®æ—¥æœŸ
+        l_Cux_Ready_Item.Doc_Status      := 'æœªè¿‡è´¦';                       -- å•æ®çŠ¶æ€
+        l_Cux_Ready_Item.Wip_Entity_Id   := C1.Wip_Entity_Id;               -- å·¥å•ID    
+        l_Cux_Ready_Item.Wip_Entity_Name := C1.Wip_Entity_Name;             -- å·¥å•å
+        l_Cux_Ready_Item.Primary_Item_Id := C1.Primary_Item_Id;             -- ç»„ä»¶ID
       
-        l_Cux_Ready_Item.Supply_Subinventory    := C1.Sub;                  -- Ä¬ÈÏÊÕ»õ×Ó¿â
-        l_Cux_Ready_Item.Supply_Locator_Id      := C1.Inventory_Location_Id;-- Ä¬ÈÏÊÕ»õ»õÎ»   
-        l_Cux_Ready_Item.Supply_Loc_Code        := C1.Loc;                  -- Ä¬ÈÏÊÕ»õ»õÎ»   
-        l_Cux_Ready_Item.Now_Qty                := p_Now_Qty;               -- ±¾´ÎÈë¿âÁ¿
-        l_Cux_Ready_Item.Inventory_Item_Id      := C1.Inventory_Item_Id;    -- ×°Åä¼şID
-        l_Cux_Ready_Item.Item_Primary_Uom_Code  := C1.Item_Primary_Uom_Code;-- µ¥Î» 
-        l_Cux_Ready_Item.Operation_Seq_Num      := C1.Operation_Seq_Num;    -- ¹¤Ğò
+        l_Cux_Ready_Item.Supply_Subinventory    := C1.Sub;                  -- é»˜è®¤æ”¶è´§å­åº“
+        l_Cux_Ready_Item.Supply_Locator_Id      := C1.Inventory_Location_Id;-- é»˜è®¤æ”¶è´§è´§ä½   
+        l_Cux_Ready_Item.Supply_Loc_Code        := C1.Loc;                  -- é»˜è®¤æ”¶è´§è´§ä½   
+        l_Cux_Ready_Item.Now_Qty                := p_Now_Qty;               -- æœ¬æ¬¡å…¥åº“é‡
+        l_Cux_Ready_Item.Inventory_Item_Id      := C1.Inventory_Item_Id;    -- è£…é…ä»¶ID
+        l_Cux_Ready_Item.Item_Primary_Uom_Code  := C1.Item_Primary_Uom_Code;-- å•ä½ 
+        l_Cux_Ready_Item.Operation_Seq_Num      := C1.Operation_Seq_Num;    -- å·¥åº
         l_Cux_Ready_Item.Operation_Code         := C1.Operation_Code;       -- 
         l_Cux_Ready_Item.Quantity_Per_Assembly  := C1.Quantity_Per_Assembly;
         l_Cux_Ready_Item.Component_Yield_Factor := C1.Component_Yield_Factor;
         l_Cux_Ready_Item.Required_Quantity      := C1.Required_Quantity;
-        l_Cux_Ready_Item.Quantity_Issued        := C1.Quantity_Issued;      -- ÒÑÍê¹¤ÊıÁ¿
-        l_Cux_Ready_Item.Iss_Ready_Qty          := C1.Iss_Ready_Qty;        -- ¿ÉÍê¹¤ÊıÁ¿
+        l_Cux_Ready_Item.Quantity_Issued        := C1.Quantity_Issued;      -- å·²å®Œå·¥æ•°é‡
+        l_Cux_Ready_Item.Iss_Ready_Qty          := C1.Iss_Ready_Qty;        -- å¯å®Œå·¥æ•°é‡
         l_Cux_Ready_Item.Creation_Date          := SYSDATE;
         l_Cux_Ready_Item.Created_By             := Fnd_Global.User_Id;
         l_Cux_Ready_Item.Last_Update_Date       := SYSDATE;
@@ -3788,8 +3907,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         l_lot                                   := C1.Create_Lot; --ADDED BY BRUCE ON 20151030
         l_Cux_Ready_Item.Transfer_Status        := 'WAITING';
       
-        l_Cux_Ready_Item.Ready_Qty     := p_Now_Qty;              -- ±¾´ÎÍê¹¤ÊıÁ¿
-        l_Cux_Ready_Item.Iss_Ready_Qty := C1.Quantity_Issued;     -- ÒÑÍê¹¤ÊıÁ¿
+        l_Cux_Ready_Item.Ready_Qty     := p_Now_Qty;              -- æœ¬æ¬¡å®Œå·¥æ•°é‡
+        l_Cux_Ready_Item.Iss_Ready_Qty := C1.Quantity_Issued;     -- å·²å®Œå·¥æ•°é‡
       
         IF l_Cux_Ready_Item.Ready_Qty <= 0 THEN
            l_Count := l_Count - 1;
@@ -3803,10 +3922,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       COMMIT;
     
       p_Return_Status := 'S';
-      p_Return_Msg    := 'ÏÂ´ï³É¹¦';
+      p_Return_Msg    := 'ä¸‹è¾¾æˆåŠŸ';
       IF l_Count = 0 THEN
         p_Return_Status := 'E';
-        p_Return_Msg    := 'ÎŞÃ÷Ï¸Êı¾İ»òÎŞ¿â´æÊıÁ¿,µ¥¾İÎ´Éú³É£¡';
+        p_Return_Msg    := 'æ— æ˜ç»†æ•°æ®æˆ–æ— åº“å­˜æ•°é‡,å•æ®æœªç”Ÿæˆï¼';
       END IF;
     
       --added by bruce on 20151028
@@ -3831,13 +3950,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   *    Program Name:   process_trx
   *    Author      :   Felix.Liu
   *    Date        :   2014-08-12
-  *    Purpose     :   ¹ıÕÊÍê¹¤Èë¿âµ¥
+  *    Purpose     :   è¿‡å¸å®Œå·¥å…¥åº“å•
   *    Parameters  :
-  *             in       p_organization_id    ×éÖ¯ID
-  *             In       p_doc_no            µ¥¾İºÅ
-                in       p_doc_type          µ¥¾İÀàĞÍ
-  *             out      p_return_status     ´¦Àí½á¹û
-                out      p_return_msg         ´¦ÀíĞÅÏ¢
+  *             in       p_organization_id    ç»„ç»‡ID
+  *             In       p_doc_no            å•æ®å·
+                in       p_doc_type          å•æ®ç±»å‹
+  *             out      p_return_status     å¤„ç†ç»“æœ
+                out      p_return_msg         å¤„ç†ä¿¡æ¯
   *    Update History
   *    Version    Date         Name            Description
   *    --------  ----------  ---------------  --------------------
@@ -3880,14 +3999,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
        WHERE Cri.Organization_Id = p_Organization_Id
          AND Cri.Doc_No = p_Doc_No
          AND Cri.Doc_Type = p_Doc_Type
-         AND ((Cri.Doc_Type IN ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)') AND
+         AND ((Cri.Doc_Type IN ('æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)') AND
              Nvl(Cri.Attribute1, 'N') = 'Y') OR
              Cri.Doc_Type NOT IN
-             ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)', 'ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') OR
-             (Cri.Doc_Type IN ('ÍÆÊ½³¬Áì', 'À­Ê½³¬Áì') AND
+             ('æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)', 'æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') OR
+             (Cri.Doc_Type IN ('æ¨å¼è¶…é¢†', 'æ‹‰å¼è¶…é¢†') AND
              Nvl(Cri.Attribute1, 'N') = 'Y'))
-         AND ((Cri.Ready_Qty > 0 AND Cri.Doc_Type <> 'Íê¹¤Èë¿â') OR
-             (Cri.Now_Qty > 0 AND Cri.Doc_Type = 'Íê¹¤Èë¿â'))
+         AND ((Cri.Ready_Qty > 0 AND Cri.Doc_Type <> 'å®Œå·¥å…¥åº“') OR
+             (Cri.Now_Qty > 0 AND Cri.Doc_Type = 'å®Œå·¥å…¥åº“'))
             
          AND Cri.Pro_Trx_Id IS NULL;
   
@@ -3895,7 +4014,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   
     FOR C1 IN c_Lines LOOP
     
-      --È¡Ïû±£Áô
+      --å–æ¶ˆä¿ç•™
       DELETE Mtl_Reservations Mr
        WHERE Mr.Supply_Source_Name = C1.Doc_No
          AND Mr.Demand_Source_Header_Id = C1.Wip_Entity_Id
@@ -3910,7 +4029,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_Iface_Rec.Created_By        := l_User_Id;
       l_Iface_Rec.Last_Update_Login := Fnd_Global.Login_Id;
     
-      l_Iface_Rec.Transaction_Type_Id   := 44; --WIP Íê¹¤
+      l_Iface_Rec.Transaction_Type_Id   := 44; --WIP å®Œå·¥
       l_iface_rec.final_completion_flag := 'Y';
       l_Iface_Rec.Operation_Seq_Num     := C1.Operation_Seq_Num;
       l_Iface_Rec.Waybill_Airbill       := C1.Operation_Seq_Num;
@@ -3938,8 +4057,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     
       --mhw end 2014-10-12
     
-      l_Iface_Rec.Source_Code           := 'Èë¿âµ¥';
-      l_Iface_Rec.Transaction_Reference := C1.Doc_Type || '[Èë¿âµ¥ºÅ:' ||
+      l_Iface_Rec.Source_Code           := 'å…¥åº“å•';
+      l_Iface_Rec.Transaction_Reference := C1.Doc_Type || '[å…¥åº“å•å·:' ||
                                            C1.Doc_No || ']';
     
       SELECT Mtl_Material_Transactions_s.Nextval
@@ -3966,8 +4085,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     
       INSERT INTO Inv.Mtl_Transactions_Interface VALUES l_Iface_Rec;
     
-      IF C1.Doc_Type IN ('Íê¹¤Èë¿â') THEN
-        --Æ½¾ù³É±¾·½·¨ÏÂ»¹ĞèÒª²åÈëÒÔÏÂ½Ó¿Ú±í,¶øÇÒÊÇÃ¿µÀ¹¤Ğò¶¼ĞèÒª²åÈë£¬²»½ö½öÊÇ×îºóÒ»µÀ¹¤Ğò
+      IF C1.Doc_Type IN ('å®Œå·¥å…¥åº“') THEN
+        --å¹³å‡æˆæœ¬æ–¹æ³•ä¸‹è¿˜éœ€è¦æ’å…¥ä»¥ä¸‹æ¥å£è¡¨,è€Œä¸”æ˜¯æ¯é“å·¥åºéƒ½éœ€è¦æ’å…¥ï¼Œä¸ä»…ä»…æ˜¯æœ€åä¸€é“å·¥åº
         INSERT INTO Cst_Comp_Snap_Interface
           (Transaction_Interface_Id,
            Wip_Entity_Id,
@@ -4009,7 +4128,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                                  p_Table            => 1, --1==MTI,2==MMTT
                                                                  p_Header_Id        => l_Iface_Rec.Transaction_Header_Id);
     
-      -- ÎïÁÏÊÂÎñ´¦Àí
+      -- ç‰©æ–™äº‹åŠ¡å¤„ç†
       IF l_Return_Count = -1 OR
          p_Return_Status <> Fnd_Api.g_Ret_Sts_Success THEN
       
@@ -4064,16 +4183,16 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     END LOOP;
   
     UPDATE Cux_Ready_Item Cri
-       SET Cri.Doc_Status       = 'ÒÑ¹ıÕË',
+       SET Cri.Doc_Status       = 'å·²è¿‡è´¦',
            Cri.Last_Updated_By  = l_User_Id,
            Cri.Last_Update_Date = SYSDATE
      WHERE Cri.Doc_No = p_Doc_No
        AND Cri.Organization_Id = p_Organization_Id;
   
-    p_Return_Msg := '¹ıÕË³É¹¦';
+    p_Return_Msg := 'è¿‡è´¦æˆåŠŸ';
     COMMIT;
   
-    --¶ş´Î´¦Àí
+    --äºŒæ¬¡å¤„ç†
     DELETE Mtl_Reservations Mr
      WHERE EXISTS (SELECT 1
               FROM Cux_Ready_Item Cri
@@ -4083,14 +4202,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                AND Mr.Demand_Source_Line_Id = Cri.Line_Id
                AND Mr.Organization_Id = Cri.Organization_Id
                AND cri.doc_no = p_Doc_No
-               AND Cri.Doc_Status = 'ÒÑ¹ıÕË');
+               AND Cri.Doc_Status = 'å·²è¿‡è´¦');
     COMMIT;
   
-    -- Òì³£´¦Àí
+    -- å¼‚å¸¸å¤„ç†
   EXCEPTION
     WHEN OTHERS THEN
       p_Return_Status := 'E';
-      p_Return_Msg    := 'ÊÂÎï´¦ÀíÒì³£' || SQLERRM || '´úÂëĞĞ:' ||
+      p_Return_Msg    := 'äº‹ç‰©å¤„ç†å¼‚å¸¸' || SQLERRM || 'ä»£ç è¡Œ:' ||
                          Dbms_Utility.Format_Error_Backtrace;
       ROLLBACK;
   END Post_Complete_Doc;
@@ -4114,12 +4233,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
          where msi.inventory_item_id = p_inventory_item_id
            and msi.organization_id = p_organization_id;
       
-        x_onhand_msg := x_onhand_msg || chr(10) || 'ÎïÁÏ: ' || v_onhand_item ||
-                        '; ×Ó¿â: ' || p_sub;
+        x_onhand_msg := x_onhand_msg || chr(10) || 'ç‰©æ–™: ' || v_onhand_item ||
+                        '; å­åº“: ' || p_sub;
       
-        -- ÊÇ·ñÏÔÊ¾»õÎ»
+        -- æ˜¯å¦æ˜¾ç¤ºè´§ä½
         if p_loc is not null then
-          x_onhand_msg := x_onhand_msg || '; »õÎ»: ' || p_loc;
+          x_onhand_msg := x_onhand_msg || '; è´§ä½: ' || p_loc;
         end if;
       end if;
     end if;
@@ -4159,25 +4278,25 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     for rec_docs in cur_docs(p_lot) loop
     
       select decode(rec_docs.doc_type,
-                    'ÍÆÊ½±¸ÁÏ',
+                    'æ¨å¼å¤‡æ–™',
                     'WIP_RLS_PS',
-                    'À­Ê½±¸ÁÏ',
+                    'æ‹‰å¼å¤‡æ–™',
                     'WIP_RLS_PL',
-                    'ÍÆÊ½²¹ÁÏ',
+                    'æ¨å¼è¡¥æ–™',
                     'WIP_RPL_PS',
-                    'À­Ê½²¹ÁÏ',
+                    'æ‹‰å¼è¡¥æ–™',
                     'WIP_RPL_PL',
-                    'ÍÆÊ½³¬Áì',
+                    'æ¨å¼è¶…é¢†',
                     'WIP_OVR_PS',
-                    'À­Ê½³¬Áì',
+                    'æ‹‰å¼è¶…é¢†',
                     'WIP_OVR_PL',
-                    'ÍÆÊ½ÍËÁÏ(¸ºµ¥)',
+                    'æ¨å¼é€€æ–™(è´Ÿå•)',
                     'WIP_NEG_PS',
-                    'ÍÆÊ½ÍËÁÏ(Áãµ¥)',
+                    'æ¨å¼é€€æ–™(é›¶å•)',
                     'WIP_FRG_PS',
-                    'À­Ê½ÍËÁÏ',
+                    'æ‹‰å¼é€€æ–™',
                     'WIP_RTN_PL',
-                    'Íê¹¤Èë¿â',
+                    'å®Œå·¥å…¥åº“',
                     'WIP_CMPL',
                     'NA')
         INTO l_doc_type
@@ -4196,7 +4315,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         if (l_doc_type in
            ('WIP_RLS_PS', 'WIP_RLS_PL', 'WIP_RPL_PS', 'WIP_RPL_PL')) then
           NULL;
-          --È¡Ïû×Ô¶¯Å××ª
+          --å–æ¶ˆè‡ªåŠ¨æŠ›è½¬
           /*begin
             Cux_Wip2wms_Transfer_Pkg.Transfer_Wip_Issue_Data(x_Ret_Sts         => l_ret_status,
                                                              x_Error_Msg       => l_ret_msg,
@@ -4204,7 +4323,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                              p_Doc_No          => rec_docs.doc_no);
           exception
             when others then
-              p_Return_Msg := 'Å××ªÊ§°Ü£º' || rec_docs.doc_no;
+              p_Return_Msg := 'æŠ›è½¬å¤±è´¥ï¼š' || rec_docs.doc_no;
           end;*/
         
         elsif (l_doc_type in ('WIP_NEG_PS' /*, 'WIP_FRG_PS'*/)) then
@@ -4214,14 +4333,14 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                             p_Organization_Id => p_organization_id,
                                                             p_Doc_No          => rec_docs.doc_no);
         elsif (l_doc_type in ('WIP_OVR_PS', 'WIP_OVR_PL', 'WIP_FRG_PS')) then
-          --³¬ÁìÒÔ¼°ÍÆÊ½ÁãÍÆ¶¼ÊÇ½çÃæÊÖ¹¤Å××ª
+          --è¶…é¢†ä»¥åŠæ¨å¼é›¶æ¨éƒ½æ˜¯ç•Œé¢æ‰‹å·¥æŠ›è½¬
           /* update cux_ready_item cri
             set cri.transfer_status = 'NO_TRANSFER'
           where cri.doc_no = rec_docs.doc_no
             AND cri.create_lot = p_lot;*/
           NULL;
         elsif (l_doc_type = 'WIP_RTN_PL') then
-          --ÖĞÊÔ³µ¼ä
+          --ä¸­è¯•è½¦é—´
           update cux_ready_item cri
              set cri.transfer_status = 'NO_TRANSFER'
            where cri.doc_no = rec_docs.doc_no
@@ -4259,7 +4378,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              AND cri.create_lot = p_lot;
         
           /* if(p_Return_Status='S') then
-            p_Return_Msg:='ÏÂ´ï³É¹¦£¬Î´Å××ª';
+            p_Return_Msg:='ä¸‹è¾¾æˆåŠŸï¼ŒæœªæŠ›è½¬';
           end if;*/
         
         end if;
@@ -4268,16 +4387,16 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     end loop;
     p_Return_Status := 'S';
     if (l_count_error > 0) then
-      p_Return_Msg := 'ÏÂ´ï³É¹¦ ' || l_error_msg || ' Å××ªÊ§°Ü£¡';
+      p_Return_Msg := 'ä¸‹è¾¾æˆåŠŸ ' || l_error_msg || ' æŠ›è½¬å¤±è´¥ï¼';
     else
-      p_Return_Msg := 'ÏÂ´ï³É¹¦';
+      p_Return_Msg := 'ä¸‹è¾¾æˆåŠŸ';
     end if;
   
     commit;
   exception
     when others then
       p_Return_Status := 'E';
-      p_Return_Msg    := 'ÏÂ´ï³É¹¦£¬Å××ª·¢ÉúÒì³££º' || SQLERRM;
+      p_Return_Msg    := 'ä¸‹è¾¾æˆåŠŸï¼ŒæŠ›è½¬å‘ç”Ÿå¼‚å¸¸ï¼š' || SQLERRM;
   end;
   PROCEDURE process_full_prepared(p_lot             varchar2,
                                   p_organization_id number,
@@ -4340,7 +4459,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
        WHERE cri.wip_entity_id in
              (select cmb.wip_entity_id
                 from cux.cux_wip_combination_details cmb
-               where cmb.combination_id = p_comb_id) --´Ë×Ó²éÑ¯µÈÂŞ¾üĞŞ¸ÄºÏ²¢¹¤µ¥±í½á¹¹ºóµ÷Õû
+               where cmb.combination_id = p_comb_id) --æ­¤å­æŸ¥è¯¢ç­‰ç½—å†›ä¿®æ”¹åˆå¹¶å·¥å•è¡¨ç»“æ„åè°ƒæ•´
          and wo.wip_entity_id = cri.wip_entity_id
          and cri.operation_seq_num = wo.operation_seq_num
          and WO.STANDARD_OPERATION_ID = BSO.STANDARD_OPERATION_ID(+)
@@ -4362,7 +4481,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                            where cri.wip_entity_id in
                                                  (select cmb.wip_entity_id
                                                     from cux.cux_wip_combination_details cmb
-                                                   where cmb.combination_id = p_comb_id) --´Ë×Ó²éÑ¯µÈÂŞ¾üĞŞ¸ÄºÏ²¢¹¤µ¥±í½á¹¹ºóµ÷Õû
+                                                   where cmb.combination_id = p_comb_id) --æ­¤å­æŸ¥è¯¢ç­‰ç½—å†›ä¿®æ”¹åˆå¹¶å·¥å•è¡¨ç»“æ„åè°ƒæ•´
                                                 --and cri.operation_seq_num = p_seq_num
                                              and NVL(cri.Operation_Code, 'NA') = NVL(p_seq_code, 'NA')
                                              and cri.supply_subinventory = p_subinv
@@ -4459,7 +4578,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
            '');
       exception
         when others then
-          p_Return_Msg := '²åÈëºÏ²¢µ¥Í·±¨´í£º' || sqlerrm;
+          p_Return_Msg := 'æ’å…¥åˆå¹¶å•å¤´æŠ¥é”™ï¼š' || sqlerrm;
           raise Fnd_Api.g_Exc_Error;
       end;
       --insert combination detail
@@ -4475,7 +4594,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           (l_comb_id, 1, p_organization_id, p_wip_id, p_wip_name, 'Y');
       exception
         when others then
-          p_Return_Msg := '²åÈëºÏ²¢µ¥Ã÷Ï¸±¨´í£º' || sqlerrm;
+          p_Return_Msg := 'æ’å…¥åˆå¹¶å•æ˜ç»†æŠ¥é”™ï¼š' || sqlerrm;
           raise Fnd_Api.g_Exc_Error;
       end;
       --p_Return_Msg:='222';
@@ -4500,7 +4619,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                and nvl(flv.attribute3, 'N') = 'Y';
           exception
             when others then
-              p_Return_Msg := '»ñÈ¡±¸ÁÏÊıÁ¿³ö´í£º' || rec_oper_sub.operation_seq_num ||
+              p_Return_Msg := 'è·å–å¤‡æ–™æ•°é‡å‡ºé”™ï¼š' || rec_oper_sub.operation_seq_num ||
                               rec_item.inventory_item_id;
               raise Fnd_Api.g_Exc_Error;
           end;
@@ -4570,7 +4689,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                  l_login_id);
             EXCEPTION
               WHEN OTHERS THEN
-                p_Return_Msg := '²åÈëÆëÌ×±í±¨´í1£º' || sqlerrm;
+                p_Return_Msg := 'æ’å…¥é½å¥—è¡¨æŠ¥é”™1ï¼š' || sqlerrm;
                 raise Fnd_Api.g_Exc_Error;
             END;
           end if; --count exist
@@ -4581,7 +4700,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     end if; --l_comb_id
   
     if (l_comb_id > 0) then
-      --ºÏ²¢¹¤µ¥ÒÔ¼°µ¥Ò»¹¤µ¥ĞéÄâºÏ²¢ºÅ¶¼ÔÚÕâ¸öÅĞ¶ÏÀïÖ´ĞĞÆëÌ×¼ÆËã
+      --åˆå¹¶å·¥å•ä»¥åŠå•ä¸€å·¥å•è™šæ‹Ÿåˆå¹¶å·éƒ½åœ¨è¿™ä¸ªåˆ¤æ–­é‡Œæ‰§è¡Œé½å¥—è®¡ç®—
       FOR REC_OPER_SUB2 in CUR_OPER_SUB2(l_comb_id) loop
         --p_Return_Msg:='66';
         l_item_full := 'Y';
@@ -4608,7 +4727,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                and nvl(flv.attribute3, 'N') = 'Y';
           exception
             when others then
-              p_Return_Msg := '»ñÈ¡±¸ÁÏÊıÁ¿³ö´í£º' || rec_oper_sub2.operation_code ||
+              p_Return_Msg := 'è·å–å¤‡æ–™æ•°é‡å‡ºé”™ï¼š' || rec_oper_sub2.operation_code ||
                               rec_item2.inventory_item_id;
               raise Fnd_Api.g_Exc_Error;
           end;
@@ -4674,7 +4793,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                l_login_id);
           EXCEPTION
             WHEN OTHERS THEN
-              p_Return_Msg := '²åÈëÆëÌ×±í±¨´í2£º' || sqlerrm;
+              p_Return_Msg := 'æ’å…¥é½å¥—è¡¨æŠ¥é”™2ï¼š' || sqlerrm;
               raise Fnd_Api.g_Exc_Error;
           END;
         end if;
@@ -4685,10 +4804,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
   exception
     WHEN Fnd_Api.g_Exc_Error THEN
       p_Return_Status := 'E';
-      p_Return_Msg    := 'ÏÂ´ï³É¹¦ ' || p_Return_Msg;
+      p_Return_Msg    := 'ä¸‹è¾¾æˆåŠŸ ' || p_Return_Msg;
     when others then
       p_Return_Status := 'E';
-      p_Return_Msg    := 'ÏÂ´ï³É¹¦£¬¼ÆËãÆëÌ×·¢ÉúÒì³££º' || p_Return_Msg || SQLERRM;
+      p_Return_Msg    := 'ä¸‹è¾¾æˆåŠŸï¼Œè®¡ç®—é½å¥—å‘ç”Ÿå¼‚å¸¸ï¼š' || p_Return_Msg || SQLERRM;
   end;
 
   PROCEDURE cancel_full_prepared(p_lot             varchar2,
@@ -4726,10 +4845,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     COMMIT;
   exception
     WHEN Fnd_Api.g_Exc_Error THEN
-      p_Return_Msg := 'Çå³ıÆëÌ×Êı¾İÊ§°Ü';
+      p_Return_Msg := 'æ¸…é™¤é½å¥—æ•°æ®å¤±è´¥';
     when others then
       p_Return_Status := 'E';
-      p_Return_Msg    := 'Çå³ıÆëÌ×Êı¾İ·¢ÉúÒì³££º' || SQLERRM;
+      p_Return_Msg    := 'æ¸…é™¤é½å¥—æ•°æ®å‘ç”Ÿå¼‚å¸¸ï¼š' || SQLERRM;
     
   end;
   /*
@@ -4754,7 +4873,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
          and cwb.prepared_flag = 'Y';
     
       if (l_count_full = 0) then
-        l_full_flag := 'O'; --¹¤µ¥±¾À´¾ÍÎ´ÆëÌ×
+        l_full_flag := 'O'; --å·¥å•æœ¬æ¥å°±æœªé½å¥—
         return l_full_flag;
       end if;
     
@@ -4769,12 +4888,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                AND CRI.ORGANIZATION_ID = p_organization_id
                and cri.doc_no <> p_doc_number
                AND CRI.INVENTORY_ITEM_ID = REC_REQ.INVENTORY_ITEM_ID
-               and cri.doc_type in ('ÍÆÊ½±¸ÁÏ',
-                                    'À­Ê½±¸ÁÏ',
-                                    'ÍÆÊ½²¹ÁÏ',
-                                    'À­Ê½²¹ÁÏ',
-                                    'ÍÆÊ½³¬Áì',
-                                    'À­Ê½³¬Áì');
+               and cri.doc_type in ('æ¨å¼å¤‡æ–™',
+                                    'æ‹‰å¼å¤‡æ–™',
+                                    'æ¨å¼è¡¥æ–™',
+                                    'æ‹‰å¼è¡¥æ–™',
+                                    'æ¨å¼è¶…é¢†',
+                                    'æ‹‰å¼è¶…é¢†');
           exception
             when others then
               l_ready_qty := 0;
@@ -4789,7 +4908,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       RETURN l_full_flag;
     exception
       WHEN Fnd_Api.g_Exc_Error THEN
-        --p_Return_Msg := 'ÏÂ´ï³É¹¦ ' || p_Return_Msg;
+        --p_Return_Msg := 'ä¸‹è¾¾æˆåŠŸ ' || p_Return_Msg;
         NULL;
       when others then
         RETURN 'N';

@@ -1,5 +1,10 @@
 CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
 
+       
+  TYPE CUX_DOC_CLASS_TYPE IS RECORD(       
+                            EMPTY_RETURN_FLAG  VARCHAR2(1)
+	);  
+     
   /*===============================================================
     *    Program Name:   create_preparation_doc
     *    Author      :   LGF
@@ -30,6 +35,7 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
                                    p_Sub             VARCHAR2,
                                    p_Loc             VARCHAR2,
                                    p_Operation_Code  VARCHAR2,
+                                   p_param           CUX_DOC_CLASS_TYPE,
                                    p_Return_Status   OUT VARCHAR2,
                                    p_Return_Msg      OUT VARCHAR2);
 
@@ -63,6 +69,7 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
                                           p_Sub             VARCHAR2,
                                           p_Loc             VARCHAR2,
                                           p_Operation_Code  VARCHAR2,
+                                          p_param           CUX_DOC_CLASS_TYPE,
                                           p_Return_Status   OUT VARCHAR2,
                                           p_Return_Msg      OUT VARCHAR2);
 
@@ -119,6 +126,7 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
                                p_Sub             VARCHAR2,
                                p_Loc             VARCHAR2,
                                p_Operation_Code  VARCHAR2,
+                               p_param           CUX_DOC_CLASS_TYPE,
                                p_Return_Status   OUT VARCHAR2,
                                p_Return_Msg      OUT VARCHAR2);
 
@@ -152,6 +160,7 @@ CREATE OR REPLACE PACKAGE Cux_Wip_Trans_Pkg AS
                                       p_Sub             VARCHAR2,
                                       p_Loc             VARCHAR2,
                                       p_Operation_Code  VARCHAR2,
+                                      p_param           CUX_DOC_CLASS_TYPE,
                                       p_Return_Status   OUT VARCHAR2,
                                       p_Return_Msg      OUT VARCHAR2);
 
@@ -283,6 +292,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                    p_Sub             VARCHAR2,
                                    p_Loc             VARCHAR2,
                                    p_Operation_Code  VARCHAR2,
+                                   p_param           CUX_DOC_CLASS_TYPE,
                                    p_Return_Status   OUT VARCHAR2,
                                    p_Return_Msg      OUT VARCHAR2) AS
   
@@ -304,6 +314,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              a.Component_Yield_Factor, -- 产出率
              a.Required_Quantity, -- 需求数量
              a.Quantity_Issued, -- 已发放数量
+             a.MATERIAL_BATCH1,
+             a.MATERIAL_BATCH2,
+             a.SPECIAL_ORDER,
+             a.SPECIAL_NUMBER,
              Decode(Sign(a.Iss_Ready_Qty), -- sign 大于0 返回 1,小于0 返回 -1,等于0 返回 0
                     1,
                     a.Iss_Ready_Qty,
@@ -331,6 +345,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      Wro.Component_Yield_Factor,
                      Wro.Required_Quantity,
                      Wro.Quantity_Issued,
+                     wro.attribute1 MATERIAL_BATCH1,
+                     wro.attribute2 MATERIAL_BATCH2,
+                     wro.attribute3 SPECIAL_ORDER,
+                     wro.attribute4 SPECIAL_NUMBER,
                      Ceil(Wro.Quantity_Per_Assembly * p_Now_Qty /
                           Cux_Wip_Transactions_Pkg.Get_Component_Yield_Factor(p_Org_Id                 => Wro.Organization_Id,
                                                                               p_Wip_Id                 => Wro.Wip_Entity_Id,
@@ -587,7 +605,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_Cux_Ready_Item.Create_Lot             := C1.Create_Lot;
       l_lot                                   := C1.Create_Lot; --added by bruce on 20151028
       l_Cux_Ready_Item.Transfer_Status        := 'WAITING';
-    
+      
+      l_Cux_Ready_Item.Material_Batch1        := C1.Material_Batch1;
+      l_Cux_Ready_Item.Material_Batch2        := C1.Material_Batch2;
+      l_Cux_Ready_Item.Special_Number         := C1.Special_Number;
+      l_Cux_Ready_Item.Special_Order          := C1.Special_Order;
+      l_Cux_Ready_Item.Empty_Return_Flag      := p_param.EMPTY_RETURN_FLAG;
       -- 拉式物料对应的线边仓对应的货位是每个工单进行命名
       IF p_Wip_Type = '拉式备料' THEN
         IF p_Organization_Id = 84 THEN
@@ -733,6 +756,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                           p_Sub             VARCHAR2,
                                           p_Loc             VARCHAR2,
                                           p_Operation_Code  VARCHAR2,
+                                          p_param           CUX_DOC_CLASS_TYPE,
                                           p_Return_Status   OUT VARCHAR2,
                                           p_Return_Msg      OUT VARCHAR2) AS
     --added by bruce on 20151029
@@ -758,6 +782,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              a.Component_Yield_Factor, -- 产出率
              a.Required_Quantity, -- 需求数量
              a.Quantity_Issued, -- 已发放数量
+             a.MATERIAL_BATCH1,
+             a.MATERIAL_BATCH2,
+             a.SPECIAL_ORDER,
+             a.SPECIAL_NUMBER,
              Decode(Sign(a.Iss_Ready_Qty), -- sign 大于0 返回 1,小于0 返回 -1,等于0 返回 0
                     1,
                     a.Iss_Ready_Qty,
@@ -785,6 +813,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      Wro.Component_Yield_Factor,
                      Wro.Required_Quantity,
                      Wro.Quantity_Issued,
+                     wro.attribute1 MATERIAL_BATCH1,
+                     wro.attribute2 MATERIAL_BATCH2,
+                     wro.attribute3 SPECIAL_ORDER,
+                     wro.attribute4 SPECIAL_NUMBER,
                      Ceil(Wro.Quantity_Per_Assembly * p_Now_Qty /
                           Cux_Wip_Transactions_Pkg.Get_Component_Yield_Factor(p_Org_Id                 => Wro.Organization_Id,
                                                                               p_Wip_Id                 => Wro.Wip_Entity_Id,
@@ -1020,6 +1052,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_Cux_Ready_Item.Create_Lot             := C1.Create_Lot;
       l_lot                                   := C1.Create_Lot; --added by bruce on 20151029
       l_Cux_Ready_Item.Transfer_Status        := 'WAITING';
+      
+      l_Cux_Ready_Item.Material_Batch1        := C1.Material_Batch1;
+      l_Cux_Ready_Item.Material_Batch2        := C1.Material_Batch2;
+      l_Cux_Ready_Item.Special_Number         := C1.Special_Number;
+      l_Cux_Ready_Item.Special_Order          := C1.Special_Order;
+      l_Cux_Ready_Item.Empty_Return_Flag      := p_param.EMPTY_RETURN_FLAG;
       -- 拉式物料对应的线边仓对应的货位是每个工单进行命名
       IF p_Wip_Type = '拉式备料' THEN
         IF p_Organization_Id = 84 THEN
@@ -1475,6 +1513,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                p_Sub             VARCHAR2,
                                p_Loc             VARCHAR2,
                                p_Operation_Code  VARCHAR2,
+                               p_param           CUX_DOC_CLASS_TYPE,
                                p_Return_Status   OUT VARCHAR2,
                                p_Return_Msg      OUT VARCHAR2) AS
   
@@ -1496,6 +1535,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              a.Component_Yield_Factor,
              a.Required_Quantity,
              a.Quantity_Issued,
+             a.MATERIAL_BATCH1,
+             a.MATERIAL_BATCH2,
+             a.SPECIAL_ORDER,
+             a.SPECIAL_NUMBER,
              a.Iss_Ready_Qty,
              Cws.Sub,
              Cws.Loc_Code Loc,
@@ -1517,6 +1560,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      Wro.Component_Yield_Factor,
                      Wro.Required_Quantity,
                      Wro.Quantity_Issued,
+                     wro.attribute1 MATERIAL_BATCH1,
+                     wro.attribute2 MATERIAL_BATCH2,
+                     wro.attribute3 SPECIAL_ORDER,
+                     wro.attribute4 SPECIAL_NUMBER,
                      Ceil(Wro.Quantity_Per_Assembly * p_Now_Qty /
                           Cux_Wip_Transactions_Pkg.Get_Component_Yield_Factor(p_Org_Id                 => Wro.Organization_Id,
                                                                               p_Wip_Id                 => Wro.Wip_Entity_Id,
@@ -1925,6 +1972,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         l_Cux_Ready_Item.Last_Update_Login      := Fnd_Global.Login_Id;
         l_Cux_Ready_Item.Create_Lot             := v_Create_Lot;
         l_Cux_Ready_Item.Doc_No                 := v_Create_Lot;
+        l_Cux_Ready_Item.Material_Batch1        := x.attribute1;
+        l_Cux_Ready_Item.Material_Batch2        := x.attribute2;
+        l_Cux_Ready_Item.Special_Number         := x.attribute4;
+        l_Cux_Ready_Item.Special_Order          := x.attribute3;
+        l_Cux_Ready_Item.Empty_Return_Flag      := p_param.EMPTY_RETURN_FLAG;
       
         IF l_Cux_Ready_Item.Ready_Qty > 0 THEN
           INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
@@ -2051,7 +2103,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
               l_Cux_Ready_Item.Attribute10       := y.Doc_No;
               l_Cux_Ready_Item.Attribute11       := v_Qty;
               v_Doc_No                           := y.Doc_No; -- 绑定单号
-            
+              
+              l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+              l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+              l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+              l_Cux_Ready_Item.Special_Order     := x.Special_Order;
+              l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+              
               v_Qty := v_Qty - v_temp_qty;
             ELSE
             
@@ -2091,7 +2149,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
               l_Cux_Ready_Item.Attribute11       := v_Qty;
               v_Doc_No                           := y.Doc_No;
               v_Qty                              := 0;
-            
+              l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+              l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+              l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+              l_Cux_Ready_Item.Special_Order     := x.Special_Order;
+              l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+              
             END IF;
           
             -- 有补料数量,插入对应值
@@ -2189,6 +2252,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           l_Cux_Ready_Item.Attribute10       := v_Doc_No;
           l_Cux_Ready_Item.Attribute11       := -0.0001;
         
+          l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+          l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+          l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+          l_Cux_Ready_Item.Special_Order     := x.Special_Order;
+          l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+              
           INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
         
         END IF;
@@ -2228,6 +2297,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         l_Cux_Ready_Item.Attribute11            := v_Qty;
         l_Cux_Ready_Item.Attribute10            := NULL; ---备料单号
       
+        l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+        l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+        l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+        l_Cux_Ready_Item.Special_Order     := x.Special_Order;
+        l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;      
         INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
       END IF;
     END LOOP;
@@ -2369,6 +2443,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                       p_Sub             VARCHAR2,
                                       p_Loc             VARCHAR2,
                                       p_Operation_Code  VARCHAR2,
+                                      p_param           CUX_DOC_CLASS_TYPE,
                                       p_Return_Status   OUT VARCHAR2,
                                       p_Return_Msg      OUT VARCHAR2) AS
     l_lot varchar2(100);
@@ -2734,6 +2809,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           l_cux_ready_item.create_lot             := v_create_lot;
           l_cux_ready_item.doc_no                 := v_create_lot;
         
+          l_Cux_Ready_Item.Material_Batch1        := x.attribute1; -- 属性号1
+          l_Cux_Ready_Item.Material_Batch2        := x.attribute2; -- 属性号2
+          l_Cux_Ready_Item.Special_Number         := x.attribute4; -- 特制单号
+          l_Cux_Ready_Item.Special_Order          := x.attribute3; -- 特制数量
+          l_Cux_Ready_Item.Empty_Return_Flag      := p_param.EMPTY_RETURN_FLAG;
           ----
           IF l_cux_ready_item.ready_qty > 0 THEN
             INSERT INTO cux_ready_item VALUES l_cux_ready_item;
@@ -2830,6 +2910,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                 l_cux_ready_item.supply_subinventory    := x.supply_subinventory;
                 l_cux_ready_item.supply_locator_id      := x.supply_locator_id;
                 l_cux_ready_item.supply_loc_code        := x.supply_loc_code;
+            
+                l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+                l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+                l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+                l_Cux_Ready_Item.Special_Order     := x.Special_Order;   
+                l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+                
                 l_cux_ready_item.quantity_issued        := y.quantity_issued;
                 l_cux_ready_item.iss_ready_qty          := v_required_item_qty -
                                                            v_ready_item_b_qty -
@@ -2851,6 +2938,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                                            (v_required_item_qty -
                                                            v_ready_item_b_qty -
                                                            v_ready_qty_b);
+                                                                                                 
               ELSE
                 l_cux_ready_item.line_id                := cux.cux_doc_line_seq.nextval;
                 l_cux_ready_item.organization_id        := y.organization_id;
@@ -2872,6 +2960,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                 l_cux_ready_item.supply_subinventory    := x.supply_subinventory;
                 l_cux_ready_item.supply_locator_id      := x.supply_locator_id;
                 l_cux_ready_item.supply_loc_code        := x.supply_loc_code;
+                
+                l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+                l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+                l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+                l_Cux_Ready_Item.Special_Order     := x.Special_Order;   
+                l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+                
                 l_cux_ready_item.quantity_issued        := y.quantity_issued;
                 l_cux_ready_item.iss_ready_qty          := v_qty;
                 l_cux_ready_item.creation_date          := SYSDATE;
@@ -2938,6 +3033,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
             l_cux_ready_item.attribute10            := v_doc_no;
             l_cux_ready_item.attribute11            := -0.0001;
           
+            l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+            l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+            l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+            l_Cux_Ready_Item.Special_Order     := x.Special_Order;   
+            l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;
+                 
             INSERT INTO cux_ready_item VALUES l_cux_ready_item;
           END IF;
         
@@ -2976,6 +3077,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           l_cux_ready_item.doc_no                 := v_create_lot_new;
           l_cux_ready_item.attribute11            := v_qty;
           l_cux_ready_item.attribute10            := NULL; ---备料单号
+                 
+          l_Cux_Ready_Item.Material_Batch1   := x.Material_Batch1;
+          l_Cux_Ready_Item.Material_Batch2   := x.Material_Batch2;
+          l_Cux_Ready_Item.Special_Number    := x.Special_Number;
+          l_Cux_Ready_Item.Special_Order     := x.Special_Order;   
+          l_Cux_Ready_Item.Empty_Return_Flag := x.empty_return_flag;       
+          
           INSERT INTO cux_ready_item VALUES l_cux_ready_item;
         END IF;
       END LOOP;
@@ -3154,7 +3262,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              cws.loc_code loc,
              cws.location_id inventory_location_id,
              to_char(systimestamp, 'YYYYMMDDHH24MISSFF4') create_lot,
-             a.replace_flag
+             a.replace_flag,
+             a.MATERIAL_BATCH1,
+             a.MATERIAL_BATCH2,
+             a.SPECIAL_ORDER,
+             a.SPECIAL_NUMBER
         FROM (SELECT wdj.organization_id,
                      wdj.wip_entity_id,
                      wdj.wip_entity_name,
@@ -3170,6 +3282,10 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                      wro.component_yield_factor,
                      wro.required_quantity,
                      wro.quantity_issued,
+                     wro.attribute1 MATERIAL_BATCH1,
+                     wro.attribute2 MATERIAL_BATCH2,
+                     wro.attribute3 SPECIAL_ORDER,
+                     wro.attribute4 SPECIAL_NUMBER,
                      decode(p_wip_type
                             
                            ,
@@ -3237,9 +3353,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
          AND cws.ws_code(+) = a.ws_code
          AND nvl(cws.sub, '1') = nvl(p_sub, nvl(cws.sub, '1'))
          AND nvl(cws.loc_code, '1') = nvl(p_loc, nvl(cws.loc_code, '1'))
-         AND (a.iss_ready_qty <> 0 AND
-             p_wip_type NOT IN ('推式超领', '拉式超领') OR
-             p_wip_type IN ('推式超领', '拉式超领'))
+         AND (a.iss_ready_qty <> 0 AND p_wip_type NOT IN ('推式超领', '拉式超领') OR
+              p_wip_type IN ('推式超领', '拉式超领'))
        ORDER BY operation_code, sub, replace_flag;
   
     v_count             NUMBER;
@@ -3402,7 +3517,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       l_cux_ready_item.create_lot             := c1.create_lot;
       l_lot                                   := c1.create_lot; --added by bruce on 20151029
       l_cux_ready_item.transfer_status        := 'WAITING';
-    
+      
+      l_cux_ready_item.material_batch1        := c1.material_batch1;
+      l_cux_ready_item.material_batch2        := c1.material_batch2;
+      l_cux_ready_item.special_order          := c1.special_order;
+      l_cux_ready_item.special_number         := c1.special_number;
       -- 目标子库货位为线边仓
       IF p_wip_type IN ('拉式退料', '拉式超领') THEN
       
@@ -3650,13 +3769,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
              NULL Inventory_Item_Id,
              NULL Com_Item_Code,
              Msi.Primary_Uom_Code Item_Primary_Uom_Code,
+             
              (SELECT Wo.Operation_Seq_Num
                 FROM Wip_Operations Wo
                WHERE Wo.Organization_Id = Wdj.Organization_Id
                  AND Wo.Wip_Entity_Id = Wdj.Wip_Entity_Id
-                 AND Wo.Next_Operation_Seq_Num IS NULL) Operation_Seq_Num
-             
-            ,
+                 AND Wo.Next_Operation_Seq_Num IS NULL) Operation_Seq_Num, -- 工序
+                 
              NULL Operation_Code,
              NULL Quantity_Per_Assembly,
              NULL Component_Yield_Factor,
@@ -3668,9 +3787,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                 FROM Mtl_Item_Sub_Defaults Mis
                WHERE Mis.Organization_Id = Wdj.Organization_Id
                  AND Mis.Inventory_Item_Id = Wdj.Primary_Item_Id
-                 AND Rownum = 1) Sub
-             
-            ,
+                 AND Rownum = 1) Sub,
+                 
              (SELECT Mil.Segment1
                 FROM Mtl_Item_Loc_Defaults Mild, Mtl_Item_Locations Mil
                WHERE 1 = 1
@@ -3727,13 +3845,12 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
     -- 校验通过,开始备料
     IF Is_Next = 'Y' THEN
     
-      -- 不为推式补料，拉式补料 的情况
-    
       FOR C1 IN c_Line LOOP
         l_Count          := l_Count + 1;
         l_Cux_Ready_Item := NULL;
       
-        IF p_Wip_Type = '完工入库' AND (C1.Sub IS NULL) THEN
+        -- 默认收货子库必须存在
+        IF C1.Sub IS NULL THEN
           p_Return_Status := 'E';
           p_Return_Msg    := p_Return_Msg || '单据下达失败,子库[' || C1.Sub ||
                              ']为空,请检查:' || Chr(10);
@@ -3741,6 +3858,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
           RETURN;
         END IF;
       
+        -- 根据 工序,子库进行分单
         IF (Old_Sub IS NULL AND Old_Operation_Code IS NULL) OR
            (Old_Sub <> C1.Sub) OR (Old_Operation_Code <> C1.Operation_Code) THEN
         
@@ -3760,26 +3878,26 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
       
         l_Cux_Ready_Item.Line_Id         := Cux.Cux_Doc_Line_Seq.Nextval;
         l_Cux_Ready_Item.Organization_Id := C1.Organization_Id;
-        l_Cux_Ready_Item.Doc_Type        := p_Wip_Type;
-        l_Cux_Ready_Item.Doc_Date        := p_Doc_Date;
-        l_Cux_Ready_Item.Doc_Status      := '未过账';
-        l_Cux_Ready_Item.Wip_Entity_Id   := C1.Wip_Entity_Id;
-        l_Cux_Ready_Item.Wip_Entity_Name := C1.Wip_Entity_Name;
-        l_Cux_Ready_Item.Primary_Item_Id := C1.Primary_Item_Id;
+        l_Cux_Ready_Item.Doc_Type        := p_Wip_Type;                     -- 单据类型
+        l_Cux_Ready_Item.Doc_Date        := p_Doc_Date;                     -- 单据日期
+        l_Cux_Ready_Item.Doc_Status      := '未过账';                       -- 单据状态
+        l_Cux_Ready_Item.Wip_Entity_Id   := C1.Wip_Entity_Id;               -- 工单ID    
+        l_Cux_Ready_Item.Wip_Entity_Name := C1.Wip_Entity_Name;             -- 工单名
+        l_Cux_Ready_Item.Primary_Item_Id := C1.Primary_Item_Id;             -- 组件ID
       
-        l_Cux_Ready_Item.Supply_Subinventory    := C1.Sub;
-        l_Cux_Ready_Item.Supply_Locator_Id      := C1.Inventory_Location_Id;
-        l_Cux_Ready_Item.Supply_Loc_Code        := C1.Loc;
-        l_Cux_Ready_Item.Now_Qty                := p_Now_Qty;
-        l_Cux_Ready_Item.Inventory_Item_Id      := C1.Inventory_Item_Id;
-        l_Cux_Ready_Item.Item_Primary_Uom_Code  := C1.Item_Primary_Uom_Code;
-        l_Cux_Ready_Item.Operation_Seq_Num      := C1.Operation_Seq_Num;
-        l_Cux_Ready_Item.Operation_Code         := C1.Operation_Code;
+        l_Cux_Ready_Item.Supply_Subinventory    := C1.Sub;                  -- 默认收货子库
+        l_Cux_Ready_Item.Supply_Locator_Id      := C1.Inventory_Location_Id;-- 默认收货货位   
+        l_Cux_Ready_Item.Supply_Loc_Code        := C1.Loc;                  -- 默认收货货位   
+        l_Cux_Ready_Item.Now_Qty                := p_Now_Qty;               -- 本次入库量
+        l_Cux_Ready_Item.Inventory_Item_Id      := C1.Inventory_Item_Id;    -- 装配件ID
+        l_Cux_Ready_Item.Item_Primary_Uom_Code  := C1.Item_Primary_Uom_Code;-- 单位 
+        l_Cux_Ready_Item.Operation_Seq_Num      := C1.Operation_Seq_Num;    -- 工序
+        l_Cux_Ready_Item.Operation_Code         := C1.Operation_Code;       -- 
         l_Cux_Ready_Item.Quantity_Per_Assembly  := C1.Quantity_Per_Assembly;
         l_Cux_Ready_Item.Component_Yield_Factor := C1.Component_Yield_Factor;
         l_Cux_Ready_Item.Required_Quantity      := C1.Required_Quantity;
-        l_Cux_Ready_Item.Quantity_Issued        := C1.Quantity_Issued;
-        l_Cux_Ready_Item.Iss_Ready_Qty          := C1.Iss_Ready_Qty;
+        l_Cux_Ready_Item.Quantity_Issued        := C1.Quantity_Issued;      -- 已完工数量
+        l_Cux_Ready_Item.Iss_Ready_Qty          := C1.Iss_Ready_Qty;        -- 可完工数量
         l_Cux_Ready_Item.Creation_Date          := SYSDATE;
         l_Cux_Ready_Item.Created_By             := Fnd_Global.User_Id;
         l_Cux_Ready_Item.Last_Update_Date       := SYSDATE;
@@ -3789,43 +3907,16 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         l_lot                                   := C1.Create_Lot; --ADDED BY BRUCE ON 20151030
         l_Cux_Ready_Item.Transfer_Status        := 'WAITING';
       
-        /**
-        * 计算备料数
-        */
-        IF l_Cux_Ready_Item.Doc_Type = '完工入库' THEN
-          l_Cux_Ready_Item.Ready_Qty     := p_Now_Qty;
-          l_Cux_Ready_Item.Iss_Ready_Qty := C1.Quantity_Issued;
-        END IF;
+        l_Cux_Ready_Item.Ready_Qty     := p_Now_Qty;              -- 本次完工数量
+        l_Cux_Ready_Item.Iss_Ready_Qty := C1.Quantity_Issued;     -- 已完工数量
       
         IF l_Cux_Ready_Item.Ready_Qty <= 0 THEN
-          l_Count := l_Count - 1;
+           l_Count := l_Count - 1;
         ELSE
-          IF p_Wip_Type IN ('推式备料', '拉式备料') THEN
-            l_Cux_Ready_Item.Iss_Ready_Qty := Ceil(C1.Quantity_Per_Assembly *
-                                                   p_Now_Qty /
-                                                   C1.Component_Yield_Factor);
-          ELSE
-            l_Cux_Ready_Item.Iss_Ready_Qty := C1.Iss_Ready_Qty;
-          END IF;
-        
-          INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
-        
+           l_Cux_Ready_Item.Iss_Ready_Qty := C1.Iss_Ready_Qty;
+           INSERT INTO Cux_Ready_Item VALUES l_Cux_Ready_Item;
         END IF;
-      
-        --保留
-        IF l_Cux_Ready_Item.Doc_Type NOT IN
-           ('推式退料(负单)',
-            '推式退料(零单)',
-            '完工入库',
-            '推式超领',
-            '拉式超领') THEN
-          Cux_Wip_Transactions_Pkg.Create_Save(l_Cux_Ready_Item.Line_Id,
-                                               p_Return_Status,
-                                               p_Return_Msg);
-          IF p_Return_Status <> 'S' THEN
-            RETURN;
-          END IF;
-        END IF;
+        
       END LOOP;
       -------
       COMMIT;
