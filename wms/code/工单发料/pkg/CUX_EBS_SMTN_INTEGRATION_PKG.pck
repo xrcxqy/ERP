@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE CUX_EBS_SMTN_INTEGRATION_PKG AUTHID CURRENT_USER IS
+ï»¿CREATE OR REPLACE PACKAGE CUX_EBS_SMTN_INTEGRATION_PKG AUTHID CURRENT_USER IS
   /* $Header: CUX_EBS_SMTN_INTEGRATION_PKG.plb 120.0.1 2015/9/9$ */
   /**************************************************************************
   REM Copyright (c) 2015 ruijie Corporation. All rights reserved.
@@ -162,7 +162,7 @@ CREATE OR REPLACE PACKAGE CUX_EBS_SMTN_INTEGRATION_PKG AUTHID CURRENT_USER IS
                                x_Error_Msg OUT VARCHAR2);
   
     /**
-   * ÅĞ¶Ïµ¥¾İÊÇ·ñÎªWMS/SMTN²Ö¿â
+   * åˆ¤æ–­å•æ®æ˜¯å¦ä¸ºWMS/SMTNä»“åº“
    */                             
   FUNCTION is_inv_wms_sub(p_header_id       number,
                           p_organization_id number,
@@ -172,7 +172,7 @@ CREATE OR REPLACE PACKAGE CUX_EBS_SMTN_INTEGRATION_PKG AUTHID CURRENT_USER IS
                           x_Error_Msg       OUT VARCHAR2) RETURN VARCHAR2;
                                                        
   /**
-   * ÅĞ¶Ïµ¥¾İÊÇ·ñÅ×µ½WMS/SMTN
+   * åˆ¤æ–­å•æ®æ˜¯å¦æŠ›åˆ°WMS/SMTN
    */                             
   FUNCTION is_inv_sys(p_header_id       number,
                       p_organization_id number,
@@ -237,7 +237,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-          x_Error_Msg := '»ñÈ¡ºÏ²¢ĞĞĞÅÏ¢³ö´í£º' || sqlerrm;
+          x_Error_Msg := 'è·å–åˆå¹¶è¡Œä¿¡æ¯å‡ºé”™ï¼š' || sqlerrm;
           raise Fnd_Api.g_Exc_Error;
       end;
     
@@ -305,7 +305,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     
     else
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÎ´Å××ª';
+      x_Error_Msg := 'å•æ®æœªæŠ›è½¬';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   
@@ -315,7 +315,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎóget dly line£º' || sqlerrm ||
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯get dly lineï¼š' || sqlerrm ||
                      p_dly_line.Order_Number || p_dly_line.Line_Number;
   end;
   PROCEDURE get_rtn_line_info(p_rtn_line  IN OUT Cux_Wms_Pub.Trx_Line_Rec,
@@ -363,7 +363,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     
     ELSE
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İ×´Ì¬²»ÕıÈ·';
+      x_Error_Msg := 'å•æ®çŠ¶æ€ä¸æ­£ç¡®';
       RAISE Fnd_Api.g_Exc_Error;
     END IF;
   
@@ -373,7 +373,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE get_zr_line_info(p_zr_header Cux_Wms_Material_Trx_Headers%rowtype,
                              p_zr_line   IN OUT Cux_Wms_Pub.Trx_Line_Rec,
@@ -424,11 +424,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     else
     
       /*x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑÔÓÈë';
+      x_Error_Msg := 'å•æ®å·²æ‚å…¥';
       RAISE Fnd_Api.g_Exc_Error;*/
     
       x_Ret_Sts   := fnd_api.G_RET_STS_SUCCESS;
-      x_Error_Msg := 'ÔÓÈëµ¥¾İÒÑ¹ıÕË';
+      x_Error_Msg := 'æ‚å…¥å•æ®å·²è¿‡è´¦';
       --RAISE Fnd_Api.g_Exc_Error;
     
     end if;
@@ -439,7 +439,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE get_zf_line_info(p_zf_header Cux_Wms_Material_Trx_Headers%rowtype,
                              p_zf_line   IN OUT Cux_Wms_Pub.Trx_Line_Rec,
@@ -493,10 +493,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     else
     
       /*x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑÔÓ·¢';
+      x_Error_Msg := 'å•æ®å·²æ‚å‘';
       RAISE Fnd_Api.g_Exc_Error;*/
       x_Ret_Sts   := fnd_api.G_RET_STS_SUCCESS;
-      x_Error_Msg := 'ÔÓ·¢µ¥¾İÒÑ¹ıÕË£¡';
+      x_Error_Msg := 'æ‚å‘å•æ®å·²è¿‡è´¦ï¼';
       --RAISE Fnd_Api.g_Exc_Error;
     end if;
   exception
@@ -505,7 +505,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE get_db_line_info(p_db_header Cux_Wms_Material_Trx_Headers%rowtype,
                              p_db_line   IN OUT Cux_Wms_Pub.Trx_Line_Rec,
@@ -563,10 +563,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     else
     
       /*x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑµ÷²¦';
+      x_Error_Msg := 'å•æ®å·²è°ƒæ‹¨';
       RAISE Fnd_Api.g_Exc_Error;*/
       x_Ret_Sts   := fnd_api.G_RET_STS_SUCCESS;
-      x_Error_Msg := 'µ÷²¦µ¥¾İÒÑ¹ıÕË';
+      x_Error_Msg := 'è°ƒæ‹¨å•æ®å·²è¿‡è´¦';
       --RAISE Fnd_Api.g_Exc_Error;
     
     end if;
@@ -576,7 +576,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
 
   PROCEDURE get_yddb_line_info(p_yddb_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -634,10 +634,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     else
     
       /*x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑµ÷²¦';
+      x_Error_Msg := 'å•æ®å·²è°ƒæ‹¨';
       RAISE Fnd_Api.g_Exc_Error;*/
       x_Ret_Sts   := fnd_api.G_RET_STS_SUCCESS;
-      x_Error_Msg := 'ÒìµØµ÷²¦µ¥¾İÒÑ¹ıÕË';
+      x_Error_Msg := 'å¼‚åœ°è°ƒæ‹¨å•æ®å·²è¿‡è´¦';
       --RAISE Fnd_Api.g_Exc_Error;
     end if;
   exception
@@ -646,7 +646,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
 
   PROCEDURE get_xodb_line_info(p_xodb_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -703,10 +703,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     else
     
       /*x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑµ÷²¦';
+      x_Error_Msg := 'å•æ®å·²è°ƒæ‹¨';
       RAISE Fnd_Api.g_Exc_Error;*/
       x_Ret_Sts   := fnd_api.G_RET_STS_SUCCESS;
-      x_Error_Msg := '¿ç×éÖ¯µ÷²¦µ¥¾İÒÑ¹ıÕË';
+      x_Error_Msg := 'è·¨ç»„ç»‡è°ƒæ‹¨å•æ®å·²è¿‡è´¦';
       --RAISE Fnd_Api.g_Exc_Error;
     end if;
   exception
@@ -715,7 +715,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
 
   PROCEDURE get_prepare_line_info(p_prepare_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -737,7 +737,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
        and cri.line_number = p_prepare_line.Line_Number
        and cri.organization_id = p_prepare_header.organization_id
           -- and cri.doc_type = l_doc_type
-          --and cri.doc_status = 'Î´¹ıÕË'
+          --and cri.doc_status = 'æœªè¿‡è´¦'
           --and cri.transfer_status = 'TRANSFERRED';
        and cri.transfer_status in ('TRANSFERRED', 'POSTED');
     if (l_count > 0) then
@@ -768,10 +768,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
        where cri.doc_no = p_prepare_line.Order_Number
          and cri.line_number = p_prepare_line.Line_Number
             --and cri.doc_type = l_doc_type
-         and cri.organization_id = p_prepare_header.organization_id; --in ('À­Ê½±¸ÁÏ', 'ÍÆÊ½±¸ÁÏ');
+         and cri.organization_id = p_prepare_header.organization_id; --in ('æ‹‰å¼å¤‡æ–™', 'æ¨å¼å¤‡æ–™');
     else
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÎ´Å××ª';
+      x_Error_Msg := 'å•æ®æœªæŠ›è½¬';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   exception
@@ -780,7 +780,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE get_replenish_line_info(p_replenish_header Cux_Wms_Material_Trx_Headers%rowtype,
                                     p_replenish_line   IN OUT Cux_Wms_Pub.Trx_Line_Rec,
@@ -800,8 +800,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
      where cri.doc_no = p_replenish_line.Order_Number
        and cri.line_number = p_replenish_line.Line_Number
        and cri.organization_id = p_replenish_header.organization_id
-          --and cri.doc_type = l_doc_type --in ('ÍÆÊ½²¹ÁÏ', 'À­Ê½²¹ÁÏ')
-          --and cri.doc_status = 'Î´¹ıÕË'
+          --and cri.doc_type = l_doc_type --in ('æ¨å¼è¡¥æ–™', 'æ‹‰å¼è¡¥æ–™')
+          --and cri.doc_status = 'æœªè¿‡è´¦'
           --and cri.transfer_status = 'TRANSFERRED';
        and cri.transfer_status in ('TRANSFERRED', 'POSTED');
   
@@ -834,10 +834,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and cri.line_number = p_replenish_line.Line_Number
          and cri.organization_id = p_replenish_header.organization_id
       --and cri.doc_type = l_doc_type
-      ; --in ('ÍÆÊ½²¹ÁÏ', 'À­Ê½²¹ÁÏ');
+      ; --in ('æ¨å¼è¡¥æ–™', 'æ‹‰å¼è¡¥æ–™');
     else
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÎ´Å××ª';
+      x_Error_Msg := 'å•æ®æœªæŠ›è½¬';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   exception
@@ -846,7 +846,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE get_over_line_info(p_over_header Cux_Wms_Material_Trx_Headers%rowtype,
                                p_over_line   IN OUT Cux_Wms_Pub.Trx_Line_Rec,
@@ -866,8 +866,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
      where cri.doc_no = p_over_line.Order_Number
        and cri.line_number = p_over_line.Line_Number
        and cri.organization_id = p_over_header.organization_id
-          --and cri.doc_type = l_doc_type --in ('ÍÆÊ½³¬Áì', 'ÍÆÊ½³¬Áì')
-          --and cri.doc_status = 'Î´¹ıÕË'
+          --and cri.doc_type = l_doc_type --in ('æ¨å¼è¶…é¢†', 'æ¨å¼è¶…é¢†')
+          --and cri.doc_status = 'æœªè¿‡è´¦'
           --and cri.transfer_status = 'TRANSFERRED';
        and cri.transfer_status in ('TRANSFERRED', 'POSTED');
   
@@ -900,10 +900,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and cri.line_number = p_over_line.Line_Number
          and cri.organization_id = p_over_header.organization_id
       --and cri.doc_type = l_doc_type
-      ; --in ('ÍÆÊ½³¬Áì', 'ÍÆÊ½³¬Áì');
+      ; --in ('æ¨å¼è¶…é¢†', 'æ¨å¼è¶…é¢†');
     else
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÎ´Å××ª';
+      x_Error_Msg := 'å•æ®æœªæŠ›è½¬';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   exception
@@ -912,7 +912,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE get_return_line_info(p_return_header Cux_Wms_Material_Trx_Headers%rowtype,
                                  p_return_line   IN OUT Cux_Wms_Pub.Trx_Line_Rec,
@@ -934,26 +934,26 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     where cri.doc_no = p_return_line.Order_Number;*/
   
     if (p_return_header.trx_order_type in ('WIP_NEG_PS', 'WIP_FRG_PS')) then
-      --ÍÆÊ½ÍËÁÏ
+      --æ¨å¼é€€æ–™
       select count(1)
         into l_count_push
         from cux_ready_item cri
        where cri.doc_no = p_return_line.Order_Number
          and cri.line_number = p_return_line.Line_Number
          and cri.organization_id = p_return_header.organization_id
-            --and cri.doc_type = l_doc_type --in ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)')
-            --and cri.doc_status = 'Î´¹ıÕË'
+            --and cri.doc_type = l_doc_type --in ('æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)')
+            --and cri.doc_status = 'æœªè¿‡è´¦'
             --and cri.transfer_status = 'TRANSFERRED';
          and cri.transfer_status in ('TRANSFERRED', 'POSTED');
     elsif (p_return_header.trx_order_type in ('WIP_FUL_PL', 'WIP_FRG_PL')) then
-      --À­Ê½ÍËÁÏ
+      --æ‹‰å¼é€€æ–™
     
       select count(1)
         into l_count_pull
         from CUX_WIP_MATERIAL_RETURN cmr
        where cmr.transaction_id = p_return_line.Order_Number
          and cmr.line_number = p_return_line.Line_Number
-            --and cmr.source_type in (1,2) 1 ÊÇÁãĞÇÍËÁÏ£¬2ÊÇÕûµ¥ÍË
+            --and cmr.source_type in (1,2) 1 æ˜¯é›¶æ˜Ÿé€€æ–™ï¼Œ2æ˜¯æ•´å•é€€
             --and cmr.status = '1'
          AND cmr.select_flag = 'Y'
             --and cri.transfer_status = 'TRANSFERRED';
@@ -991,7 +991,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and cri.line_number = p_return_line.Line_Number
          and cri.organization_id = p_return_header.organization_id
       --and cri.doc_type = l_doc_type
-      ; --in ('ÍÆÊ½ÍËÁÏ(¸ºµ¥)', 'ÍÆÊ½ÍËÁÏ(Áãµ¥)');
+      ; --in ('æ¨å¼é€€æ–™(è´Ÿå•)', 'æ¨å¼é€€æ–™(é›¶å•)');
     elsif (l_count_pull > 0 and
           p_return_header.trx_order_type in ('WIP_FUL_PL', 'WIP_FRG_PL')) then
       SELECT '',
@@ -1020,12 +1020,12 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
        where cmr.transaction_id = p_return_line.Order_Number
          and cmr.line_number = p_return_line.Line_Number
          AND CMR.SELECT_FLAG = 'Y'
-      --and cmr.source_type in (1,2) 1 ÊÇÁãĞÇÍËÁÏ£¬2ÊÇÕûµ¥ÍË
+      --and cmr.source_type in (1,2) 1 æ˜¯é›¶æ˜Ÿé€€æ–™ï¼Œ2æ˜¯æ•´å•é€€
       ;
     else
     
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÎ´Å××ª';
+      x_Error_Msg := 'å•æ®æœªæŠ›è½¬';
       RAISE Fnd_Api.g_Exc_Error;
     
     end if;
@@ -1036,7 +1036,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó1£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯1ï¼š' || sqlerrm;
   end;
   PROCEDURE get_complete_line_info(p_complete_header Cux_Wms_Material_Trx_Headers%rowtype,
                                    p_complete_line   IN OUT Cux_Wms_Pub.Trx_Line_Rec,
@@ -1056,8 +1056,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
      where cri.doc_no = p_complete_line.Order_Number
        and cri.line_number = p_complete_line.Line_Number
        and cri.organization_id = p_complete_header.organization_id
-          --and cri.doc_type = l_doc_type --'Íê¹¤Èë¿â'
-       and cri.doc_status = 'Î´¹ıÕË';
+          --and cri.doc_type = l_doc_type --'å®Œå·¥å…¥åº“'
+       and cri.doc_status = 'æœªè¿‡è´¦';
   
     if (l_count > 0) then
     
@@ -1088,10 +1088,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and cri.line_number = p_complete_line.Line_Number
          and cri.organization_id = p_complete_header.organization_id
       --and cri.doc_type = l_doc_type
-      ; --'Íê¹¤Èë¿â';
+      ; --'å®Œå·¥å…¥åº“';
     else
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË';
+      x_Error_Msg := 'å•æ®å·²è¿‡è´¦';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   exception
@@ -1100,7 +1100,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
 
   PROCEDURE split_rcv_line(p_delivery_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -1140,7 +1140,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-          x_Error_Msg := '»ñÈ¡ºÏ²¢±êÇ©³ö´í£º' || sqlerrm;
+          x_Error_Msg := 'è·å–åˆå¹¶æ ‡ç­¾å‡ºé”™ï¼š' || sqlerrm;
           raise Fnd_Api.g_Exc_Error;
       end;
       x_Error_Msg := '2';
@@ -1160,7 +1160,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-              x_Error_Msg := '»ñÈ¡½ÓÊÕÂ·¾¢³ö´í£º' || sqlerrm;
+              x_Error_Msg := 'è·å–æ¥æ”¶è·¯åŠ²å‡ºé”™ï¼š' || sqlerrm;
               raise Fnd_Api.g_Exc_Error;
           end;
         
@@ -1183,8 +1183,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             exception
               when others then
                 /*x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                x_Error_Msg := p_delivery_header.trx_order_number || 'ĞĞ' ||
-                               rec_comb_lines.line_number || '»ñÈ¡½ÓÊÜÊıÁ¿³ö´í£º' ||
+                x_Error_Msg := p_delivery_header.trx_order_number || 'è¡Œ' ||
+                               rec_comb_lines.line_number || 'è·å–æ¥å—æ•°é‡å‡ºé”™ï¼š' ||
                                SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;*/
                 l_accepted_qty := 0;
@@ -1239,7 +1239,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     if (l_count = 0) then
     
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'Ã»ÓĞ·ûºÏÈë¿âÒªÇóµÄ¼ÇÂ¼£¡';
+      x_Error_Msg := 'æ²¡æœ‰ç¬¦åˆå…¥åº“è¦æ±‚çš„è®°å½•ï¼';
       raise Fnd_Api.g_Exc_Error;
     
     end if;
@@ -1250,7 +1250,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || x_Error_Msg || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || x_Error_Msg || sqlerrm;
   end;
   PROCEDURE split_rtn_line(p_return_header Cux_Wms_Material_Trx_Headers%rowtype,
                            p_return_lines  IN Cux_Wms_Pub.Material_Trx_Lines_Tab,
@@ -1287,7 +1287,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-          x_Error_Msg := '»ñÈ¡ºÏ²¢±êÇ©³ö´í£º' || sqlerrm;
+          x_Error_Msg := 'è·å–åˆå¹¶æ ‡ç­¾å‡ºé”™ï¼š' || sqlerrm;
           raise Fnd_Api.g_Exc_Error;
       end;
       x_Error_Msg := '2';
@@ -1334,7 +1334,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || x_Error_Msg || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || x_Error_Msg || sqlerrm;
   end;
   PROCEDURE create_delivery(p_delivery_header Cux_Wms_Material_Trx_Headers%rowtype,
                             p_delivery_lines  IN OUT Cux_Wms_Pub.Material_Trx_Lines_Tab,
@@ -1396,7 +1396,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     l_locator_control   number;
   begin
   
-    --ÑéÖ¤Ä¬ÈÏÊÕ»õ»õÎ»
+    --éªŒè¯é»˜è®¤æ”¶è´§è´§ä½
     l_count_index := p_delivery_lines.count;
     for x in 1 .. l_count_index loop
     
@@ -1410,8 +1410,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'µ¥¾İ' || p_delivery_header.trx_order_number || 'ĞĞ' || p_delivery_lines(x)
-                        .line_number || '»ñÈ¡Ä¬ÈÏ×Ó¿â³ö´í£º' || SQLERRM;
+          x_Error_Msg := 'å•æ®' || p_delivery_header.trx_order_number || 'è¡Œ' || p_delivery_lines(x)
+                        .line_number || 'è·å–é»˜è®¤å­åº“å‡ºé”™ï¼š' || SQLERRM;
           RAISE Fnd_Api.g_Exc_Error;
       end;
     
@@ -1424,7 +1424,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := '×Ó¿â' || l_default_subinv || '»ñÈ¡»õÎ»¿ØÖÆ³ö´í£º' || SQLERRM;
+          x_Error_Msg := 'å­åº“' || l_default_subinv || 'è·å–è´§ä½æ§åˆ¶å‡ºé”™ï¼š' || SQLERRM;
           RAISE Fnd_Api.g_Exc_Error;
       end;
     
@@ -1445,18 +1445,18 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '»ñÈ¡ÁÏºÅ³ö´íX£º' || SQLERRM;
+              x_Error_Msg := 'è·å–æ–™å·å‡ºé”™Xï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
         
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'ÁÏºÅ' || l_index_item_number || 'Î´ÉèÖÃ»õÎ»!';
+          x_Error_Msg := 'æ–™å·' || l_index_item_number || 'æœªè®¾ç½®è´§ä½!';
           RAISE Fnd_Api.g_Exc_Error;
         end if;
       end if;
     
     end loop;
-    --END OF ÑéÖ¤»õÎ»
+    --END OF éªŒè¯è´§ä½
     --x_Ret_Sts := Fnd_Api.g_Ret_Sts_Success;
   
     split_rcv_line(p_delivery_header => p_delivery_header,
@@ -1467,7 +1467,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
   
     if (x_Ret_Sts <> 'S') then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := '²ğĞĞ³ö´í' || x_Error_Msg;
+      x_Error_Msg := 'æ‹†è¡Œå‡ºé”™' || x_Error_Msg;
       return;
     end if;
     --check if delivery line need check, if need, then fetch system accept and reject record to validate
@@ -1497,8 +1497,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'ĞĞ' || l_delivery_lines(i).line_number ||
-                         '»ñÈ¡·¢ÔËĞĞĞÅÏ¢³ö´í£º' || SQLERRM;
+          x_Error_Msg := 'è¡Œ' || l_delivery_lines(i).line_number ||
+                         'è·å–å‘è¿è¡Œä¿¡æ¯å‡ºé”™ï¼š' || SQLERRM;
           RAISE Fnd_Api.g_Exc_Error;
       end;
       if (l_receiving_routing_id = 2) then
@@ -1519,8 +1519,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := p_delivery_header.trx_order_number || 'ĞĞ' || l_delivery_lines(i)
-                          .line_number || '»ñÈ¡½ÓÊÜÊıÁ¿³ö´í£º' || SQLERRM;
+            x_Error_Msg := p_delivery_header.trx_order_number || 'è¡Œ' || l_delivery_lines(i)
+                          .line_number || 'è·å–æ¥å—æ•°é‡å‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       
@@ -1543,8 +1543,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := 'ĞĞ' || l_delivery_lines(i).line_number ||
-                           '¸¸½»Ò×ĞĞ³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'è¡Œ' || l_delivery_lines(i).line_number ||
+                           'çˆ¶äº¤æ˜“è¡Œå‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       
@@ -1562,9 +1562,9 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     
       if (l_dly_qty < l_delivery_lines(i).quantity) then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := 'ĞĞ' || l_delivery_lines(i).line_number || '¿ÉÈë¿âÊıÁ¿Îª' ||
-                       l_dly_qty || ',Èë¿âÊıÁ¿' || l_delivery_lines(i).quantity ||
-                       '±ØĞëĞ¡ÓÚµÈÓÚ¿ÉÈë¿âÊıÁ¿¡£' || l_receipt_line_id || '-' ||
+        x_Error_Msg := 'è¡Œ' || l_delivery_lines(i).line_number || 'å¯å…¥åº“æ•°é‡ä¸º' ||
+                       l_dly_qty || ',å…¥åº“æ•°é‡' || l_delivery_lines(i).quantity ||
+                       'å¿…é¡»å°äºç­‰äºå¯å…¥åº“æ•°é‡ã€‚' || l_receipt_line_id || '-' ||
                        l_line_location_id || '-' || l_accepted_qty || '-' ||
                        l_shipment_line_id;
         RAISE Fnd_Api.g_Exc_Error;
@@ -1591,7 +1591,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡½ÓÊÕµ¥Í·ĞÅÏ¢³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–æ¥æ”¶å•å¤´ä¿¡æ¯å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -1604,7 +1604,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡OU³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–OUå‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -1617,7 +1617,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡×éÖ¯´úÂë³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–ç»„ç»‡ä»£ç å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
     --insert into delivery header
@@ -1680,7 +1680,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '²åÈë½»»õÍ·ĞÅÏ¢³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'æ’å…¥äº¤è´§å¤´ä¿¡æ¯å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
     --insert into delivery lines using bulk insert 
@@ -1708,7 +1708,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := '»ñÈ¡Ä¬ÈÏ×Ó¿â³ö´í£º' || SQLERRM;
+          x_Error_Msg := 'è·å–é»˜è®¤å­åº“å‡ºé”™ï¼š' || SQLERRM;
           RAISE Fnd_Api.g_Exc_Error;
       end;
     
@@ -1744,8 +1744,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'ĞĞ' || l_delivery_lines(j).line_number ||
-                         '»ñÈ¡½»»õĞĞĞÅÏ¢³ö´í£º' || SQLERRM;
+          x_Error_Msg := 'è¡Œ' || l_delivery_lines(j).line_number ||
+                         'è·å–äº¤è´§è¡Œä¿¡æ¯å‡ºé”™ï¼š' || SQLERRM;
           RAISE Fnd_Api.g_Exc_Error;
       end;
       begin
@@ -1817,8 +1817,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'ĞĞ' || l_delivery_lines(j).line_number ||
-                         '²åÈë½»»õĞĞĞÅÏ¢³ö´í£º' || SQLERRM;
+          x_Error_Msg := 'è¡Œ' || l_delivery_lines(j).line_number ||
+                         'æ’å…¥äº¤è´§è¡Œä¿¡æ¯å‡ºé”™ï¼š' || SQLERRM;
           RAISE Fnd_Api.g_Exc_Error;
       end;
       l_count_line := l_count_line + 1;
@@ -1846,7 +1846,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         null;
       else
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := 'Ìá½»´´½¨½»»õµ¥ÇëÇó³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'æäº¤åˆ›å»ºäº¤è´§å•è¯·æ±‚å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
       end if;
     
@@ -1858,7 +1858,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎócreate dly£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯create dlyï¼š' || sqlerrm;
   end;
 
   PROCEDURE process_return(p_return_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -1886,13 +1886,13 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '¼ì²éÊÇ·ñ¹ıÕË³ö´í£¡' || SQLERRM;
+        x_Error_Msg := 'æ£€æŸ¥æ˜¯å¦è¿‡è´¦å‡ºé”™ï¼' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
     IF (l_count_post > 0) THEN
       x_Ret_Sts   := fnd_api.G_RET_STS_SUCCESS;
-      x_Error_Msg := 'ÒÑ¹ıÕË';
+      x_Error_Msg := 'å·²è¿‡è´¦';
       RETURN;
     END IF;
   
@@ -1904,11 +1904,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
   
     if (x_Ret_Sts <> 'S') then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := '²ğĞĞ³ö´í' || x_Error_Msg;
+      x_Error_Msg := 'æ‹†è¡Œå‡ºé”™' || x_Error_Msg;
       return;
     end if;
     /* x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-    x_Error_Msg := '²ğĞĞ³ö´í' || x_Error_Msg;
+    x_Error_Msg := 'æ‹†è¡Œå‡ºé”™' || x_Error_Msg;
         return;*/
     --start validation
     l_last_index := l_return_lines.count;
@@ -1922,7 +1922,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
   
     if (l_count <> l_last_index) then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÍË»õĞĞÊı' || l_last_index || '²»µÈÓÚÔ­Ê¼µ¥¾İĞĞÊı£¡';
+      x_Error_Msg := 'é€€è´§è¡Œæ•°' || l_last_index || 'ä¸ç­‰äºåŸå§‹å•æ®è¡Œæ•°ï¼';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   
@@ -1941,8 +1941,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     
       if (l_count = 0) then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := 'ĞĞ' || l_return_lines(i).line_number || 'ÍË»õÊıÁ¿' || l_return_lines(i)
-                      .quantity || '²»µÈÓÚÔ­Ê¼µ¥¾İÊıÁ¿£¡';
+        x_Error_Msg := 'è¡Œ' || l_return_lines(i).line_number || 'é€€è´§æ•°é‡' || l_return_lines(i)
+                      .quantity || 'ä¸ç­‰äºåŸå§‹å•æ®æ•°é‡ï¼';
         RAISE Fnd_Api.g_Exc_Error;
       end if;
     
@@ -1960,8 +1960,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     
       if (l_count = 0) then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := 'ĞĞ' || l_return_lines(i).line_number || 'ÍË»õ²Ö¿â' || l_return_lines(i)
-                      .subinventory || 'ÓëÔ­Ê¼µ¥¾İµÄ²Ö¿â²»·û£¡';
+        x_Error_Msg := 'è¡Œ' || l_return_lines(i).line_number || 'é€€è´§ä»“åº“' || l_return_lines(i)
+                      .subinventory || 'ä¸åŸå§‹å•æ®çš„ä»“åº“ä¸ç¬¦ï¼';
         RAISE Fnd_Api.g_Exc_Error;
       end if;
     
@@ -1975,7 +1975,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡Ô­Ê¼µ¥¾İID³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–åŸå§‹å•æ®IDå‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -1990,7 +1990,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡OU³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–OUå‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -2024,7 +2024,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     else
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'Ìá½»´´½¨ÍË»õµ¥ÇëÇó³ö´í£º' || SQLERRM;
+      x_Error_Msg := 'æäº¤åˆ›å»ºé€€è´§å•è¯·æ±‚å‡ºé”™ï¼š' || SQLERRM;
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   
@@ -2034,7 +2034,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE process_inv_doc(p_inv_header Cux_Wms_Material_Trx_Headers%rowtype,
                             p_inv_lines  IN OUT Cux_Wms_Pub.Material_Trx_Lines_Tab,
@@ -2064,13 +2064,13 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '¼ì²éÊÇ·ñ¹ıÕË³ö´í£º' || sqlerrm;
+        x_Error_Msg := 'æ£€æŸ¥æ˜¯å¦è¿‡è´¦å‡ºé”™ï¼š' || sqlerrm;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
     if (l_count_post > 0) then
       x_Ret_Sts   := fnd_api.G_RET_STS_SUCCESS;
-      x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË';
+      x_Error_Msg := 'å•æ®å·²è¿‡è´¦';
       RETURN;
     end if;
   
@@ -2104,11 +2104,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     if (v_count_period = 0) then
       --period is not open
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆÚ¼äÎ´´ò¿ª';
+      x_Error_Msg := 'æœŸé—´æœªæ‰“å¼€';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   
-    --ÑéÖ¤ĞĞÊıÊÇ·ñÒ»ÖÂ
+    --éªŒè¯è¡Œæ•°æ˜¯å¦ä¸€è‡´
     l_last_index := p_inv_lines.count;
   
     select count(1)
@@ -2120,7 +2120,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
   
     if (l_count <> l_last_index) then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := '½»Ò×ĞĞÊı' || l_last_index || '²»µÈÓÚÔ­Ê¼µ¥¾İĞĞÊı£¡';
+      x_Error_Msg := 'äº¤æ˜“è¡Œæ•°' || l_last_index || 'ä¸ç­‰äºåŸå§‹å•æ®è¡Œæ•°ï¼';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   
@@ -2133,7 +2133,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡µ¥ºÅ³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–å•å·å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -2168,7 +2168,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       if (v_count_period = 0) then
         --period is not open
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := 'Ä¿µÄ×éÖ¯ÆÚ¼äÎ´´ò¿ª';
+        x_Error_Msg := 'ç›®çš„ç»„ç»‡æœŸé—´æœªæ‰“å¼€';
         RAISE Fnd_Api.g_Exc_Error;
       end if;
     end if;
@@ -2181,7 +2181,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
   
     if (l_count = 0) then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË';
+      x_Error_Msg := 'å•æ®å·²è¿‡è´¦';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   
@@ -2193,7 +2193,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '¸üĞÂ½»Ò×ÈÕÆÚ³ö´í';
+        x_Error_Msg := 'æ›´æ–°äº¤æ˜“æ—¥æœŸå‡ºé”™';
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -2208,7 +2208,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '¸üĞÂµ¥¾İ×´Ì¬Îª²¦³öÊ±³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'æ›´æ–°å•æ®çŠ¶æ€ä¸ºæ‹¨å‡ºæ—¶å‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       elsif (l_transfer_status in ('ISSUED', 'TRANSFERRED') and
@@ -2216,7 +2216,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         CUX_INV_MATERIAL_REQ_PKG.MAIN_CHECK(P_HEADER_ID  => l_header_id,
                                             P_ERROR_CODE => l_error_code);
         IF l_error_code IS NULL THEN
-          -- fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦Àí³É¹¦');
+          -- fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†æˆåŠŸ');
         
           begin
             UPDATE CUX_INV_MATERIAL_HEADERS CIH
@@ -2225,28 +2225,28 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '¸üĞÂµ¥¾İ×´Ì¬Îª¹ıÕËÊ±³ö´í£º' || SQLERRM;
+              x_Error_Msg := 'æ›´æ–°å•æ®çŠ¶æ€ä¸ºè¿‡è´¦æ—¶å‡ºé”™ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
         
         ELSE
-          fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦ÀíÊ§°Ü');
+          fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†å¤±è´¥');
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := '´¦ÀíÊ§°Ü£º' || l_error_code;
+          x_Error_Msg := 'å¤„ç†å¤±è´¥ï¼š' || l_error_code;
           RAISE Fnd_Api.g_Exc_Error;
         END IF;
       else
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := 'µ¥¾İÀàĞÍ»òÕßÅ××ª×´Ì¬²»ÕıÈ·1';
+        x_Error_Msg := 'å•æ®ç±»å‹æˆ–è€…æŠ›è½¬çŠ¶æ€ä¸æ­£ç¡®1';
         RAISE Fnd_Api.g_Exc_Error;
       end if;
     
-    elsif (p_inv_header.trx_order_type in ('MISC_RCV', 'MISC_ISSUE') and --ÔÓÈë£¬ÔÓ³ö ²»ÅĞ¶Ï·½Ïò£¬Ö±½Ó¹ıÕË
+    elsif (p_inv_header.trx_order_type in ('MISC_RCV', 'MISC_ISSUE') and --æ‚å…¥ï¼Œæ‚å‡º ä¸åˆ¤æ–­æ–¹å‘ï¼Œç›´æ¥è¿‡è´¦
           l_transfer_status = 'TRANSFERRED') then
       CUX_INV_MATERIAL_REQ_PKG.MAIN_CHECK(P_HEADER_ID  => l_header_id,
                                           P_ERROR_CODE => l_error_code);
       IF l_error_code IS NULL THEN
-        -- fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦Àí³É¹¦');
+        -- fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†æˆåŠŸ');
         begin
           UPDATE CUX_INV_MATERIAL_HEADERS CIH
              set cih.transfer_status = 'POSTED'
@@ -2254,18 +2254,18 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '¸üĞÂµ¥¾İ×´Ì¬Îª¹ıÕËÊ±³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'æ›´æ–°å•æ®çŠ¶æ€ä¸ºè¿‡è´¦æ—¶å‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       ELSE
-        fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦ÀíÊ§°Ü');
+        fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†å¤±è´¥');
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '´¦ÀíÊ§°Ü£º' || l_error_code;
+        x_Error_Msg := 'å¤„ç†å¤±è´¥ï¼š' || l_error_code;
         RAISE Fnd_Api.g_Exc_Error;
       END IF;
     else
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÀàĞÍ»òÕßÅ××ª×´Ì¬²»ÕıÈ·2';
+      x_Error_Msg := 'å•æ®ç±»å‹æˆ–è€…æŠ›è½¬çŠ¶æ€ä¸æ­£ç¡®2';
       RAISE Fnd_Api.g_Exc_Error;
     
     end if;
@@ -2276,7 +2276,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎóprocess inv doc£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯process inv docï¼š' || sqlerrm;
   end;
   PROCEDURE process_zr(p_zr_header Cux_Wms_Material_Trx_Headers%rowtype,
                        p_zr_lines  IN OUT Cux_Wms_Pub.Material_Trx_Lines_Tab,
@@ -2301,7 +2301,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡ÔÓÈëµ¥ºÅ³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–æ‚å…¥å•å·å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -2309,11 +2309,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                                         P_ERROR_CODE => l_error_code);
   
     IF l_error_code IS NULL THEN
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦Àí³É¹¦');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†æˆåŠŸ');
     ELSE
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦ÀíÊ§°Ü');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†å¤±è´¥');
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÔÓÈëµ¥´¦ÀíÊ§°Ü£º' || l_error_code;
+      x_Error_Msg := 'æ‚å…¥å•å¤„ç†å¤±è´¥ï¼š' || l_error_code;
       RAISE Fnd_Api.g_Exc_Error;
     END IF;
   
@@ -2323,7 +2323,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
 
   PROCEDURE process_zf(p_zf_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -2349,7 +2349,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡ÔÓ·¢µ¥ºÅ³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–æ‚å‘å•å·å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -2357,11 +2357,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                                         P_ERROR_CODE => l_error_code);
   
     IF l_error_code IS NULL THEN
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦Àí³É¹¦');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†æˆåŠŸ');
     ELSE
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦ÀíÊ§°Ü');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†å¤±è´¥');
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÔÓ·¢µ¥´¦ÀíÊ§°Ü£º' || l_error_code;
+      x_Error_Msg := 'æ‚å‘å•å¤„ç†å¤±è´¥ï¼š' || l_error_code;
       RAISE Fnd_Api.g_Exc_Error;
     END IF;
   
@@ -2371,7 +2371,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
 
   PROCEDURE process_db(p_db_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -2398,19 +2398,19 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡µ÷²¦µ¥ºÅ³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–è°ƒæ‹¨å•å·å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
-    --´¦Àí³ÌĞòĞè×¢²áÎª²¢·¢£¬ÈÃÓÃ»§¿ÉÊÖ¹¤Ìá½»´¦Àí³ö´íµÄ¼ÇÂ¼
+    --å¤„ç†ç¨‹åºéœ€æ³¨å†Œä¸ºå¹¶å‘ï¼Œè®©ç”¨æˆ·å¯æ‰‹å·¥æäº¤å¤„ç†å‡ºé”™çš„è®°å½•
     CUX_INV_MATERIAL_REQ_PKG.MAIN_CHECK(P_HEADER_ID  => l_db_id,
                                         P_ERROR_CODE => l_error_code);
   
     IF l_error_code IS NULL THEN
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦Àí³É¹¦');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†æˆåŠŸ');
     ELSE
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦ÀíÊ§°Ü');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†å¤±è´¥');
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ÷²¦µ¥´¦ÀíÊ§°Ü£º' || l_error_code;
+      x_Error_Msg := 'è°ƒæ‹¨å•å¤„ç†å¤±è´¥ï¼š' || l_error_code;
       RAISE Fnd_Api.g_Exc_Error;
     END IF;
   
@@ -2420,7 +2420,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
 
   PROCEDURE process_yddb(p_yddb_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -2447,7 +2447,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡ÒìµØµ÷²¦µ¥ºÅ³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–å¼‚åœ°è°ƒæ‹¨å•å·å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -2455,11 +2455,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                                         P_ERROR_CODE => l_error_code);
   
     IF l_error_code IS NULL THEN
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦Àí³É¹¦');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†æˆåŠŸ');
     ELSE
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦ÀíÊ§°Ü');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†å¤±è´¥');
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÒìµØµ÷²¦µ¥´¦ÀíÊ§°Ü£º' || l_error_code;
+      x_Error_Msg := 'å¼‚åœ°è°ƒæ‹¨å•å¤„ç†å¤±è´¥ï¼š' || l_error_code;
       RAISE Fnd_Api.g_Exc_Error;
     END IF;
   
@@ -2469,7 +2469,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE process_xodb(p_xodb_header Cux_Wms_Material_Trx_Headers%rowtype,
                          p_xodb_lines  IN OUT Cux_Wms_Pub.Material_Trx_Lines_Tab,
@@ -2495,19 +2495,19 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡¿ç×éÖ¯µ÷²¦µ¥ºÅ³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–è·¨ç»„ç»‡è°ƒæ‹¨å•å·å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
-    --´¦Àí³ÌĞòĞè×¢²áÎª²¢·¢£¬ÈÃÓÃ»§¿ÉÊÖ¹¤Ìá½»´¦Àí³ö´íµÄ¼ÇÂ¼
+    --å¤„ç†ç¨‹åºéœ€æ³¨å†Œä¸ºå¹¶å‘ï¼Œè®©ç”¨æˆ·å¯æ‰‹å·¥æäº¤å¤„ç†å‡ºé”™çš„è®°å½•
     CUX_INV_MATERIAL_REQ_PKG.MAIN_CHECK(P_HEADER_ID  => l_xodb_id,
                                         P_ERROR_CODE => l_error_code);
   
     IF l_error_code IS NULL THEN
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦Àí³É¹¦');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†æˆåŠŸ');
     ELSE
-      fnd_file.PUT_LINE(fnd_file.OUTPUT, '´¦ÀíÊ§°Ü');
+      fnd_file.PUT_LINE(fnd_file.OUTPUT, 'å¤„ç†å¤±è´¥');
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÒìµØµ÷²¦µ¥´¦ÀíÊ§°Ü£º' || l_error_code;
+      x_Error_Msg := 'å¼‚åœ°è°ƒæ‹¨å•å¤„ç†å¤±è´¥ï¼š' || l_error_code;
       RAISE Fnd_Api.g_Exc_Error;
     END IF;
   
@@ -2517,7 +2517,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
 
   PROCEDURE process_wip_doc(p_wip_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -2537,13 +2537,13 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     x_Ret_Sts := 'S';
   
     if (p_wip_header.trx_order_type in ('WIP_FUL_PL', 'WIP_FRG_PL')) then
-      --À­Ê½ÍËÁÏ
+      --æ‹‰å¼é€€æ–™
     
       select count(1)
         into l_count_not_post
         from cux.cux_ready_item cri
-       where cri.doc_type in ('À­Ê½±¸ÁÏ', 'À­Ê½²¹ÁÏ', 'À­Ê½³¬Áä')
-         and cri.doc_status = 'Î´¹ıÕË'
+       where cri.doc_type in ('æ‹‰å¼å¤‡æ–™', 'æ‹‰å¼è¡¥æ–™', 'æ‹‰å¼è¶…é¾„')
+         and cri.doc_status = 'æœªè¿‡è´¦'
          and cri.wip_entity_name = p_wip_header.wip_entity_name
          and cri.organization_id = p_wip_header.organization_id;
     
@@ -2553,8 +2553,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           select cri.doc_type, cri.doc_no
             into l_doc_type, l_doc_no
             from cux_ready_item cri
-           where cri.doc_type in ('À­Ê½±¸ÁÏ', 'À­Ê½²¹ÁÏ', 'À­Ê½³¬Áä')
-             and cri.doc_status = 'Î´¹ıÕË'
+           where cri.doc_type in ('æ‹‰å¼å¤‡æ–™', 'æ‹‰å¼è¡¥æ–™', 'æ‹‰å¼è¶…é¾„')
+             and cri.doc_status = 'æœªè¿‡è´¦'
              and cri.wip_entity_name = p_wip_header.wip_entity_name
              and cri.organization_id = p_wip_header.organization_id
              and rownum = 1;
@@ -2562,12 +2562,12 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '»ñÈ¡Î´¹ıÕËÀ­Ê½µ¥¾İ³ö´í£º' || sqlerrm;
+            x_Error_Msg := 'è·å–æœªè¿‡è´¦æ‹‰å¼å•æ®å‡ºé”™ï¼š' || sqlerrm;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '´æÔÚÎ´¹ıÕËµÄÀ­Ê½·¢ÁÏ:' || l_doc_type || '-' || l_doc_no;
+        x_Error_Msg := 'å­˜åœ¨æœªè¿‡è´¦çš„æ‹‰å¼å‘æ–™:' || l_doc_type || '-' || l_doc_no;
         RAISE Fnd_Api.g_Exc_Error;
       end if;
     
@@ -2581,19 +2581,19 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and we.wip_entity_name = p_wip_header.wip_entity_name
          and cmr.status = '2';
     else
-      --ÍÆÊ½µ¥¾İ
+      --æ¨å¼å•æ®
       select count(1)
         into l_count_post
         from cux_ready_item cri
        where cri.doc_no = p_wip_header.trx_order_number
          and cri.organization_id = p_wip_header.organization_id
             -- and cri.doc_type = l_doc_type
-         and cri.doc_status = 'ÒÑ¹ıÕË';
+         and cri.doc_status = 'å·²è¿‡è´¦';
     end if;
   
     if (l_count_post > 0) then
       x_Ret_Sts   := fnd_api.G_RET_STS_SUCCESS;
-      x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË';
+      x_Error_Msg := 'å•æ®å·²è¿‡è´¦';
       RAISE Fnd_Api.g_Exc_Error; --MODIFIED BY BRUCE ON 20160219 FOR AVOIDING PARALELL PROCESS
     end if;
   
@@ -2627,11 +2627,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     if (v_count_period = 0) then
       --period is not open
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆÚ¼äÎ´´ò¿ª' || p_wip_header.organization_id;
+      x_Error_Msg := 'æœŸé—´æœªæ‰“å¼€' || p_wip_header.organization_id;
       RAISE Fnd_Api.g_Exc_Error;
     end if;
     x_Error_Msg := '333';
-    --ÑéÖ¤ĞĞÊıÊÇ·ñÒ»ÖÂ
+    --éªŒè¯è¡Œæ•°æ˜¯å¦ä¸€è‡´
     l_last_index := p_wip_lines.count;
     x_Error_Msg  := '444';
     if (p_wip_header.trx_order_type in ('WIP_FUL_PL', 'WIP_FRG_PL')) then
@@ -2657,7 +2657,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     x_Error_Msg := '666';
     if (l_count <> l_last_index) then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := '½»Ò×ĞĞÊı' || l_last_index || '²»µÈÓÚÔ­Ê¼µ¥¾İĞĞÊı£¡';
+      x_Error_Msg := 'äº¤æ˜“è¡Œæ•°' || l_last_index || 'ä¸ç­‰äºåŸå§‹å•æ®è¡Œæ•°ï¼';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   
@@ -2695,12 +2695,12 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
   
     IF (l_process_status = 'P') THEN
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÒÑ´æÔÚ´¦ÀíÖĞµÄµ¥¾İ£º' || p_wip_header.trx_order_number;
+      x_Error_Msg := 'å·²å­˜åœ¨å¤„ç†ä¸­çš„å•æ®ï¼š' || p_wip_header.trx_order_number;
       RAISE Fnd_Api.g_Exc_Error;
     else
       if (p_wip_header.trx_order_type in
          ('WIP_FUL_PL', 'WIP_FRG_PL')) then
-         --À­Ê½ÍËÁÏ
+         --æ‹‰å¼é€€æ–™
          null;
         /*update CUX_WIP_MATERIAL_RETURN CMR
            set CMR.process_status = 'P'
@@ -2717,7 +2717,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          where cri.doc_no = p_wip_header.trx_order_number
            and cri.organization_id = p_wip_header.organization_id;
       END IF;
-      COMMIT;--Á¢¼´Ìá½»ÒÑ×èÖ¹ºóÃæÍ¬ÑùµÄµ¥¾İ±»»ØÅ×»ØÀ´
+      COMMIT;--ç«‹å³æäº¤å·²é˜»æ­¢åé¢åŒæ ·çš„å•æ®è¢«å›æŠ›å›æ¥
     END IF;
   
     --END OF ADD BY BRUCE ON 20160219 FOR AVOIDING PARALELL PROCESS
@@ -2756,7 +2756,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
   
      if (p_wip_header.trx_order_type in
          ('WIP_FUL_PL', 'WIP_FRG_PL')) then
-         --À­Ê½ÍËÁÏ
+         --æ‹‰å¼é€€æ–™
         update CUX_WIP_MATERIAL_RETURN CMR
            set CMR.process_status = ''
          where cmr.orig_doc_number = p_wip_header.wms_trx_number
@@ -2781,7 +2781,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó3£º' || x_Error_Msg || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯3ï¼š' || x_Error_Msg || sqlerrm;
   end;
 
   PROCEDURE process_prepare_item(p_prepare_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -2812,14 +2812,14 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡µ¥¾İ×´Ì¬³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–å•æ®çŠ¶æ€å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
     -- Call the procedure
-    if l_doc_status = 'ÒÑ¹ıÕË' then
+    if l_doc_status = 'å·²è¿‡è´¦' then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË,²»ÄÜÖØ¸´¹ıÕË.';
+      x_Error_Msg := 'å•æ®å·²è¿‡è´¦,ä¸èƒ½é‡å¤è¿‡è´¦.';
       RAISE Fnd_Api.g_Exc_Error;
     else
     
@@ -2834,7 +2834,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         --and cri.doc_type = l_doc_type
         ;
         /* x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := 'µ¥¾İxxx.'||p_prepare_lines(i).QUANTITY||p_prepare_header.trx_order_number||p_prepare_lines(i).LINE_NUMBER||p_prepare_header.organization_id;
+        x_Error_Msg := 'å•æ®xxx.'||p_prepare_lines(i).QUANTITY||p_prepare_header.trx_order_number||p_prepare_lines(i).LINE_NUMBER||p_prepare_header.organization_id;
         RAISE Fnd_Api.g_Exc_Error;*/
       end loop;
     
@@ -2846,7 +2846,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     
       if l_return_status = 'E' then
         x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-        x_Error_Msg := '¹ıÕËÊ§°Ü£º' || l_return_msg;
+        x_Error_Msg := 'è¿‡è´¦å¤±è´¥ï¼š' || l_return_msg;
       ELSE
         begin
           UPDATE CUX_READY_ITEM CRI
@@ -2856,7 +2856,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '¸üĞÂµ¥¾İ×´Ì¬Îª¹ıÕËÊ±³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'æ›´æ–°å•æ®çŠ¶æ€ä¸ºè¿‡è´¦æ—¶å‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       end if;
@@ -2867,7 +2867,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE process_replenish_item(p_replenish_header Cux_Wms_Material_Trx_Headers%rowtype,
                                    p_replenish_lines  IN OUT Cux_Wms_Pub.Material_Trx_Lines_Tab,
@@ -2902,7 +2902,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡µ¥¾İ×´Ì¬³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–å•æ®çŠ¶æ€å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
@@ -2922,16 +2922,16 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           l_link_prepare_doc := 'ERROR';
       end;
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := '±¸ÁÏµ¥' || l_link_prepare_doc || 'Î´¹ıÕÊ,²¹ÁÏµ¥' ||
-                     p_replenish_header.trx_order_number || '²»ÄÜ¹ıÕÊ!';
+      x_Error_Msg := 'å¤‡æ–™å•' || l_link_prepare_doc || 'æœªè¿‡å¸,è¡¥æ–™å•' ||
+                     p_replenish_header.trx_order_number || 'ä¸èƒ½è¿‡å¸!';
       RAISE Fnd_Api.g_Exc_Error;
     END IF;
   
     -- Call the procedure
-    if l_doc_status = 'ÒÑ¹ıÕË' then
+    if l_doc_status = 'å·²è¿‡è´¦' then
     
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË,²»ÄÜÖØ¸´¹ıÕË.';
+      x_Error_Msg := 'å•æ®å·²è¿‡è´¦,ä¸èƒ½é‡å¤è¿‡è´¦.';
       RAISE Fnd_Api.g_Exc_Error;
     else
     
@@ -2956,7 +2956,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     
       if l_return_status = 'E' then
         x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-        x_Error_Msg := '¹ıÕËÊ§°Ü£º' || l_return_msg;
+        x_Error_Msg := 'è¿‡è´¦å¤±è´¥ï¼š' || l_return_msg;
       ELSE
         begin
           UPDATE CUX_READY_ITEM CRI
@@ -2966,7 +2966,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '¸üĞÂµ¥¾İ×´Ì¬Îª¹ıÕËÊ±³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'æ›´æ–°å•æ®çŠ¶æ€ä¸ºè¿‡è´¦æ—¶å‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       end if;
@@ -2978,7 +2978,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE process_over_item(p_over_header Cux_Wms_Material_Trx_Headers%rowtype,
                               p_over_lines  IN OUT Cux_Wms_Pub.Material_Trx_Lines_Tab,
@@ -3009,14 +3009,14 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡µ¥¾İ×´Ì¬³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–å•æ®çŠ¶æ€å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
   
     -- Call the procedure
-    if l_doc_status = 'ÒÑ¹ıÕË' then
+    if l_doc_status = 'å·²è¿‡è´¦' then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË,²»ÄÜÖØ¸´¹ıÕË.';
+      x_Error_Msg := 'å•æ®å·²è¿‡è´¦,ä¸èƒ½é‡å¤è¿‡è´¦.';
       RAISE Fnd_Api.g_Exc_Error;
     else
     
@@ -3042,7 +3042,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       if l_return_status = 'E' then
       
         x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-        x_Error_Msg := '¹ıÕËÊ§°Ü£º' || l_return_msg;
+        x_Error_Msg := 'è¿‡è´¦å¤±è´¥ï¼š' || l_return_msg;
       ELSE
         begin
           UPDATE CUX_READY_ITEM CRI
@@ -3052,7 +3052,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '¸üĞÂµ¥¾İ×´Ì¬Îª¹ıÕËÊ±³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'æ›´æ–°å•æ®çŠ¶æ€ä¸ºè¿‡è´¦æ—¶å‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       end if;
@@ -3063,7 +3063,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE process_return_item(p_return_header Cux_Wms_Material_Trx_Headers%rowtype,
                                 p_return_lines  IN OUT Cux_Wms_Pub.Material_Trx_Lines_Tab,
@@ -3125,7 +3125,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     l_count_rtn             number;
   
     V_TRANSACTION_TYPE_ID number;
-    V_DISPOSITIONS_NAME   varchar2(100); -- 'À­Ê½ÎïÁÏÅÌµã' ; -- 'ÅÌÓ®µ÷Õû';  -- ÕÊ»§±ğÃû
+    V_DISPOSITIONS_NAME   varchar2(100); -- 'æ‹‰å¼ç‰©æ–™ç›˜ç‚¹' ; -- 'ç›˜èµ¢è°ƒæ•´';  -- å¸æˆ·åˆ«å
   
     V_ADJ_QTY number;
     -- V_ADJ_QTY := NVL(V_RETURN_QUANTITY,0) - ( NVL(V_QUANTITY_OPEN,0) - V_ALL_RETURN_QTY ) ;
@@ -3160,7 +3160,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     x_Ret_Sts := 'S';
   
     if (p_return_header.trx_order_type in ('WIP_FUL_PL', 'WIP_FRG_PL')) then
-      --À­Ê½ÍËÁÏ£¨Õûµ¥£©,À­Ê½ÍËÁÏ£¨ÁãĞÇ£©,ÁãĞÇÓÉSMTN·¢Æğ£¬Õûµ¥ÓÉERP·¢Æğ
+      --æ‹‰å¼é€€æ–™ï¼ˆæ•´å•ï¼‰,æ‹‰å¼é€€æ–™ï¼ˆé›¶æ˜Ÿï¼‰,é›¶æ˜Ÿç”±SMTNå‘èµ·ï¼Œæ•´å•ç”±ERPå‘èµ·
     
       if (p_return_header.trx_order_type = 'WIP_FRG_PL') then
         l_source_type := 1;
@@ -3168,7 +3168,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         l_source_type := 2;
       end if;
       --PASS VALIDATION
-      --Èç¹ûÊÇÀ­Ê½ÁãĞÇÍËÁÏ£¬³ö´íÔÙ´¦ÀíÊ±ÏÈ¼ì²é¿ÍÖÆµ¥¾İÊÇ·ñÒÑ¾­²úÉú
+      --å¦‚æœæ˜¯æ‹‰å¼é›¶æ˜Ÿé€€æ–™ï¼Œå‡ºé”™å†å¤„ç†æ—¶å…ˆæ£€æŸ¥å®¢åˆ¶å•æ®æ˜¯å¦å·²ç»äº§ç”Ÿ
     
       BEGIN
         select count(1)
@@ -3198,13 +3198,13 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         EXCEPTION
           WHEN OTHERS THEN
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := 'Í³¼Æ¹ıÕË¼ÇÂ¼³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'ç»Ÿè®¡è¿‡è´¦è®°å½•å‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         END;
         
         if (l_count_post > 0) then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË£¡';
+          x_Error_Msg := 'å•æ®å·²è¿‡è´¦ï¼';
           RAISE Fnd_Api.g_Exc_Error;
         end if;*/
       
@@ -3220,7 +3220,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         EXCEPTION
           WHEN OTHERS THEN
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '»ñÈ¡µ¥¾İID³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'è·å–å•æ®IDå‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         END;
       
@@ -3228,9 +3228,9 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     
       if ( /*p_return_header.trx_order_type = 'WIP_FRG_PL' and*/
           l_count_exist = 0) then
-        --Õë¶ÔÁãĞÇ,Õûµ¥À­Ê½£¬´´½¨µ¥¾İÔÙ¹ıÕË
+        --é’ˆå¯¹é›¶æ˜Ÿ,æ•´å•æ‹‰å¼ï¼Œåˆ›å»ºå•æ®å†è¿‡è´¦
       
-        --»ñÈ¡SMTN·µ»ØµÄÎïÁÏÒÔÍâµÄÆäËûÎïÁÏÀ´ÍË£¬ÍËÁÏÊıÁ¿¶¼¸ø0£¬ÒÔ±ãºóÃæ×öÔÓÏî
+        --è·å–SMTNè¿”å›çš„ç‰©æ–™ä»¥å¤–çš„å…¶ä»–ç‰©æ–™æ¥é€€ï¼Œé€€æ–™æ•°é‡éƒ½ç»™0ï¼Œä»¥ä¾¿åé¢åšæ‚é¡¹
         validate_return_item(p_return_header => p_return_header,
                              p_return_lines  => p_return_lines,
                              p_source_type   => l_source_type,
@@ -3254,7 +3254,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           if ltbl_return_lines(j).item_number is null then
           
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := 'ÁÏºÅÎª¿Õ,²»ÄÜÍËÁÏ.';
+            x_Error_Msg := 'æ–™å·ä¸ºç©º,ä¸èƒ½é€€æ–™.';
             RAISE Fnd_Api.g_Exc_Error;
           
           end if;
@@ -3271,7 +3271,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '»ñÈ¡ÎïÁÏID³ö´í£º' || SQLERRM;
+              x_Error_Msg := 'è·å–ç‰©æ–™IDå‡ºé”™ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
           --get wip id
@@ -3287,7 +3287,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '»ñÈ¡¹¤µ¥ID³ö´í£º' || SQLERRM;
+              x_Error_Msg := 'è·å–å·¥å•IDå‡ºé”™ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
         
@@ -3303,7 +3303,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '»ñÈ¡¹©Ó¦ÀàĞÍ³ö´í£º' || SQLERRM;
+              x_Error_Msg := 'è·å–ä¾›åº”ç±»å‹å‡ºé”™ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
         
@@ -3315,7 +3315,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         
           --get supply location id
           if (l_push_flag = 'N') then
-            --À­Ê½²Å»ñÈ¡³µ¼ä²Ö¿â»õÎ»
+            --æ‹‰å¼æ‰è·å–è½¦é—´ä»“åº“è´§ä½
           
             begin
             
@@ -3334,7 +3334,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             exception
               when others then
                 x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                x_Error_Msg := '»ñÈ¡³µ¼ä»õÎ»ID³ö´í£º' || SQLERRM;
+                x_Error_Msg := 'è·å–è½¦é—´è´§ä½IDå‡ºé”™ï¼š' || SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;
             end;
           
@@ -3347,7 +3347,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             EXCEPTION
               WHEN OTHERS THEN
                 x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                x_Error_Msg := '»ñÈ¡³µ¼ä²Ö¿â³ö´í£º' || SQLERRM;
+                x_Error_Msg := 'è·å–è½¦é—´ä»“åº“å‡ºé”™ï¼š' || SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;
             END;
           
@@ -3360,7 +3360,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                  and mmt.transaction_type_id =
                      (select transaction_type_id
                         from mtl_transaction_types
-                       where transaction_type_name = 'À­Ê½ÎïÁÏ·¢·Å')
+                       where transaction_type_name = 'æ‹‰å¼ç‰©æ–™å‘æ”¾')
                  and mmt.primary_quantity < 0
                  and nvl(mmt.attribute9, 'N') = 'N'
                  and mmt.organization_id = p_return_header.organization_id
@@ -3369,7 +3369,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             exception
               when others then
                 x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                x_Error_Msg := '»ñÈ¡·¢ÁÏ²Ö¿â/»õÎ»³ö´í£º' || SQLERRM;
+                x_Error_Msg := 'è·å–å‘æ–™ä»“åº“/è´§ä½å‡ºé”™ï¼š' || SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;
             end;
           
@@ -3390,7 +3390,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                where transaction_type_id =
                      (select transaction_type_id
                         from mtl_transaction_types
-                       where transaction_type_name = 'WIP ·¢·Å') --100 /* --2 */
+                       where transaction_type_name = 'WIP å‘æ”¾') --100 /* --2 */
                  and primary_quantity < 0
                  and mmt.organization_id = p_return_header.organization_id
                  and mmt.inventory_item_id = l_item_id
@@ -3400,7 +3400,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             exception
               when others then
                 x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                x_Error_Msg := 'ÍÆÊ½·¢ÁÏ»õÎ»³ö´í£º' || SQLERRM;
+                x_Error_Msg := 'æ¨å¼å‘æ–™è´§ä½å‡ºé”™ï¼š' || SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;
             end;
             l_supply_loc_id := '';
@@ -3409,10 +3409,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         
           if ltbl_return_lines(j).Subinventory is null or ltbl_return_lines(j)
              .Subinventory <> l_issue_subinv then
-            --Ä¿µÄ×Ó¿â
+            --ç›®çš„å­åº“
           
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := 'ÎïÁÏID' || l_item_id || '×Ó¿âÎª¿Õ»òÕß¸ú·¢ÁÏ×Ó¿â²»Ò»ÖÂ,²»ÄÜÍËÁÏ.' || ltbl_return_lines(j)
+            x_Error_Msg := 'ç‰©æ–™ID' || l_item_id || 'å­åº“ä¸ºç©ºæˆ–è€…è·Ÿå‘æ–™å­åº“ä¸ä¸€è‡´,ä¸èƒ½é€€æ–™.' || ltbl_return_lines(j)
                           .Subinventory;
             RAISE Fnd_Api.g_Exc_Error;
           
@@ -3422,7 +3422,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         
           --get returned qty 
           if (l_source_type = 1) then
-            --1, GET ISSUE QTY ÁãĞÇÍË
+            --1, GET ISSUE QTY é›¶æ˜Ÿé€€
             if (l_push_flag = 'Y') then
               BEGIN
                 select nvl(sum(abs(mmt.primary_quantity)), 0) --sum(nvl(abs(mmt.primary_quantity), 0))
@@ -3440,7 +3440,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                          where transaction_type_id =
                                (select transaction_type_id
                                   from mtl_transaction_types
-                                 where transaction_type_name = 'WIP ·¢·Å') --100 /* --2 */
+                                 where transaction_type_name = 'WIP å‘æ”¾') --100 /* --2 */
                            and primary_quantity < 0
                          group by subinventory_code,
                                   transaction_type_id,
@@ -3458,7 +3458,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
               EXCEPTION
                 WHEN OTHERS THEN
                   x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                  x_Error_Msg := '»ñÈ¡ÍËÁÏµ¥ÍÆÊ½·¢ÁÏÊıÁ¿³ö´í£º' || SQLERRM;
+                  x_Error_Msg := 'è·å–é€€æ–™å•æ¨å¼å‘æ–™æ•°é‡å‡ºé”™ï¼š' || SQLERRM;
                   RAISE Fnd_Api.g_Exc_Error;
               END;
             ELSE
@@ -3479,7 +3479,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                          where transaction_type_id =
                                (select transaction_type_id
                                   from mtl_transaction_types
-                                 where transaction_type_name = 'À­Ê½ÎïÁÏ·¢·Å') --100 /* --2 */
+                                 where transaction_type_name = 'æ‹‰å¼ç‰©æ–™å‘æ”¾') --100 /* --2 */
                            and primary_quantity < 0
                          group by subinventory_code,
                                   transaction_type_id,
@@ -3497,7 +3497,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
               EXCEPTION
                 WHEN OTHERS THEN
                   x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                  x_Error_Msg := '»ñÈ¡ÁãĞÇÍËÁÏµ¥·¢ÁÏÊıÁ¿³ö´í£º' || SQLERRM;
+                  x_Error_Msg := 'è·å–é›¶æ˜Ÿé€€æ–™å•å‘æ–™æ•°é‡å‡ºé”™ï¼š' || SQLERRM;
                   RAISE Fnd_Api.g_Exc_Error;
               END;
             end if;
@@ -3538,7 +3538,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                   l_rtn_qty := 0;
                 WHEN OTHERS THEN
                   x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                  x_Error_Msg := '»ñÈ¡ÍËÁÏÊıÁ¿³ö´í£º' || SQLERRM;
+                  x_Error_Msg := 'è·å–é€€æ–™æ•°é‡å‡ºé”™ï¼š' || SQLERRM;
                   RAISE Fnd_Api.g_Exc_Error;
               END;
             ELSE
@@ -3546,7 +3546,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             end if;
           
           else
-            --source type is 2,Õûµ¥ÍË
+            --source type is 2,æ•´å•é€€
             if (l_push_flag = 'Y') then
               begin
                 select nvl(sum(nvl(abs(mmt.primary_quantity), 0)), 0)
@@ -3556,7 +3556,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                    and mmt.transaction_type_id =
                        (select transaction_type_id
                           from mtl_transaction_types
-                         where transaction_type_name = 'WIP ·¢·Å')
+                         where transaction_type_name = 'WIP å‘æ”¾')
                    and mmt.primary_quantity < 0
                    and nvl(mmt.attribute9, 'N') = 'N'
                    and mmt.organization_id =
@@ -3566,7 +3566,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
               EXCEPTION
                 WHEN OTHERS THEN
                   x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                  x_Error_Msg := '»ñÈ¡Õûµ¥ÍËÁÏµ¥ÍÆÊ½·¢ÁÏÊıÁ¿³ö´í£º' || SQLERRM;
+                  x_Error_Msg := 'è·å–æ•´å•é€€æ–™å•æ¨å¼å‘æ–™æ•°é‡å‡ºé”™ï¼š' || SQLERRM;
                   RAISE Fnd_Api.g_Exc_Error;
               end;
             ELSE
@@ -3578,7 +3578,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                    and mmt.transaction_type_id =
                        (select transaction_type_id
                           from mtl_transaction_types
-                         where transaction_type_name = 'À­Ê½ÎïÁÏ·¢·Å')
+                         where transaction_type_name = 'æ‹‰å¼ç‰©æ–™å‘æ”¾')
                    and mmt.primary_quantity < 0
                    and nvl(mmt.attribute9, 'N') = 'N'
                    and mmt.organization_id =
@@ -3588,7 +3588,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
               EXCEPTION
                 WHEN OTHERS THEN
                   x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                  x_Error_Msg := '»ñÈ¡Õûµ¥ÍËÁÏµ¥·¢ÁÏÊıÁ¿³ö´í£º' || SQLERRM;
+                  x_Error_Msg := 'è·å–æ•´å•é€€æ–™å•å‘æ–™æ•°é‡å‡ºé”™ï¼š' || SQLERRM;
                   RAISE Fnd_Api.g_Exc_Error;
               end;
             end if;
@@ -3608,11 +3608,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
               EXCEPTION
                 WHEN OTHERS THEN
                   x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                  x_Error_Msg := '»ñÈ¡Õûµ¥ÍËÁÏµ¥ÍËÁÏÊıÁ¿³ö´í£º' || SQLERRM;
+                  x_Error_Msg := 'è·å–æ•´å•é€€æ–™å•é€€æ–™æ•°é‡å‡ºé”™ï¼š' || SQLERRM;
                   RAISE Fnd_Api.g_Exc_Error;
               end;
             ELSE
-              l_rtn_qty := 0; --ÍÆÊ½ÁÏÍËÁËºóÒÑ¿Û¼õISSUE QTY
+              l_rtn_qty := 0; --æ¨å¼æ–™é€€äº†åå·²æ‰£å‡ISSUE QTY
             END IF;
           
           end if; --source type
@@ -3636,7 +3636,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             EXCEPTION
               WHEN OTHERS THEN
                 x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                x_Error_Msg := '»ñÈ¡À­Ê½ĞèÇóÊıÁ¿³ö´í£º' || SQLERRM;
+                x_Error_Msg := 'è·å–æ‹‰å¼éœ€æ±‚æ•°é‡å‡ºé”™ï¼š' || SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;
             END;
           
@@ -3657,7 +3657,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             EXCEPTION
               WHEN OTHERS THEN
                 x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                x_Error_Msg := '»ñÈ¡À­Ê½ĞèÇóÊıÁ¿³ö´í£º' || SQLERRM;
+                x_Error_Msg := 'è·å–æ‹‰å¼éœ€æ±‚æ•°é‡å‡ºé”™ï¼š' || SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;
             END;
           END IF;
@@ -3669,22 +3669,22 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         
           if (l_issued_qty <= 0 or
              (l_qty_open <= 0 and ltbl_return_lines(j).quantity = 0)) then
-            continue; --·¢ÁÏ»òÕß¿ÉÍËÊıÁ¿Îª0²¢ÇÒÃ»ÓĞÖ¸¶¨ÔÓÈëÊıÁ¿µÄ¼ÇÂ¼²»×ö´¦Àí£¬Ö±½ÓÌøµ½ÏÂÒ»ĞĞ
+            continue; --å‘æ–™æˆ–è€…å¯é€€æ•°é‡ä¸º0å¹¶ä¸”æ²¡æœ‰æŒ‡å®šæ‚å…¥æ•°é‡çš„è®°å½•ä¸åšå¤„ç†ï¼Œç›´æ¥è·³åˆ°ä¸‹ä¸€è¡Œ
           end if;
         
           IF (l_push_flag = 'N' and l_source_type = 1 AND ltbl_return_lines(j)
              .quantity > l_qty_open) THEN
-            --À­Ê½¿ØÖÆÍË»õÊıÁ¿
+            --æ‹‰å¼æ§åˆ¶é€€è´§æ•°é‡
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
             x_Error_Msg := ltbl_return_lines(j)
-                           .item_number || '±¾´ÎÍË»¹ÊıÁ¿( ' || ltbl_return_lines(j)
-                           .quantity || ' ) ´óÓÚ
-           ¹¤µ¥±ê×¼Ê£ÓàÁ¿ ( ' || l_qty_open;
+                           .item_number || 'æœ¬æ¬¡é€€è¿˜æ•°é‡( ' || ltbl_return_lines(j)
+                           .quantity || ' ) å¤§äº
+           å·¥å•æ ‡å‡†å‰©ä½™é‡ ( ' || l_qty_open;
           
             RAISE Fnd_Api.g_Exc_Error;
           
           elsif (l_push_flag = 'Y') then
-            --ÍÆÊ½ÎïÁÏ¿ØÖÆÍË»õÊıÁ¿
+            --æ¨å¼ç‰©æ–™æ§åˆ¶é€€è´§æ•°é‡
             /* BEGIN
             
               select nvl(SUM(wro.quantity_issued), 0)
@@ -3703,9 +3703,9 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                l_issued_qty < ltbl_return_lines(j).quantity) then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
               x_Error_Msg := ltbl_return_lines(j)
-                             .item_number || '±¾´ÎÍÆÊ½ÍË»¹ÊıÁ¿( ' || ltbl_return_lines(j)
-                             .quantity || ' ) ´óÓÚ
-           ÒÑ·¢ÊıÁ¿ ( ' || l_issued_qty;
+                             .item_number || 'æœ¬æ¬¡æ¨å¼é€€è¿˜æ•°é‡( ' || ltbl_return_lines(j)
+                             .quantity || ' ) å¤§äº
+           å·²å‘æ•°é‡ ( ' || l_issued_qty;
             
               RAISE Fnd_Api.g_Exc_Error;
             end if;
@@ -3797,12 +3797,12 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '´´½¨ÍËÁÏµ¥¾İ³ö´í£º' || SQLERRM;
+              x_Error_Msg := 'åˆ›å»ºé€€æ–™å•æ®å‡ºé”™ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
         
         end loop;
-      end if; --ÁãĞÇÀ­Ê½
+      end if; --é›¶æ˜Ÿæ‹‰å¼
     
       /* begin
         select count(1)
@@ -3813,7 +3813,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'Í³¼ÆÍÆÊ½ÁÏ³ö´í£º' || SQLERRM;
+          x_Error_Msg := 'ç»Ÿè®¡æ¨å¼æ–™å‡ºé”™ï¼š' || SQLERRM;
           RAISE Fnd_Api.g_Exc_Error;
       end;*/
     
@@ -3841,12 +3841,12 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '¸üĞÂ´íÎó¼ÇÂ¼³ö´í£º' || SQLERRM;
+              x_Error_Msg := 'æ›´æ–°é”™è¯¯è®°å½•å‡ºé”™ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
         
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := x_Error_Msg || '¹ıÕËÀ­Ê½ÍËÁÏ´íÎó£º' || l_msg_data;
+          x_Error_Msg := x_Error_Msg || 'è¿‡è´¦æ‹‰å¼é€€æ–™é”™è¯¯ï¼š' || l_msg_data;
           RAISE Fnd_Api.g_Exc_Error;
         end if;
       
@@ -3872,15 +3872,15 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       
         if (l_count_released = 0) then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'À­Ê½»¹/ÍËÁÏ½áÊø£¬ÍÆÊ½Êı¾İÎŞ·¨»¹/ÍËÁÏ£¬¹¤µ¥×´Ì¬²»ÊÇÒÑ·¢·Å';
+          x_Error_Msg := 'æ‹‰å¼è¿˜/é€€æ–™ç»“æŸï¼Œæ¨å¼æ•°æ®æ— æ³•è¿˜/é€€æ–™ï¼Œå·¥å•çŠ¶æ€ä¸æ˜¯å·²å‘æ”¾';
           RAISE Fnd_Api.g_Exc_Error;
         end if;
       
-        --SMTN·¢ÆğµÄÀ­Ê½ÁãĞÇÍËÁÏµ¥ÖĞÈô´æÔÚÍÆÊÂ¹©Ó¦µÄÎïÁÏ£¬Ôò°´ÍÆÊ½¹ıÕË
+        --SMTNå‘èµ·çš„æ‹‰å¼é›¶æ˜Ÿé€€æ–™å•ä¸­è‹¥å­˜åœ¨æ¨äº‹ä¾›åº”çš„ç‰©æ–™ï¼Œåˆ™æŒ‰æ¨å¼è¿‡è´¦
       
         --for rec_item_oper in cur_item_operation(rec_return_item2.inventory_item_id) loop
         if (l_source_type = 1) then
-          --ÍÆÊ½ÁãÍË¼ì²éÊıÁ¿²»ÄÜ³¬³öÍê¹¤ĞèÒª×ÜÊıÁ¿
+          --æ¨å¼é›¶é€€æ£€æŸ¥æ•°é‡ä¸èƒ½è¶…å‡ºå®Œå·¥éœ€è¦æ€»æ•°é‡
           BEGIN
           
             select nvl(sum(wro.quantity_issued), 0)
@@ -3927,23 +3927,23 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                   /* AND cwm.organization_id =
                       p_return_header.organization_id
                   AND cwm.transaction_id = l_trx_id
-                     \*AND cri.doc_type = 'ÍÆÊ½ÍËÁÏ(Áãµ¥)'*\
+                     \*AND cri.doc_type = 'æ¨å¼é€€æ–™(é›¶å•)'*\
                      --and cwm.source_type = 1
                   and cwm.push_flag = 'Y'*/
                   ) a;
           --WHERE a.give_qty < a.wip_com_qty;
           /* IF l_ishave > 0 THEN
             x_Ret_Sts   := 'E';
-            x_Error_Msg := '´æÔÚÍÆÊ½ÁÏºÅ£¬¼ì²éÓĞ×é¼şÍËÁÏÊıÁ¿´óÓÚÍê¹¤ËùĞè×îĞ¡Ì×Êı£¬²»ÄÜÍËÁÏ¡£¹¤Ğò£º' ||
+            x_Error_Msg := 'å­˜åœ¨æ¨å¼æ–™å·ï¼Œæ£€æŸ¥æœ‰ç»„ä»¶é€€æ–™æ•°é‡å¤§äºå®Œå·¥æ‰€éœ€æœ€å°å¥—æ•°ï¼Œä¸èƒ½é€€æ–™ã€‚å·¥åºï¼š' ||
                            rec_item_oper.operation_seq_num;
             RAISE Fnd_Api.g_Exc_Error;
           END IF;*/
         
           if (l_total_com_qty >
              (l_total_issued_qty - rec_return_item2.return_quantity)) then
-            --ÁãÍË²Å×ö´ËÑéÖ¤
+            --é›¶é€€æ‰åšæ­¤éªŒè¯
             x_Ret_Sts   := 'E';
-            x_Error_Msg := '´æÔÚÍÆÊ½ÁÏºÅ£¬¼ì²éÓĞ×é¼şÍËÁÏÊıÁ¿´óÓÚÍê¹¤ËùĞè×îĞ¡Ì×Êı£¬²»ÄÜÍËÁÏ¡£';
+            x_Error_Msg := 'å­˜åœ¨æ¨å¼æ–™å·ï¼Œæ£€æŸ¥æœ‰ç»„ä»¶é€€æ–™æ•°é‡å¤§äºå®Œå·¥æ‰€éœ€æœ€å°å¥—æ•°ï¼Œä¸èƒ½é€€æ–™ã€‚';
             RAISE Fnd_Api.g_Exc_Error;
           end if;
         end if; --source type
@@ -3962,7 +3962,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := 'E';
-            x_Error_Msg := '»ñÈ¡µ¥Î»Ê§°Ü£º' || SQLERRM;
+            x_Error_Msg := 'è·å–å•ä½å¤±è´¥ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       
@@ -3978,22 +3978,22 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         for rec_item_oper in cur_item_operation(rec_return_item2.inventory_item_id) loop
           /*if (rec_return_item2.quantity_open <= 0) then
             update cux.cux_wip_material_return cmr
-               set cmr.attribute14 = '¿ÉÍËÊıÁ¿Îª0'
+               set cmr.attribute14 = 'å¯é€€æ•°é‡ä¸º0'
              where cmr.line_id = rec_return_item2.line_id;
             --RAISE Fnd_Api.g_Exc_Error;
             exit;
           end if;*/
         
           if (l_remain_rtn_qty = 0 and l_source_type = 1) then
-            --ÍÆÊ½ÁÏ ÒÑÍËÍê£¬¼´Ê¹»¹ÓĞ¹¤ĞòÒ²ÍË³öÑ­»·ÁË
+            --æ¨å¼æ–™ å·²é€€å®Œï¼Œå³ä½¿è¿˜æœ‰å·¥åºä¹Ÿé€€å‡ºå¾ªç¯äº†
             exit;
           end if;
         
-          --l_avail_rtn_qty := l_oper_issued_qty - l_oper_need_qty; --¿ÉÍËÊıÁ¿
+          --l_avail_rtn_qty := l_oper_issued_qty - l_oper_need_qty; --å¯é€€æ•°é‡
           if (l_source_type = 1) then
-            --Áãµ¥Âß¼­
+            --é›¶å•é€»è¾‘
             l_avail_rtn_qty := rec_return_item2.quantity_open;
-            --¼ÆËãÃ¿Ò»µÀ¹¤Ğò×îÖÕµÄÍË»õÊıÁ¿
+            --è®¡ç®—æ¯ä¸€é“å·¥åºæœ€ç»ˆçš„é€€è´§æ•°é‡
             if (l_remain_rtn_qty > l_avail_rtn_qty) then
               l_oper_rtn_qty   := l_avail_rtn_qty;
               l_remain_rtn_qty := l_remain_rtn_qty - l_oper_rtn_qty;
@@ -4002,9 +4002,9 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
               l_remain_rtn_qty := 0;
             end if;
           else
-            --Õûµ¥Âß¼­
+            --æ•´å•é€»è¾‘
             null;
-            --¼ÆËãÃ¿Ò»µÀ¹¤ĞòµÄOPEN QTY¿ÉÍËÊıÁ¿
+            --è®¡ç®—æ¯ä¸€é“å·¥åºçš„OPEN QTYå¯é€€æ•°é‡
             begin
               select nvl(wro.quantity_issued, 0) - wro.required_quantity
                 into l_oper_rtn_qty
@@ -4018,7 +4018,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             exception
               when others then
                 x_Ret_Sts   := 'E';
-                x_Error_Msg := '»ñÈ¡¹¤Ğò·¢ÁÏÊıÁ¿XÊ§°Ü£º' || SQLERRM;
+                x_Error_Msg := 'è·å–å·¥åºå‘æ–™æ•°é‡Xå¤±è´¥ï¼š' || SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;
             end;
           
@@ -4027,11 +4027,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           end if;
         
           if (l_oper_rtn_qty <= 0) then
-            --Ö»»áÕë¶Ôµ½Õûµ¥»¹£¬ÁãÍËÔÚÇ°Ãæl_remain_rtn_qty = 0µÄÌõ¼şÒÑÍË³ö
+            --åªä¼šé’ˆå¯¹åˆ°æ•´å•è¿˜ï¼Œé›¶é€€åœ¨å‰é¢l_remain_rtn_qty = 0çš„æ¡ä»¶å·²é€€å‡º
             continue;
           end if;
         
-          --ÍÆÊ½¹ıÕË
+          --æ¨å¼è¿‡è´¦
           --insert interface
           l_iface_rec                     := NULL;
           l_iface_rec.last_update_date    := SYSDATE;
@@ -4039,12 +4039,12 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           l_iface_rec.creation_date       := SYSDATE;
           l_iface_rec.created_by          := l_user_id;
           l_iface_rec.last_update_login   := l_login_id;
-          l_iface_rec.transaction_type_id := 43; --WIP ÍË»Ø
+          l_iface_rec.transaction_type_id := 43; --WIP é€€å›
           --c1.ready_qty                      := c1.ready_qty;
           l_iface_rec.operation_seq_num     := rec_item_oper.operation_seq_num;
-          l_iface_rec.source_code           := 'ÍËÁÏµ¥';
+          l_iface_rec.source_code           := 'é€€æ–™å•';
           l_iface_rec.transaction_reference := rec_return_item2.source_type ||
-                                               '[ÍËÁÏµ¥ºÅ:' ||
+                                               '[é€€æ–™å•å·:' ||
                                                rec_return_item2.transaction_id || ']';
         
           SELECT mtl_material_transactions_s.nextval
@@ -4105,12 +4105,12 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           ELSE
             null;
           END IF;
-          --ÍÆÊ½¹ıÕË
+          --æ¨å¼è¿‡è´¦
         end loop; --operation loop
       
         --AFTER WIP RETURN
         if (l_remain_rtn_qty > 0 and l_source_type = 2) then
-          --¾­¹ıWIP RETURENÖ®ºóÈç¹û»¹ÓĞÊ£Óà»¹ÁÏÊıÁ¿ÔòÔÓÈë¡£
+          --ç»è¿‡WIP RETURENä¹‹åå¦‚æœè¿˜æœ‰å‰©ä½™è¿˜æ–™æ•°é‡åˆ™æ‚å…¥ã€‚
           --start za ru
           L_IFACE_REC                   := null;
           L_IFACE_REC.LAST_UPDATE_DATE  := SYSDATE;
@@ -4120,7 +4120,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           L_IFACE_REC.LAST_UPDATE_LOGIN := FND_GLOBAL.LOGIN_ID;
         
           V_TRANSACTION_TYPE_ID := 41;
-          V_DISPOSITIONS_NAME   := 'ËğºÄÍË¿â'; -- 'À­Ê½ÎïÁÏÅÌµã' ; -- 'ÅÌÓ®µ÷Õû';  -- ÕÊ»§±ğÃû
+          V_DISPOSITIONS_NAME   := 'æŸè€—é€€åº“'; -- 'æ‹‰å¼ç‰©æ–™ç›˜ç‚¹' ; -- 'ç›˜èµ¢è°ƒæ•´';  -- å¸æˆ·åˆ«å
         
           /* V_ADJ_QTY := ABS(NVL(V_RETURN_QUANTITY, 0) -
           NVL(V_QUANTITY_OPEN, 0));*/
@@ -4130,14 +4130,14 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           begin
             SELECT DISPOSITION_ID
               INTO V_DISPOSITIONS_ID
-              FROM MTL_GENERIC_DISPOSITIONS -- ÕÊ»§±ğÃû ±í
+              FROM MTL_GENERIC_DISPOSITIONS -- å¸æˆ·åˆ«å è¡¨
              WHERE ENABLED_FLAG = 'Y'
                AND ORGANIZATION_ID = rec_return_item2.organization_id
                AND SEGMENT1 = V_DISPOSITIONS_NAME;
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '»ñÈ¡V_DISPOSITIONS_ID´íÎó£º' || SQLERRM;
+              x_Error_Msg := 'è·å–V_DISPOSITIONS_IDé”™è¯¯ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
           SELECT MTL_MATERIAL_TRANSACTIONS_S.NEXTVAL
@@ -4150,7 +4150,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           L_IFACE_REC.ORGANIZATION_ID            := rec_return_item2.organization_id;
           L_IFACE_REC.DISTRIBUTION_ACCOUNT_ID    := NULL; /*ZG_GT_CSN_RLS_TL_P.GET_INV_MATERIAL_ACCID(MTL_ORG_ID)*/
           L_IFACE_REC.INVENTORY_ITEM_ID          := rec_return_item2.inventory_item_id;
-          L_IFACE_REC.SUBINVENTORY_CODE          := rec_return_item2.subinventory; --Ò»¶¨Òª¸ø£»Èç¹ûITEMÏŞÖÆÁË×Ó¿â£¬ÄÇÃ´±ØĞë¸øÕâ¸öITEMµÄ×Ó¿â
+          L_IFACE_REC.SUBINVENTORY_CODE          := rec_return_item2.subinventory; --ä¸€å®šè¦ç»™ï¼›å¦‚æœITEMé™åˆ¶äº†å­åº“ï¼Œé‚£ä¹ˆå¿…é¡»ç»™è¿™ä¸ªITEMçš„å­åº“
           L_IFACE_REC.LOCATOR_ID                 := rec_return_item2.locator_id;
           L_IFACE_REC.TRANSACTION_QUANTITY       := V_ADJ_QTY; ---X.PRIMARY_QUANTITY; ??
           L_IFACE_REC.PRIMARY_QUANTITY           := V_ADJ_QTY; ---X.PRIMARY_QUANTITY; ??
@@ -4158,11 +4158,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           L_IFACE_REC.TRANSACTION_DATE           := sysdate; --X.TRANSACTION_DATE;
           L_IFACE_REC.TRANSACTION_SOURCE_NAME    := NULL;
           L_IFACE_REC.DISTRIBUTION_ACCOUNT_ID    := NULL; --A_REC.DISTRIBUTION_ACCOUNT_ID;
-          L_IFACE_REC.SOURCE_CODE                := 'Õûµ¥ÍËÁÏ'; --V_SOURCE_TYPE_NAME;
-          L_IFACE_REC.SOURCE_HEADER_ID           := 012345678; --ANY NUMBER IF TRANSACTION TYPE IS ÔÓÊÕ·¢/COST UPDATE
-          L_IFACE_REC.SOURCE_LINE_ID             := rec_return_item2.line_id; --1234567; 2010.9.15 XDL ÓÃÓÚ×·Ëİ
-          L_IFACE_REC.TRANSACTION_SOURCE_TYPE_ID := 6; --ÕÊ»§±ğÃû
-          L_IFACE_REC.TRANSACTION_TYPE_ID        := V_TRANSACTION_TYPE_ID; --ÕÊ»§±ğÃû½ÓÊÕ
+          L_IFACE_REC.SOURCE_CODE                := 'æ•´å•é€€æ–™'; --V_SOURCE_TYPE_NAME;
+          L_IFACE_REC.SOURCE_HEADER_ID           := 012345678; --ANY NUMBER IF TRANSACTION TYPE IS æ‚æ”¶å‘/COST UPDATE
+          L_IFACE_REC.SOURCE_LINE_ID             := rec_return_item2.line_id; --1234567; 2010.9.15 XDL ç”¨äºè¿½æº¯
+          L_IFACE_REC.TRANSACTION_SOURCE_TYPE_ID := 6; --å¸æˆ·åˆ«å
+          L_IFACE_REC.TRANSACTION_TYPE_ID        := V_TRANSACTION_TYPE_ID; --å¸æˆ·åˆ«åæ¥æ”¶
           L_IFACE_REC.TRANSACTION_SOURCE_ID      := V_DISPOSITIONS_ID; -- X.DISPOSITIONS_ID;
           L_IFACE_REC.LAST_UPDATE_DATE           := SYSDATE;
           L_IFACE_REC.LAST_UPDATED_BY            := FND_GLOBAL.USER_ID;
@@ -4223,13 +4223,13 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             exception
               when others then
                 x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                x_Error_Msg := '¸üĞÂÅ××ª×´Ì¬³ö´í2£º' || SQLERRM;
+                x_Error_Msg := 'æ›´æ–°æŠ›è½¬çŠ¶æ€å‡ºé”™2ï¼š' || SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;
             end;
           END IF;
         elsif (l_remain_rtn_qty < 0 and l_source_type = 2) then
           V_TRANSACTION_TYPE_ID := 31;
-          V_DISPOSITIONS_NAME   := 'ËğºÄÍË¿â'; --'À­Ê½ÎïÁÏÅÌµã' ; -- 'ÅÌ¿÷µ÷Õû';   -- ÕÊ»§±ğÃû
+          V_DISPOSITIONS_NAME   := 'æŸè€—é€€åº“'; --'æ‹‰å¼ç‰©æ–™ç›˜ç‚¹' ; -- 'ç›˜äºè°ƒæ•´';   -- å¸æˆ·åˆ«å
         
           /*V_ADJ_QTY := -ABS(NVL(V_RETURN_QUANTITY, 0) -
           NVL(V_QUANTITY_OPEN, 0));*/
@@ -4238,14 +4238,14 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           BEGIN
             SELECT DISPOSITION_ID
               INTO V_DISPOSITIONS_ID
-              FROM MTL_GENERIC_DISPOSITIONS -- ÕÊ»§±ğÃû ±í
+              FROM MTL_GENERIC_DISPOSITIONS -- å¸æˆ·åˆ«å è¡¨
              WHERE ENABLED_FLAG = 'Y'
                AND ORGANIZATION_ID = rec_return_item2.organization_id
                AND SEGMENT1 = V_DISPOSITIONS_NAME;
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '»ñÈ¡V_DISPOSITIONS_ID´íÎó2£º' || SQLERRM;
+              x_Error_Msg := 'è·å–V_DISPOSITIONS_IDé”™è¯¯2ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
           SELECT MTL_MATERIAL_TRANSACTIONS_S.NEXTVAL
@@ -4258,7 +4258,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           L_IFACE_REC.ORGANIZATION_ID            := rec_return_item2.organization_id;
           L_IFACE_REC.DISTRIBUTION_ACCOUNT_ID    := NULL; /*ZG_GT_CSN_RLS_TL_P.GET_INV_MATERIAL_ACCID(MTL_ORG_ID)*/
           L_IFACE_REC.INVENTORY_ITEM_ID          := rec_return_item2.inventory_item_id;
-          L_IFACE_REC.SUBINVENTORY_CODE          := rec_return_item2.subinventory; --Ò»¶¨Òª¸ø£»Èç¹ûITEMÏŞÖÆÁË×Ó¿â£¬ÄÇÃ´±ØĞë¸øÕâ¸öITEMµÄ×Ó¿â
+          L_IFACE_REC.SUBINVENTORY_CODE          := rec_return_item2.subinventory; --ä¸€å®šè¦ç»™ï¼›å¦‚æœITEMé™åˆ¶äº†å­åº“ï¼Œé‚£ä¹ˆå¿…é¡»ç»™è¿™ä¸ªITEMçš„å­åº“
           L_IFACE_REC.LOCATOR_ID                 := rec_return_item2.locator_id;
           L_IFACE_REC.TRANSACTION_QUANTITY       := V_ADJ_QTY; ---X.PRIMARY_QUANTITY; ??
           L_IFACE_REC.PRIMARY_QUANTITY           := V_ADJ_QTY; ---X.PRIMARY_QUANTITY; ??
@@ -4266,11 +4266,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           L_IFACE_REC.TRANSACTION_DATE           := sysdate; --X.TRANSACTION_DATE;
           L_IFACE_REC.TRANSACTION_SOURCE_NAME    := NULL;
           L_IFACE_REC.DISTRIBUTION_ACCOUNT_ID    := NULL; --A_REC.DISTRIBUTION_ACCOUNT_ID;
-          L_IFACE_REC.SOURCE_CODE                := 'Õûµ¥»¹ÁÏ'; --V_SOURCE_TYPE_NAME;
-          L_IFACE_REC.SOURCE_HEADER_ID           := 012345678; --ANY NUMBER IF TRANSACTION TYPE IS ÔÓÊÕ·¢/COST UPDATE
-          L_IFACE_REC.SOURCE_LINE_ID             := rec_return_item2.line_id; --1234567; 2010.9.15 XDL ÓÃÓÚ×·Ëİ
-          L_IFACE_REC.TRANSACTION_SOURCE_TYPE_ID := 6; --ÕÊ»§±ğÃû
-          L_IFACE_REC.TRANSACTION_TYPE_ID        := V_TRANSACTION_TYPE_ID; --ÕÊ»§±ğÃû·¢·Å
+          L_IFACE_REC.SOURCE_CODE                := 'æ•´å•è¿˜æ–™'; --V_SOURCE_TYPE_NAME;
+          L_IFACE_REC.SOURCE_HEADER_ID           := 012345678; --ANY NUMBER IF TRANSACTION TYPE IS æ‚æ”¶å‘/COST UPDATE
+          L_IFACE_REC.SOURCE_LINE_ID             := rec_return_item2.line_id; --1234567; 2010.9.15 XDL ç”¨äºè¿½æº¯
+          L_IFACE_REC.TRANSACTION_SOURCE_TYPE_ID := 6; --å¸æˆ·åˆ«å
+          L_IFACE_REC.TRANSACTION_TYPE_ID        := V_TRANSACTION_TYPE_ID; --å¸æˆ·åˆ«åå‘æ”¾
           L_IFACE_REC.TRANSACTION_SOURCE_ID      := V_DISPOSITIONS_ID; -- X.DISPOSITIONS_ID;
           L_IFACE_REC.LAST_UPDATE_DATE           := SYSDATE;
           L_IFACE_REC.LAST_UPDATED_BY            := FND_GLOBAL.USER_ID;
@@ -4331,7 +4331,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             exception
               when others then
                 x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-                x_Error_Msg := '¸üĞÂÅ××ª×´Ì¬³ö´í3£º' || SQLERRM;
+                x_Error_Msg := 'æ›´æ–°æŠ›è½¬çŠ¶æ€å‡ºé”™3ï¼š' || SQLERRM;
                 RAISE Fnd_Api.g_Exc_Error;
             end;
           END IF;
@@ -4350,7 +4350,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '¸üĞÂÅ××ª×´Ì¬³ö´í£º' || SQLERRM;
+              x_Error_Msg := 'æ›´æ–°æŠ›è½¬çŠ¶æ€å‡ºé”™ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
         
@@ -4366,7 +4366,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and cmr.status = '1';
       if (l_count_err > 0) then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := x_Error_Msg || '-´æÔÚÎ´¹ıÕËĞĞ';
+        x_Error_Msg := x_Error_Msg || '-å­˜åœ¨æœªè¿‡è´¦è¡Œ';
       end if;
     elsif (p_return_header.trx_order_type in ('WIP_NEG_PS', 'WIP_FRG_PS')) then
     
@@ -4387,14 +4387,14 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       exception
         when others then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := '»ñÈ¡µ¥¾İ×´Ì¬³ö´í£º' || SQLERRM;
+          x_Error_Msg := 'è·å–å•æ®çŠ¶æ€å‡ºé”™ï¼š' || SQLERRM;
           RAISE Fnd_Api.g_Exc_Error;
       end;
     
       -- Call the procedure
-      if l_doc_status = 'ÒÑ¹ıÕË' then
+      if l_doc_status = 'å·²è¿‡è´¦' then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË,²»ÄÜÖØ¸´¹ıÕË.';
+        x_Error_Msg := 'å•æ®å·²è¿‡è´¦,ä¸èƒ½é‡å¤è¿‡è´¦.';
         RAISE Fnd_Api.g_Exc_Error;
       else
         cux_wip_transactions_pkg.process_trx(p_organization_id => l_organization_id,
@@ -4405,7 +4405,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       
         if l_return_status = 'E' then
           x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-          x_Error_Msg := '¹ıÕËÊ§°Ü£º' || l_return_msg;
+          x_Error_Msg := 'è¿‡è´¦å¤±è´¥ï¼š' || l_return_msg;
         else
           begin
             UPDATE CUX_READY_ITEM CRI
@@ -4415,7 +4415,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
           exception
             when others then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-              x_Error_Msg := '¸üĞÂµ¥¾İ×´Ì¬Îª¹ıÕËÊ±³ö´í£º' || SQLERRM;
+              x_Error_Msg := 'æ›´æ–°å•æ®çŠ¶æ€ä¸ºè¿‡è´¦æ—¶å‡ºé”™ï¼š' || SQLERRM;
               RAISE Fnd_Api.g_Exc_Error;
           end;
         end if;
@@ -4432,7 +4432,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     when others then
       ROLLBACK;
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó2£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯2ï¼š' || sqlerrm;
   end;
 
   PROCEDURE validate_return_item(p_return_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -4538,10 +4538,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := 'ÑéÖ¤Êı¾İÊ±£¬»ñÈ¡¹¤µ¥ID³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'éªŒè¯æ•°æ®æ—¶ï¼Œè·å–å·¥å•IDå‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
-    --ÑéÖ¤ÊÇ·ñÍË¹ıÁÏ
+    --éªŒè¯æ˜¯å¦é€€è¿‡æ–™
     begin
       select count(1)
         into l_count_rtn
@@ -4555,11 +4555,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
   
     if (l_count_rtn > 0) then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := '¹¤µ¥´æÔÚÕûµ¥ÍËÁÏ£¬²»ÄÜÔÙÍË£¡';
+      x_Error_Msg := 'å·¥å•å­˜åœ¨æ•´å•é€€æ–™ï¼Œä¸èƒ½å†é€€ï¼';
       RAISE Fnd_Api.g_Exc_Error;
     end if;
   
-    --ÑéÖ¤ÊÇ·ñÍË¹ıÁÏ
+    --éªŒè¯æ˜¯å¦é€€è¿‡æ–™
     begin
       select count(1)
         into l_count_rtn
@@ -4574,7 +4574,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
   
     if (l_count_rtn > 0) then
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := '¹¤µ¥´æÔÚÎ´¹ıÕËµÄÁãµ¥ÍËÁÏ£¬²»ÄÜÔÙÍË£¡' ||
+      x_Error_Msg := 'å·¥å•å­˜åœ¨æœªè¿‡è´¦çš„é›¶å•é€€æ–™ï¼Œä¸èƒ½å†é€€ï¼' ||
                      p_return_header.wip_entity_name;
       RAISE Fnd_Api.g_Exc_Error;
     end if;
@@ -4607,7 +4607,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     
       for rec_validate_qty in cur_validate_qty loop
         begin
-          -- mmt ·¢ÁÏ
+          -- mmt å‘æ–™
           if (rec_validate_qty.wip_supply_type = 1) then
           
             select nvl(sum(nvl(abs(mmt.primary_quantity), 0)), 0),
@@ -4618,7 +4618,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                and mmt.transaction_type_id =
                    (select transaction_type_id
                       from mtl_transaction_types
-                     where transaction_type_name = 'WIP ·¢·Å')
+                     where transaction_type_name = 'WIP å‘æ”¾')
                and mmt.primary_quantity < 0
                and nvl(mmt.attribute9, 'N') = 'N'
                and mmt.organization_id = rec_validate_qty.organization_id
@@ -4635,7 +4635,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                and mmt.transaction_type_id =
                    (select transaction_type_id
                       from mtl_transaction_types
-                     where transaction_type_name = 'À­Ê½ÎïÁÏ·¢·Å')
+                     where transaction_type_name = 'æ‹‰å¼ç‰©æ–™å‘æ”¾')
                and mmt.primary_quantity < 0
                and nvl(mmt.attribute9, 'N') = 'N'
                and mmt.organization_id = rec_validate_qty.organization_id
@@ -4647,7 +4647,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         
           /* IF (l_return_to_subinventory IS NULL) THEN
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '' || rec_validate_qty.item_number || 'ÕÒ²»µ½·¢ÁÏ×Ó¿â.';
+            x_Error_Msg := '' || rec_validate_qty.item_number || 'æ‰¾ä¸åˆ°å‘æ–™å­åº“.';
             RAISE Fnd_Api.g_Exc_Error;
           END IF;*/
         
@@ -4659,14 +4659,14 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
              and NVL(msi.attribute6, 'NA') = 'SMTN';
         
           if (l_count_smtn = 0 and l_return_to_subinventory IS not NULL) then
-            --l_return_to_subinventory IS NULL ´ú±íÌæ´úÁÏ»òÕß¹©Ó¦·½Ê½ĞŞ¸Ä¹ıµ¼ÖÂ²é²»µ½£¬Ö±½Ó·Åµ½ºóÃæÑéÖ¤ÊıÁ¿
-            continue; --·ÇSMTN×Ó¿âµÄÍÆÊ½ÁÏ²»¼ÌĞø´¦Àí
+            --l_return_to_subinventory IS NULL ä»£è¡¨æ›¿ä»£æ–™æˆ–è€…ä¾›åº”æ–¹å¼ä¿®æ”¹è¿‡å¯¼è‡´æŸ¥ä¸åˆ°ï¼Œç›´æ¥æ”¾åˆ°åé¢éªŒè¯æ•°é‡
+            continue; --éSMTNå­åº“çš„æ¨å¼æ–™ä¸ç»§ç»­å¤„ç†
           end if;
         
           if (l_return_to_subinventory is null and
              rec_validate_qty.required_quantity > 0) then
-            --¹©Ó¦·½Ê½ĞŞ¸Ä£¬ÁÏºÅ´ÓÎ´·¢¹ıÁÏ
-            --rec_validate_qty.required_quantity > 0ÅÅ³ıÌæ´úÁÏ£¬Ìæ´úÁÏ·Åµ½ºóÃæÔÙ¼ì²é·¢ÁÏÊıÁ¿¸úĞèÒªÊıÁ¿
+            --ä¾›åº”æ–¹å¼ä¿®æ”¹ï¼Œæ–™å·ä»æœªå‘è¿‡æ–™
+            --rec_validate_qty.required_quantity > 0æ’é™¤æ›¿ä»£æ–™ï¼Œæ›¿ä»£æ–™æ”¾åˆ°åé¢å†æ£€æŸ¥å‘æ–™æ•°é‡è·Ÿéœ€è¦æ•°é‡
             begin
               select csb.sub
                 into l_default_sub
@@ -4679,7 +4679,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
               when others then
                 x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
                 x_Error_Msg := '!' || rec_validate_qty.item_number ||
-                               '»ñÈ¡Ä¬ÈÏ×Ó¿â³ö´í.';
+                               'è·å–é»˜è®¤å­åº“å‡ºé”™.';
                 RAISE Fnd_Api.g_Exc_Error;
             end;
           
@@ -4693,10 +4693,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
             if (l_count_smtn2 > 0) then
               x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
               x_Error_Msg := '!' || rec_validate_qty.item_number ||
-                             'ÕÒ²»µ½·¢ÁÏ×Ó¿â.';
+                             'æ‰¾ä¸åˆ°å‘æ–™å­åº“.';
               RAISE Fnd_Api.g_Exc_Error;
             else
-              --Èç¹ûÊÇ¹©Ó¦·½Ê½ĞŞ¸Ä£¬·Ç109¿â£¬Ö±½Ó²»´¦ÀíÁË
+              --å¦‚æœæ˜¯ä¾›åº”æ–¹å¼ä¿®æ”¹ï¼Œé109åº“ï¼Œç›´æ¥ä¸å¤„ç†äº†
               continue;
             end if;
           
@@ -4723,13 +4723,13 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         if l_real_issue_quantity < rec_validate_qty.required_quantity then
         
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'Çë×¢Òâ!' || rec_validate_qty.item_number ||
-                         '·¢ÁÏ²»×ã,²»ÄÜÕûµ¥ÍËÁÏ.';
+          x_Error_Msg := 'è¯·æ³¨æ„!' || rec_validate_qty.item_number ||
+                         'å‘æ–™ä¸è¶³,ä¸èƒ½æ•´å•é€€æ–™.';
           RAISE Fnd_Api.g_Exc_Error;
         else
           if (l_real_issue_quantity = 0 and
              rec_validate_qty.required_quantity = 0) then
-            --Õë¶ÔÌæ´úÁÏ£¬ĞèÇóÊıÁ¿Îª0£¬Ôò²»×ö»¹ÁÏ
+            --é’ˆå¯¹æ›¿ä»£æ–™ï¼Œéœ€æ±‚æ•°é‡ä¸º0ï¼Œåˆ™ä¸åšè¿˜æ–™
             continue;
           end if;
         end if;
@@ -4776,7 +4776,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '»ñÈ¡ÁÏºÅID³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'è·å–æ–™å·IDå‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       
@@ -4792,12 +4792,12 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         exception
           when others then
             x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-            x_Error_Msg := '»ñÈ¡¹©Ó¦ÀàĞÍ³ö´í£º' || SQLERRM;
+            x_Error_Msg := 'è·å–ä¾›åº”ç±»å‹å‡ºé”™ï¼š' || SQLERRM;
             RAISE Fnd_Api.g_Exc_Error;
         end;
       
         if (l_supply_type = 1) then
-          -------- ²éÕÒÊÇ·ñÓĞ·¢¹ıÁÏ --------
+          -------- æŸ¥æ‰¾æ˜¯å¦æœ‰å‘è¿‡æ–™ --------
           select count(1)
             into l_have_issue
             from WIP_REQUIREMENT_OPERATIONS a, MTL_MATERIAL_TRANSACTIONS b
@@ -4811,10 +4811,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
              and b.transaction_type_id =
                  (select transaction_type_id
                     from mtl_transaction_types
-                   where transaction_type_name = 'WIP ·¢·Å') --100 /* --2 */
+                   where transaction_type_name = 'WIP å‘æ”¾') --100 /* --2 */
              and b.primary_quantity < 0;
         else
-          -------- ²éÕÒÊÇ·ñÓĞ·¢¹ıÁÏ --------
+          -------- æŸ¥æ‰¾æ˜¯å¦æœ‰å‘è¿‡æ–™ --------
           select count(1)
             into l_have_issue
             from WIP_REQUIREMENT_OPERATIONS a, MTL_MATERIAL_TRANSACTIONS b
@@ -4827,14 +4827,14 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
              and b.transaction_type_id =
                  (select transaction_type_id
                     from mtl_transaction_types
-                   where transaction_type_name = 'À­Ê½ÎïÁÏ·¢·Å') --100 /* --2 */
+                   where transaction_type_name = 'æ‹‰å¼ç‰©æ–™å‘æ”¾') --100 /* --2 */
              and b.primary_quantity < 0;
         end if;
       
         if l_have_issue = 0 then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := 'Çë×¢Òâ!ÎïÁÏ' || p_return_lines(x).item_number ||
-                         'Ã»ÓĞ·¢ÁÏ,²»ÄÜÁãĞÇÍËÁÏ.';
+          x_Error_Msg := 'è¯·æ³¨æ„!ç‰©æ–™' || p_return_lines(x).item_number ||
+                         'æ²¡æœ‰å‘æ–™,ä¸èƒ½é›¶æ˜Ÿé€€æ–™.';
           RAISE Fnd_Api.g_Exc_Error;
         end if;
       
@@ -4860,7 +4860,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     when others then
       --ROLLBACK;
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó2£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯2ï¼š' || sqlerrm;
   end;
 
   PROCEDURE process_complete_item(p_complete_header Cux_Wms_Material_Trx_Headers%rowtype,
@@ -4891,14 +4891,14 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     exception
       when others then
         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-        x_Error_Msg := '»ñÈ¡µ¥¾İ×´Ì¬³ö´í£º' || SQLERRM;
+        x_Error_Msg := 'è·å–å•æ®çŠ¶æ€å‡ºé”™ï¼š' || SQLERRM;
         RAISE Fnd_Api.g_Exc_Error;
     end;
-    -- ÅĞ¶ÏÊÇ·ñÒÑ¾­¹ıÕË¹ı
-    if l_doc_status = 'ÒÑ¹ıÕË' then
+    -- åˆ¤æ–­æ˜¯å¦å·²ç»è¿‡è´¦è¿‡
+    if l_doc_status = 'å·²è¿‡è´¦' then
     
       x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-      x_Error_Msg := 'µ¥¾İÒÑ¹ıÕË,²»ÄÜÖØ¸´¹ıÕË.';
+      x_Error_Msg := 'å•æ®å·²è¿‡è´¦,ä¸èƒ½é‡å¤è¿‡è´¦.';
       RAISE Fnd_Api.g_Exc_Error;
     
     end if;
@@ -4909,13 +4909,13 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                                         p_return_status   => l_return_status,
                                         p_return_msg      => l_return_msg);
   
-    if l_return_status = 'S' OR l_return_msg = '¹ıÕË³É¹¦' then
+    if l_return_status = 'S' OR l_return_msg = 'è¿‡è´¦æˆåŠŸ' then
       cux_mes_pkg.post_completion_2_mes(x_ret_status    => l_return_status,
                                         x_error_msg     => l_return_msg,
                                         p_completion_id => p_complete_lines(1)
                                                            .line_id);
       if l_return_status <> 'S' then
-        x_Error_Msg := '»Ø´«MES¹¤µ¥Èë¿âĞÅÏ¢Ê§°Ü£º' || chr(10) || l_return_msg;
+        x_Error_Msg := 'å›ä¼ MESå·¥å•å…¥åº“ä¿¡æ¯å¤±è´¥ï¼š' || chr(10) || l_return_msg;
       end if;
     end if;
   exception
@@ -4924,7 +4924,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE combine_rcv_to_smtn(p_header_id number,
                                 x_Ret_Sts   OUT VARCHAR2,
@@ -4973,7 +4973,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         EXCEPTION
           WHEN OTHERS THEN
             x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-            x_Error_Msg := '»ñÈ¡ĞĞĞÅÏ¢´íÎó£º' || sqlerrm;
+            x_Error_Msg := 'è·å–è¡Œä¿¡æ¯é”™è¯¯ï¼š' || sqlerrm;
             RAISE Fnd_Api.g_Exc_Error;
         END;
         select cux_receipts_lines_s.nextval
@@ -4999,7 +4999,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         EXCEPTION
           WHEN OTHERS THEN
             x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-            x_Error_Msg := '²åÈëĞéÄâĞĞĞÅÏ¢´íÎó£º' || sqlerrm;
+            x_Error_Msg := 'æ’å…¥è™šæ‹Ÿè¡Œä¿¡æ¯é”™è¯¯ï¼š' || sqlerrm;
             RAISE Fnd_Api.g_Exc_Error;
         END;
         begin
@@ -5012,7 +5012,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         EXCEPTION
           WHEN OTHERS THEN
             x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-            x_Error_Msg := '¸üĞÂºÏ²¢ĞĞĞÅÏ¢´íÎó£º' || sqlerrm;
+            x_Error_Msg := 'æ›´æ–°åˆå¹¶è¡Œä¿¡æ¯é”™è¯¯ï¼š' || sqlerrm;
             RAISE Fnd_Api.g_Exc_Error;
         END;
       end if;
@@ -5028,7 +5028,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
 
   PROCEDURE combine_rtn_to_smtn(p_header_id number,
@@ -5077,7 +5077,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         EXCEPTION
           WHEN OTHERS THEN
             x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-            x_Error_Msg := '»ñÈ¡ĞĞĞÅÏ¢´íÎó£º' || sqlerrm;
+            x_Error_Msg := 'è·å–è¡Œä¿¡æ¯é”™è¯¯ï¼š' || sqlerrm;
             RAISE Fnd_Api.g_Exc_Error;
         END;
       
@@ -5105,7 +5105,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         EXCEPTION
           WHEN OTHERS THEN
             x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-            x_Error_Msg := '²åÈëĞéÄâĞĞ´íÎó£º' || sqlerrm;
+            x_Error_Msg := 'æ’å…¥è™šæ‹Ÿè¡Œé”™è¯¯ï¼š' || sqlerrm;
             RAISE Fnd_Api.g_Exc_Error;
         END;
       
@@ -5119,7 +5119,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         EXCEPTION
           WHEN OTHERS THEN
             x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-            x_Error_Msg := '¸üĞÂºÏ²¢ĞĞ´íÎó£º' || sqlerrm;
+            x_Error_Msg := 'æ›´æ–°åˆå¹¶è¡Œé”™è¯¯ï¼š' || sqlerrm;
             RAISE Fnd_Api.g_Exc_Error;
         END;
       end if;
@@ -5135,7 +5135,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   PROCEDURE delete_reservation(p_header_id number,
                                x_Ret_Sts   OUT VARCHAR2,
@@ -5171,7 +5171,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       null;
     when others then
       x_Ret_Sts   := Fnd_Api.G_RET_STS_ERROR;
-      x_Error_Msg := 'ÆäËû´íÎó£º' || sqlerrm;
+      x_Error_Msg := 'å…¶ä»–é”™è¯¯ï¼š' || sqlerrm;
   end;
   
   FUNCTION is_inv_wms_sub(p_header_id       number,
@@ -5187,8 +5187,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     l_count   := 0;
     x_Ret_Sts := 'S';
     
-    if p_trx_type IN ('WIP_FUL_PL',       -- À­Ê½ÍËÁÏ£¨Õûµ¥£©
-                      'WIP_FRG_PL') then  -- À­Ê½ÍËÁÏ£¨ÁãĞÇ£©
+    if p_trx_type IN ('WIP_FUL_PL',       -- æ‹‰å¼é€€æ–™ï¼ˆæ•´å•ï¼‰
+                      'WIP_FRG_PL') then  -- æ‹‰å¼é€€æ–™ï¼ˆé›¶æ˜Ÿï¼‰
                       
     
       select count(1)
@@ -5200,10 +5200,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and msi.organization_id = cmr.organization_id
          and msi.attribute6 in ('SMTN', 'WMS');
          
-    elsif p_trx_type in ('MISC_RCV',      -- ÔÓÈëµ¥
-                         'MISC_ISSUE',    -- ÔÓ³öµ¥
-                         'L_TRANS',       -- ±¾µØµ÷²¦µ¥
-                         'M_TRANS') then  -- ÒìµØµ÷²¦µ¥
+    elsif p_trx_type in ('MISC_RCV',      -- æ‚å…¥å•
+                         'MISC_ISSUE',    -- æ‚å‡ºå•
+                         'L_TRANS',       -- æœ¬åœ°è°ƒæ‹¨å•
+                         'M_TRANS') then  -- å¼‚åœ°è°ƒæ‹¨å•
     
       select count(1)
         into l_count
@@ -5214,7 +5214,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and msi.organization_id = cim.organization_id
          and msi.attribute6 in ('SMTN', 'WMS');
     
-    elsif p_trx_type = 'ORG_TRANS' then  -- ×éÖ¯¼äµ÷²¦µ¥
+    elsif p_trx_type = 'ORG_TRANS' then  -- ç»„ç»‡é—´è°ƒæ‹¨å•
     
       select count(1)
         into l_count
@@ -5235,17 +5235,17 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
            and msi.attribute6 in ('SMTN', 'WMS');
       end if;
     
-    elsif p_trx_type in ('WIP_RLS_PS',  -- ÍÆÊ½±¸ÁÏ
-                         'WIP_RLS_PL',  -- À­Ê½±¸ÁÏ
-                         'WIP_RPL_PS',  -- ÍÆÊ½²¹ÁÏ
-                         'WIP_RPL_PL',  -- À­Ê½²¹ÁÏ
-                         'WIP_OVR_PS',  -- ÍÆÊ½³¬Áì
-                         'WIP_OVR_PL',  -- À­Ê½³¬Áì
-                         'WIP_NEG_PS',  -- ÍÆÊ½ÍËÁÏ(¸ºµ¥)
-                         'WIP_FRG_PS',  -- ÍÆÊ½ÍËÁÏ(Áãµ¥)
-                         'WIP_RTN_PL',  -- À­Ê½ÍËÁÏ
-                         'WIP_CMPL') then -- Íê¹¤Èë¿â
-        -- ÅĞ¶ÏÊÇ·ñÊÇSMTN OR WMS ²Ö¿â
+    elsif p_trx_type in ('WIP_RLS_PS',  -- æ¨å¼å¤‡æ–™
+                         'WIP_RLS_PL',  -- æ‹‰å¼å¤‡æ–™
+                         'WIP_RPL_PS',  -- æ¨å¼è¡¥æ–™
+                         'WIP_RPL_PL',  -- æ‹‰å¼è¡¥æ–™
+                         'WIP_OVR_PS',  -- æ¨å¼è¶…é¢†
+                         'WIP_OVR_PL',  -- æ‹‰å¼è¶…é¢†
+                         'WIP_NEG_PS',  -- æ¨å¼é€€æ–™(è´Ÿå•)
+                         'WIP_FRG_PS',  -- æ¨å¼é€€æ–™(é›¶å•)
+                         'WIP_RTN_PL',  -- æ‹‰å¼é€€æ–™
+                         'WIP_CMPL') then -- å®Œå·¥å…¥åº“
+        -- åˆ¤æ–­æ˜¯å¦æ˜¯SMTN OR WMS ä»“åº“
         select count(1)
           into l_count
           from cux.cux_ready_item cri, mtl_secondary_inventories msi
@@ -5262,11 +5262,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
        where cri.doc_no = p_doc_number
          and cri.organization_id = p_organization_id
          and rownum = 1;
-      if (l_excp_doc_type = 'À­Ê½ÍËÁÏ') then
+      if (l_excp_doc_type = 'æ‹‰å¼é€€æ–™') then
         null;
       else
         x_Ret_Sts   := 'E';
-        x_Error_Msg := 'µ¥¾İÀàĞÍÒì³£';
+        x_Error_Msg := 'å•æ®ç±»å‹å¼‚å¸¸';
         raise Fnd_Api.g_Exc_Error;
       end if;
     end if;
@@ -5301,8 +5301,8 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     l_count   := 0;
     x_Ret_Sts := 'S';
     
-    if p_trx_type IN ('WIP_FUL_PL',       -- À­Ê½ÍËÁÏ£¨Õûµ¥£©
-                      'WIP_FRG_PL') then  -- À­Ê½ÍËÁÏ£¨ÁãĞÇ£©
+    if p_trx_type IN ('WIP_FUL_PL',       -- æ‹‰å¼é€€æ–™ï¼ˆæ•´å•ï¼‰
+                      'WIP_FRG_PL') then  -- æ‹‰å¼é€€æ–™ï¼ˆé›¶æ˜Ÿï¼‰
                       
     
       select count(1)
@@ -5314,10 +5314,10 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and msi.organization_id = cmr.organization_id
          and msi.attribute6 in ('SMTN', 'WMS');
          
-    elsif p_trx_type in ('MISC_RCV',      -- ÔÓÈëµ¥
-                         'MISC_ISSUE',    -- ÔÓ³öµ¥
-                         'L_TRANS',       -- ±¾µØµ÷²¦µ¥
-                         'M_TRANS') then  -- ÒìµØµ÷²¦µ¥
+    elsif p_trx_type in ('MISC_RCV',      -- æ‚å…¥å•
+                         'MISC_ISSUE',    -- æ‚å‡ºå•
+                         'L_TRANS',       -- æœ¬åœ°è°ƒæ‹¨å•
+                         'M_TRANS') then  -- å¼‚åœ°è°ƒæ‹¨å•
     
       select count(1)
         into l_count
@@ -5328,7 +5328,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and msi.organization_id = cim.organization_id
          and msi.attribute6 in ('SMTN', 'WMS');
     
-    elsif p_trx_type = 'ORG_TRANS' then  -- ×éÖ¯¼äµ÷²¦µ¥
+    elsif p_trx_type = 'ORG_TRANS' then  -- ç»„ç»‡é—´è°ƒæ‹¨å•
     
       select count(1)
         into l_count
@@ -5349,17 +5349,17 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
            and msi.attribute6 in ('SMTN', 'WMS');
       end if;
     
-    elsif p_trx_type in ('WIP_RLS_PS',  -- ÍÆÊ½±¸ÁÏ
-                         'WIP_RLS_PL',  -- À­Ê½±¸ÁÏ
-                         'WIP_RPL_PS',  -- ÍÆÊ½²¹ÁÏ
-                         'WIP_RPL_PL',  -- À­Ê½²¹ÁÏ
-                         'WIP_OVR_PS',  -- ÍÆÊ½³¬Áì
-                         'WIP_OVR_PL',  -- À­Ê½³¬Áì
-                         'WIP_NEG_PS',  -- ÍÆÊ½ÍËÁÏ(¸ºµ¥)
-                         'WIP_FRG_PS',  -- ÍÆÊ½ÍËÁÏ(Áãµ¥)
-                         'WIP_RTN_PL',  -- À­Ê½ÍËÁÏ
-                         'WIP_CMPL') then -- Íê¹¤Èë¿â
-        -- ÅĞ¶ÏÊÇ·ñÊÇSMTN OR WMS ²Ö¿â
+    elsif p_trx_type in ('WIP_RLS_PS',  -- æ¨å¼å¤‡æ–™
+                         'WIP_RLS_PL',  -- æ‹‰å¼å¤‡æ–™
+                         'WIP_RPL_PS',  -- æ¨å¼è¡¥æ–™
+                         'WIP_RPL_PL',  -- æ‹‰å¼è¡¥æ–™
+                         'WIP_OVR_PS',  -- æ¨å¼è¶…é¢†
+                         'WIP_OVR_PL',  -- æ‹‰å¼è¶…é¢†
+                         'WIP_NEG_PS',  -- æ¨å¼é€€æ–™(è´Ÿå•)
+                         'WIP_FRG_PS',  -- æ¨å¼é€€æ–™(é›¶å•)
+                         'WIP_RTN_PL',  -- æ‹‰å¼é€€æ–™
+                         'WIP_CMPL') then -- å®Œå·¥å…¥åº“
+        -- åˆ¤æ–­æ˜¯å¦æ˜¯SMTN OR WMS ä»“åº“
         select count(1)
           into l_count
           from cux.cux_ready_item cri, mtl_secondary_inventories msi
@@ -5376,11 +5376,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
        where cri.doc_no = p_doc_number
          and cri.organization_id = p_organization_id
          and rownum = 1;
-      if (l_excp_doc_type = 'À­Ê½ÍËÁÏ') then
+      if (l_excp_doc_type = 'æ‹‰å¼é€€æ–™') then
         null;
       else
         x_Ret_Sts   := 'E';
-        x_Error_Msg := 'µ¥¾İÀàĞÍÒì³£';
+        x_Error_Msg := 'å•æ®ç±»å‹å¼‚å¸¸';
         raise Fnd_Api.g_Exc_Error;
       end if;
     end if;
@@ -5451,7 +5451,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and cri.organization_id = p_organization_id
          and cri.wip_entity_id = nvl(p_wip_id, cri.wip_entity_id)
          and cri.doc_type in
-             ('ÍÆÊ½±¸ÁÏ', 'À­Ê½±¸ÁÏ', 'ÍÆÊ½²¹ÁÏ', 'À­Ê½²¹ÁÏ')
+             ('æ¨å¼å¤‡æ–™', 'æ‹‰å¼å¤‡æ–™', 'æ¨å¼è¡¥æ–™', 'æ‹‰å¼è¡¥æ–™')
          and cri.doc_type = nvl(p_doc_type, cri.doc_type)
          and cri.doc_no = nvl(p_doc_number, cri.doc_no)
          and cri.supply_subinventory = msi.secondary_inventory_name
@@ -5469,7 +5469,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
          and cri.transfer_status = 'WAITING'
          and cri.organization_id = p_organization_id
          and cri.doc_type in
-             ('ÍÆÊ½±¸ÁÏ', 'À­Ê½±¸ÁÏ', 'ÍÆÊ½²¹ÁÏ', 'À­Ê½²¹ÁÏ')
+             ('æ¨å¼å¤‡æ–™', 'æ‹‰å¼å¤‡æ–™', 'æ¨å¼è¡¥æ–™', 'æ‹‰å¼è¡¥æ–™')
          and cri.doc_type = nvl(p_doc_type, cri.doc_type)
          and cri.doc_no = nvl(p_doc_number, cri.doc_no)
          and cri.supply_subinventory = msi.secondary_inventory_name
@@ -5508,7 +5508,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         fnd_file.PUT_LINE(fnd_file.LOG,
                           'UPDATE S:' || rec_batch_doc.Transfer_Id);
         fnd_file.PUT_LINE(fnd_file.OUTPUT,
-                          rec_batch_doc.doc_no || 'Å××ª³É¹¦');
+                          rec_batch_doc.doc_no || 'æŠ›è½¬æˆåŠŸ');
         update cux.cux_wip_batch_transfer_doc cbd
            set cbd.process_code = 'S'
          where cbd.transfer_id = rec_batch_doc.transfer_id;
@@ -5517,7 +5517,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
         fnd_file.PUT_LINE(fnd_file.LOG,
                           'UPDATE E:' || rec_batch_doc.Transfer_Id);
         fnd_file.PUT_LINE(fnd_file.OUTPUT,
-                          rec_batch_doc.doc_no || 'Å××ªÊ§°Ü£º' || l_Error_Msg);
+                          rec_batch_doc.doc_no || 'æŠ›è½¬å¤±è´¥ï¼š' || l_Error_Msg);
         update cux.cux_wip_batch_transfer_doc cbd
            set cbd.process_code = 'E', cbd.error_msg = l_Error_Msg
          where cbd.transfer_id = rec_batch_doc.transfer_id;
@@ -5536,7 +5536,7 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     when others then
       x_retcode := 2;
       fnd_file.PUT_LINE(fnd_file.LOG,
-                        'ÆäËû´íÎótransfer_doc_by_batch£º' || sqlerrm);
+                        'å…¶ä»–é”™è¯¯transfer_doc_by_batchï¼š' || sqlerrm);
   end;
 END CUX_EBS_SMTN_INTEGRATION_PKG;
 /
