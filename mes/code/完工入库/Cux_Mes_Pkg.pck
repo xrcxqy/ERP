@@ -29,6 +29,15 @@
                                   x_Error_Msg     OUT VARCHAR2,
                                   p_Completion_Id NUMBER);
 
+
+  TYPE CUX_WGRK_STORAGE_TYPE IS RECORD(
+                                ORGANIZATION      VARCHAR2(2)
+                               ,ORGANIZATION_ID   number
+                               ,inventory_item_id number
+  ); 
+
+  PROCEDURE Accept_WGRK_STORAGE(p_Request  IN CLOB,
+                                x_Response OUT CLOB);                                
 END;
 /
 CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
@@ -1767,6 +1776,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
             ,Wdj.Scheduled_Start_Date
             ,Wdj.Scheduled_Completion_Date
             ,Wdj.Scheduled_Start_Date Requested_Start_Date
+            ,wdj.attribute4 MATERIAL_BATCH1 -- 属性号1
+            ,null           MATERIAL_BATCH2 -- 暂时未启用
             ,We.Wip_Entity_Name
             ,We.Primary_Item_Id
             ,We.Organization_Id
@@ -2009,7 +2020,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
         l_Document := '<WORKGROUP>' || x.Organization_Shot ||
                       '</WORKGROUP>'; --工单所属组织
         Wf_Notification.Writetoclob(l_Clob_Document, l_Document);
-      
+        
+        l_Document := '<MATERIAL_BATCH1>' || x.MATERIAL_BATCH1 || '</MATERIAL_BATCH1>'; --属性号1    
+        Wf_Notification.Writetoclob(l_Clob_Document, l_Document);
+        
+        l_Document := '<MATERIAL_BATCH2>' || x.MATERIAL_BATCH2 || '</MATERIAL_BATCH2>'; --属性号1    
+        Wf_Notification.Writetoclob(l_Clob_Document, l_Document);
+        
         --传入G/H
         IF x.Organization_Id = 84 THEN
           v_Flag := 'G'; --FW
@@ -3081,6 +3098,13 @@ CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
     Dbms_Xslprocessor.Valueof(l_Node,
                               'MATERIAL_BATCH2/text()',
                               x_Complete_Job.Material_Batch2);
+    
+    -- 主表备注
+    l_Item := 'ZBBZ';
+    Dbms_Xslprocessor.Valueof(l_Node,
+                              'ZBBZ/text()',
+                              x_Complete_Job.Remark);
+                                                        
     --获取箱号信息
     l_Node_List  := Dbms_Xmldom.Getelementsbytagname(p_Doc, 'BAR_BOX');
     l_Node_Count := Dbms_Xmldom.Getlength(l_Node_List);
@@ -3431,6 +3455,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
       x_Ret_Status := Fnd_Api.g_Ret_Sts_Unexp_Error;
       x_Error_Msg  := l_Item || ' ' || SQLERRM;
   END Get_Completion;
+  
   --创建完工入库单
   PROCEDURE Create_Completion(x_Ret_Status   OUT VARCHAR2,
                               x_Error_Msg    OUT VARCHAR2,
@@ -3442,47 +3467,66 @@ CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
     l_Available_Qty  NUMBER; --可完工数量
     l_Mmt_Over_Qty   NUMBER; --已经过账的完工数量
     l_Ready_Over_Qty NUMBER; --未过账的完工数量
+    l_locator_type   number; -- 是否开启货位控制
+    l_loc            varchar2(20);
   BEGIN
     x_Ret_Status := Fnd_Api.g_Ret_Sts_Success;
+    
     --完工数量
     l_Available_Qty := Cux_Wip_Transactions_Pkg.Get_Wip_Over_Qty(x_Complete_Job.Organization_Id,
                                                                  x_Complete_Job.Wip_Entity_Id);
   
     IF x_Complete_Job.Complete_Quantity > l_Available_Qty THEN
-      x_Ret_Status := Fnd_Api.g_Ret_Sts_Error;
-      x_Error_Msg  := '完工入库数量大于可完工数量。';
-      RETURN;
+       x_Ret_Status := Fnd_Api.g_Ret_Sts_Error;
+       x_Error_Msg  := '完工入库数量大于可完工数量。';
+       RETURN;
     END IF;
   
     l_Step := 'C10';
     BEGIN
-      SELECT Subinventory_Code
-        INTO l_Ready_Item.Supply_Subinventory
-        FROM Mtl_Item_Sub_Defaults Mis
-       WHERE Mis.Organization_Id = x_Complete_Job.Organization_Id
+      SELECT Mis.Subinventory_Code,
+             sub.locator_type
+        INTO l_Ready_Item.Supply_Subinventory,
+             l_locator_type
+        FROM Mtl_Item_Sub_Defaults Mis,
+             MTL_SECONDARY_INVENTORIES sub
+       WHERE 1 = 1
+         AND Mis.Organization_Id = sub.organization_id
+         AND Mis.Subinventory_Code = sub.secondary_inventory_name
+         AND Mis.Organization_Id = x_Complete_Job.Organization_Id
          AND Mis.Inventory_Item_Id = x_Complete_Job.Item_Id
          AND Mis.Default_Type = 2;
     EXCEPTION
       WHEN OTHERS THEN
-        NULL;
+        x_Ret_Status := Fnd_Api.g_Ret_Sts_Error;
+        x_Error_Msg  := '默认收货子库不存在,无法创建完工入库单';
+        return;
     END;
+    
     l_Step := 'C15';
-    BEGIN
-      SELECT Mil.Segment1, Mild.Locator_Id
-        INTO l_Ready_Item.Supply_Loc_Code, l_Ready_Item.Supply_Locator_Id
-        FROM Mtl_Item_Loc_Defaults Mild, Mtl_Item_Locations Mil
-       WHERE 1 = 1
-         AND Mild.Locator_Id = Mil.Inventory_Location_Id
-         AND Mild.Organization_Id = Mil.Organization_Id
-         AND Nvl(Mil.Enabled_Flag, 'N') = 'Y'
-         AND Mild.Organization_Id = x_Complete_Job.Organization_Id
-         AND Mild.Inventory_Item_Id = x_Complete_Job.Item_Id
-         AND Mild.Default_Type = 2
-         AND Mild.Subinventory_Code = x_Complete_Job.Subinventory_Code;
-    EXCEPTION
-      WHEN No_Data_Found THEN
-        NULL;
-    END;
+    
+    -- 如果开启货位控制,默认货位为子库-X
+    if l_locator_type <> 1 then
+       l_loc := l_Ready_Item.Supply_Subinventory || '-X';
+       BEGIN
+          select mil.Segment1,
+                 mil.inventory_location_id 
+            INTO l_Ready_Item.Supply_Loc_Code, 
+                 l_Ready_Item.Supply_Locator_Id
+            from MTL_ITEM_LOCATIONS mil 
+           where 1 = 1
+             and mil.organization_id = x_Complete_Job.Organization_Id
+             and mil.subinventory_code = l_Ready_Item.Supply_Subinventory
+             AND Nvl(Mil.Enabled_Flag, 'N') = 'Y'
+             and mil.Segment1 = l_loc;
+        EXCEPTION
+          WHEN No_Data_Found THEN
+            x_Ret_Status := Fnd_Api.g_Ret_Sts_Error;
+            x_Error_Msg  := '默认收货子库对应的-X货位不存在,无法创建完工入库单';
+            return;
+        END;
+    end if;
+    
     l_Step                       := 'C20';
     l_Ready_Item.Doc_No          := 'OR' || Cux_Doc_Or_Seq_Fw.Nextval;
     l_Ready_Item.Line_Id         := Cux.Cux_Doc_Line_Seq.Nextval;
@@ -3497,12 +3541,17 @@ CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
   
     l_Ready_Item.Now_Qty           := x_Complete_Job.Complete_Quantity; -- 下达数
     l_Ready_Item.Inventory_Item_Id := NULL; -- 物料ID
+    l_Ready_Item.Material_Batch1   := x_Complete_Job.Material_Batch1;
+    l_Ready_Item.Material_Batch2   := x_Complete_Job.Material_Batch2;
+    l_Ready_Item.Attribute3        := x_Complete_Job.Remark;
+    
     -- 物料单位
     SELECT t.Primary_Uom_Code
       INTO l_Ready_Item.Item_Primary_Uom_Code
       FROM Mtl_System_Items_b t
      WHERE t.Organization_Id = x_Complete_Job.Organization_Id
        AND t.Inventory_Item_Id = x_Complete_Job.Item_Id;
+       
     -- 工序编号
     SELECT Wo.Operation_Seq_Num
       INTO l_Ready_Item.Operation_Seq_Num
@@ -3515,8 +3564,8 @@ CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
     l_Ready_Item.Quantity_Per_Assembly  := NULL; -- 单位需求
     l_Ready_Item.Component_Yield_Factor := NULL; -- 产出率
     l_Ready_Item.Required_Quantity      := NULL; -- 必需量
+    
     -- 已完成量
-  
     SELECT Nvl(SUM(Mmt.Transaction_Quantity), 0)
       INTO l_Mmt_Over_Qty
       FROM Mtl_Material_Transactions Mmt
@@ -3540,33 +3589,34 @@ CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
     l_Ready_Item.Last_Update_Date   := SYSDATE;
     l_Ready_Item.Last_Updated_By    := Fnd_Global.User_Id;
     l_Ready_Item.Last_Update_Login  := Fnd_Global.Login_Id;
-    l_Ready_Item.Create_Lot         := To_Char(Systimestamp,
-                                               'YYYYMMDDHH24MISSFF4');
+    l_Ready_Item.Create_Lot         := To_Char(Systimestamp,'YYYYMMDDHH24MISSFF4');
     l_Ready_Item.Source_System      := p_Request.Relative_System;
     l_Ready_Item.Source_Document_Id := x_Complete_Job.Mes_Completion_Number; --记录                                       
+    
     INSERT INTO Cux_Ready_Item VALUES l_Ready_Item;
+    
     --回写ERP完工单信息
     x_Complete_Job.Erp_Completion_Number := l_Ready_Item.Doc_No;
     x_Complete_Job.Completion_Type       := l_Ready_Item.Doc_Type;
     x_Complete_Job.Erp_Completion_Date   := l_Ready_Item.Creation_Date;
     x_Complete_Job.Subinventory_Code     := l_Ready_Item.Supply_Subinventory;
+    
     SELECT t.Description
       INTO x_Complete_Job.Subinventory_Name
       FROM Mtl_Secondary_Inventories t
      WHERE t.Organization_Id = x_Complete_Job.Organization_Id
        AND t.Secondary_Inventory_Name = x_Complete_Job.Subinventory_Code;
+    
     x_Complete_Job.Locator_Name := l_Ready_Item.Supply_Loc_Code;
     x_Complete_Job.Uom          := l_Ready_Item.Item_Primary_Uom_Code;
+    
     IF Instr(x_Complete_Job.Item_Number, '-') > 0 THEN
-      x_Complete_Job.Hardware_Version := Substr(x_Complete_Job.Item_Number,
-                                                -3);
+      x_Complete_Job.Hardware_Version := Substr(x_Complete_Job.Item_Number,-3);
       x_Complete_Job.Software_Version := NULL;
+    
     ELSE
-      x_Complete_Job.Hardware_Version := Substr(x_Complete_Job.Item_Number,
-                                                -5,
-                                                3);
-      x_Complete_Job.Software_Version := Substr(x_Complete_Job.Item_Number,
-                                                -2);
+      x_Complete_Job.Hardware_Version := Substr(x_Complete_Job.Item_Number,-5,3);
+      x_Complete_Job.Software_Version := Substr(x_Complete_Job.Item_Number,-2);
     END IF;
   
   EXCEPTION
@@ -4034,5 +4084,228 @@ CREATE OR REPLACE PACKAGE BODY Cux_Mes_Pkg AS
       l_Request.Error_Msg := x_Error_Msg;
       Update_Transfer_Request(l_Request);
   END Post_Completion_2_Mes;
+  
+  
+  PROCEDURE Get_WGRK_STORAGE(p_Doc        Dbms_Xmldom.Domdocument,
+                             x_Ret_Status out VARCHAR2,
+                             x_Error_Msg  out VARCHAR2,
+                             x_query      out CUX_WGRK_STORAGE_TYPE)
+  is                               
+    l_Node_List         Dbms_Xmldom.Domnodelist;
+    l_Node              Dbms_Xmldom.Domnode;
+    l_Node_Count        NUMBER;
+    l_Tmp_String        VARCHAR2(500);                              
+  begin
+    x_Ret_Status := Fnd_Api.g_Ret_Sts_Success;  
+    l_Node_List := Dbms_Xmldom.Getelementsbytagname(p_Doc, 'STD_IN');
+    l_Node      := Dbms_Xmldom.Item(l_Node_List, 0);
+    
+    
+    --1. 企业法人
+    Dbms_Xslprocessor.Valueof(l_Node, 'Factory/text()', l_Tmp_String);
+    if l_Tmp_String is null then
+       x_Ret_Status   := Fnd_Api.g_Ret_Sts_Error;
+       x_Error_Msg := '企业法人为空。';
+       RETURN;
+    else
+       BEGIN
+        SELECT Ood.Organization_Id,T.TAG
+          INTO x_query.ORGANIZATION_ID,x_query.ORGANIZATION
+          FROM Fnd_Lookup_Values_Vl t, Org_Organization_Definitions Ood
+         WHERE t.Lookup_Type = 'CUX_LEGAL_ENTITY'
+           AND t.Lookup_Code = l_Tmp_String
+           AND t.Tag = Ood.Organization_Code;
+      EXCEPTION
+        WHEN OTHERS THEN
+          x_Ret_Status := Fnd_Api.g_Ret_Sts_Error;
+          x_Error_Msg  := '企业法人错误:' || l_Tmp_String;
+          RETURN;
+      END;
+    end if;
+    
+    -- 物料名称
+    Dbms_Xslprocessor.Valueof(l_Node, 'CPDM/text()', l_Tmp_String);
+    x_query.inventory_item_id := cux_global_pkg.GET_INVENTORY_ITEM_ID(l_Tmp_String);
+  
+    if x_query.inventory_item_id is null then
+       x_Ret_Status := Fnd_Api.g_Ret_Sts_Error;
+       x_Error_Msg  := '产品代码有误:' || l_Tmp_String;
+       RETURN;
+    end if;
+  
+  end;
+  
+  function query_WGRK_STORAGE(p_query CUX_WGRK_STORAGE_TYPE) 
+  RETURN CLOB IS
+     l_Response_Msg CLOB;  
+     l_sub_default  varchar2(1);
+     l_count        number;
+     
+     CURSOR C1 (p_ORGANIZATION varchar2)IS
+        select flv.MEANING sub,flv.DESCRIPTION dis
+          from Fnd_Lookup_Values_Vl flv 
+         where flv.Lookup_Type = 'CUX_WIP_COMPLETE_SUB' 
+           and flv.TAG = p_ORGANIZATION
+           and flv.ENABLED_FLAG = 'Y';
+  begin
+      l_Response_Msg := '<STORAGES>';
+      for x in C1(p_query.ORGANIZATION) loop
+            
+          -- 判断是否是默认子库  
+          select count(1)
+            into l_count
+            from MTL_ITEM_SUB_DEFAULTS sub
+           where sub.organization_id = p_query.ORGANIZATION_ID
+             and sub.subinventory_code = x.sub
+             and sub.inventory_item_id = p_query.inventory_item_id;
+             
+          if l_count > 0 then
+             l_sub_default := 'Y';
+          else
+             l_sub_default := 'N';
+          end if;
+      
+          l_Response_Msg := l_Response_Msg || '<STORAGE>';
+          l_Response_Msg := l_Response_Msg || '<CKDM>' || x.sub ||'</CKDM>';
+          l_Response_Msg := l_Response_Msg || '<CKMC>' || x.dis ||'</CKMC>';
+          l_Response_Msg := l_Response_Msg || '<MRCKTAG>' || l_sub_default ||'</MRCKTAG>';
+          l_Response_Msg := l_Response_Msg || '</STORAGE>';
+      end loop;
+      
+      l_Response_Msg := l_Response_Msg || '</STORAGES>';
+      
+      return l_Response_Msg;
+  end;
+  
+  /**
+  * 返回数据给用户
+  */
+  FUNCTION Response_WGRK_STORAGE(p_Ret_Status VARCHAR2,
+                                 p_Error_Msg  VARCHAR2,
+                                 p_result     CLOB,
+                                 p_Request    Cux_Soa_Requests%ROWTYPE)
+  RETURN CLOB IS                               
+     l_Response_Msg CLOB;
+  BEGIN
+    l_Response_Msg := l_Response_Msg || '<STD_OUT origin="TIPTOP">';
+    l_Response_Msg := l_Response_Msg || '<Service Name="SetData">';
+    
+    IF p_Ret_Status = Fnd_Api.g_Ret_Sts_Success THEN
+       l_Response_Msg := l_Response_Msg || '<Status>0</Status>';
+    ELSE
+       l_Response_Msg := l_Response_Msg || '<Status>1</Status>';
+    END IF;
+    
+    l_Response_Msg := l_Response_Msg || '<Error>'|| p_Error_Msg ||'</Error>';
+    l_Response_Msg := l_Response_Msg || '<OperDate>' ||
+                                            To_Char(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') ||
+                                         '</OperDate>';
+     
+    l_Response_Msg := l_Response_Msg || p_result;
+                                        
+    l_Response_Msg := l_Response_Msg || '</Service></STD_OUT>';     
+    
+    
+    
+    
+    UPDATE Cux_Soa_Requests t
+       SET t.Response_Date   = SYSDATE
+          ,t.Response_Msg    = l_Response_Msg
+          ,t.Response_Status = Decode(p_Ret_Status,
+                                      Fnd_Api.g_Ret_Sts_Success,
+                                      'S',
+                                      'F')
+          ,t.Entity_Type     = p_Request.Entity_Type
+          ,t.Entity_Id       = p_Request.Entity_Id
+          ,t.Error_Msg       = Decode(p_Ret_Status,
+                                      Fnd_Api.g_Ret_Sts_Success,
+                                      NULL,
+                                      p_Error_Msg)
+     WHERE t.Request_Id = p_Request.Request_Id;
+    COMMIT;
+    RETURN l_Response_Msg;                               
+    
+  END;
+  
+  PROCEDURE Accept_WGRK_STORAGE(p_Request  IN CLOB,
+                                x_Response OUT CLOB)
+  IS
+    l_Ret_Status VARCHAR2(10) := Fnd_Api.g_Ret_Sts_Success;
+    l_Error_Msg  VARCHAR2(200);
+  
+    l_Request    Cux_Soa_Requests%ROWTYPE;
+    l_Request_Id NUMBER;
+  
+    l_Parser     Dbms_Xmlparser.Parser;
+    l_Doc        Dbms_Xmldom.Domdocument;
+    l_Soa_Header Cux_Soa_Pub.Soa_Context_Header;
+    
+    l_Step VARCHAR2(30);
+  
+    l_result CLOB;
+    
+    l_query CUX_WGRK_STORAGE_TYPE;
+  begin
+    l_Step := '000';
+    --创建SOA请求
+    l_Request.Direction       := 'INBOUND';
+    l_Request.Interface       := 'Cux_Mes_Pkg';
+    l_Request.Method          := 'Accept_WGRK_STORAGE';
+    l_Request.Relative_System := 'MES';
+    l_Request.Url             := NULL;
+    l_Request.Request_Date    := SYSDATE;
+    l_Request.Request_Msg     := p_Request;
+    Cux_Soa_Pub.Create_Request(l_Request, l_Request_Id);
+    l_Step := '010';
+    SAVEPOINT Process_Accepting;
+    
+    --创建XML对象
+    l_Parser := Dbms_Xmlparser.Newparser;
+    BEGIN
+      Dbms_Xmlparser.Parseclob(l_Parser, p_Request);
+      l_Doc := Dbms_Xmlparser.Getdocument(l_Parser);
+    EXCEPTION
+      WHEN OTHERS THEN
+        l_Error_Msg := '解析检验数据失败:' || SQLERRM;
+        RAISE Fnd_Api.g_Exc_Error;
+    END;
+    l_Step := '020';
+    
+    -- 解析参数
+    Get_WGRK_STORAGE(l_Doc,
+                     l_Ret_Status,
+                     l_Error_Msg,
+                     l_query);
+    
+    
+    -- 查询数据
+    if l_Ret_Status = Fnd_Api.g_Ret_Sts_Success then
+       l_result := query_WGRK_STORAGE(l_query);
+    end if;
+    
+    -- 返回结果
+    x_Response := Response_WGRK_STORAGE(l_Ret_Status,
+                                        l_Error_Msg,
+                                        l_result,
+                                        l_Request);
+    
+  EXCEPTION
+    WHEN Fnd_Api.g_Exc_Error THEN
+      l_Ret_Status := Fnd_Api.g_Ret_Sts_Error;
+      ROLLBACK TO Process_Accepting;
+      x_Response := Response_WGRK_STORAGE(l_Ret_Status,
+                                          l_Error_Msg,
+                                          null,
+                                          l_Request);
+    WHEN OTHERS THEN
+      l_Ret_Status := Fnd_Api.g_Ret_Sts_Unexp_Error;
+      ROLLBACK TO Process_Accepting;
+      l_Error_Msg := '执行发生异常(' || l_Step || '):' || SQLERRM;
+      x_Response  := Response_WGRK_STORAGE(l_Ret_Status,
+                                           l_Error_Msg,
+                                           null,
+                                           l_Request);  
+  end;      
+                                
 END;
 /
