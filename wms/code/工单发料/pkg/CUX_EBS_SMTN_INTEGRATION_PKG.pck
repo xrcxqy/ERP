@@ -183,7 +183,8 @@
   
  
                       
-                      
+  FUNCTION get_trx_type_code(p_trx_type  varchar2) RETURN VARCHAR2;
+                                            
   FUNCTION get_trx_type(p_header_id  number,
                         p_doc_number varchar2,
                         p_doc_type   varchar2) RETURN VARCHAR2;
@@ -5272,12 +5273,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     end if;
   
     IF (l_count > 0) THEN
-    
-      l_inv_sys := 'Y';
+       l_inv_sys := 'Y';
     else
-      l_inv_sys := 'N';
-    
+       l_inv_sys := 'N';
     END IF;
+    
     RETURN l_inv_sys;
   exception
     WHEN Fnd_Api.g_Exc_Error THEN
@@ -5298,8 +5298,20 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     l_count         number;
     l_excp_doc_type varchar2(100);
   BEGIN
+    l_inv_sys := is_inv_wms_sub(p_header_id,
+                                p_organization_id,
+                                p_doc_number,
+                                p_trx_type,
+                                x_Ret_Sts,
+                                x_Error_Msg ); 
+    
+    -- 判断是否为WMS/MSTN仓库,如果不是,则不进行空转
+    if l_inv_sys <> 'Y' then
+       x_Error_Msg := '非WMS/MSTN仓库';
+       return l_inv_sys;
+    end if;
+    
     l_count   := 0;
-    x_Ret_Sts := 'S';
     
     if p_trx_type IN ('WIP_FUL_PL',       -- 拉式退料（整单）
                       'WIP_FRG_PL') then  -- 拉式退料（零星）
@@ -5357,18 +5369,20 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                          'WIP_OVR_PL',  -- 拉式超领
                          'WIP_NEG_PS',  -- 推式退料(负单)
                          'WIP_FRG_PS',  -- 推式退料(零单)
-                         'WIP_RTN_PL',  -- 拉式退料
+                         -- 'WIP_RTN_PL',  -- 拉式退料
                          'WIP_CMPL') then -- 完工入库
-        -- 判断是否是SMTN OR WMS 仓库
+        -- 判断是否是 空转         
         select count(1)
           into l_count
-          from cux.cux_ready_item cri, mtl_secondary_inventories msi
-         where cri.doc_no = p_doc_number
-           and cri.organization_id = p_organization_id
-           and cri.supply_subinventory = msi.secondary_inventory_name
-           and msi.organization_id = cri.organization_id
-           and msi.attribute6 in ('SMTN', 'WMS');
+          from cux.cux_ready_item cri   
+         where cri.organization_id = p_organization_id
+           and cri.doc_no = p_doc_number
+           and cri.empty_return_flag = 'Y'; 
     
+    elsif p_trx_type = 'WIP_RTN_PL' then  -- 拉式退料
+      x_Error_Msg := '仓库类型为WMS/SMTN,单据类型为拉式退料,无需抛转';
+      l_inv_sys := 'N';
+      RETURN l_inv_sys;
     else
       select cri.doc_type
         into l_excp_doc_type
@@ -5386,11 +5400,11 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
     end if;
   
     IF (l_count > 0) THEN
-    
-      l_inv_sys := 'Y';
-    else
       l_inv_sys := 'N';
-    
+      x_Error_Msg := '仓库类型为WMS/SMTN,并且为空转单据';
+    else
+      l_inv_sys := 'Y';
+      x_Error_Msg := '仓库类型为WMS/SMTN,并且为非空转单据';
     END IF;
     RETURN l_inv_sys;
   exception
@@ -5401,6 +5415,26 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       l_inv_sys := 'N';
       RETURN l_inv_sys;
   END;
+  
+  FUNCTION get_trx_type_code(p_trx_type  varchar2) RETURN VARCHAR2 is
+    
+    l_doc_type varchar2(100);  
+  begin
+    begin
+      select flv.LOOKUP_CODE
+        into l_doc_type
+        from fnd_lookup_values_vl flv 
+       where flv.LOOKUP_TYPE = 'CUX_INV_TRX_TYPE'
+         and flv.TAG in ('WIP','WIPR')
+         and flv.MEANING = p_trx_type;
+    exception
+       when others then
+         l_doc_type := '';
+         RAISE Fnd_Api.g_Exc_Error;
+    end;
+    
+    return l_doc_type;
+  end;
   
   FUNCTION get_trx_type(p_header_id  number,
                         p_doc_number varchar2,
