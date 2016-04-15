@@ -5255,7 +5255,14 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
            and cri.supply_subinventory = msi.secondary_inventory_name
            and msi.organization_id = cri.organization_id
            and msi.attribute6 in ('SMTN', 'WMS');
-    
+    elsif p_trx_type = 'OE_SHIP' then  -- 发货通知单
+       select count(1)
+         into l_count 
+         from CUX.CUX_PICK_SUB_DOC cpd,
+              mtl_secondary_inventories msi 
+        where cpd.req_header_id = p_header_id
+          and cpd.inter_subinv = msi.secondary_inventory_name
+          and msi.attribute6 in ('SMTN', 'WMS');
     else
       select cri.doc_type
         into l_excp_doc_type
@@ -5383,6 +5390,13 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       x_Error_Msg := '仓库类型为WMS/SMTN,单据类型为拉式退料,无需抛转';
       l_inv_sys := 'N';
       RETURN l_inv_sys;
+      
+    elsif p_trx_type = 'OE_SHIP' then  -- 发货通知单
+       select count(1)
+         into l_count 
+         from CUX_OE_SHIP_HEADERS_V coh
+        where coh.req_header_id = p_header_id
+          and coh.Empty_Return_Flag = 'Y';
     else
       select cri.doc_type
         into l_excp_doc_type
