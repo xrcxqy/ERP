@@ -161,6 +161,11 @@
                                x_Ret_Sts   OUT VARCHAR2,
                                x_Error_Msg OUT VARCHAR2);
   
+  PROCEDURE process_oe_ship(p_ship_header Cux_Wms_Material_Trx_Headers%rowtype,
+                            p_ship_lines  IN OUT Cux_Wms_Pub.Material_Trx_Lines_Tab,
+                            x_Ret_Sts    OUT VARCHAR2,
+                            x_Error_Msg  OUT VARCHAR2);
+                            
     /**
    * 判断单据是否为WMS/SMTN仓库
    */                             
@@ -5175,6 +5180,59 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
       x_Error_Msg := '其他错误：' || sqlerrm;
   end;
   
+  /**
+   * 发货单过账
+   */
+  PROCEDURE process_oe_ship(p_ship_header Cux_Wms_Material_Trx_Headers%rowtype,
+                            p_ship_lines  IN OUT Cux_Wms_Pub.Material_Trx_Lines_Tab,
+                            x_Ret_Sts    OUT VARCHAR2,
+                            x_Error_Msg  OUT VARCHAR2)IS
+     
+     l_request_number VARCHAR2(100); 
+     l_last_index     number;   
+     l_count          number; 
+     
+     l_header_id      number;                  
+  begin
+     --1.0 必要信息初始化
+     l_request_number := p_ship_header.trx_order_number;
+     
+     -- 1.1 检查是否过账
+     begin
+        null;
+     exception
+        when others then
+          null;
+     end;
+     
+     -- 1.2 检查行数是否一致
+     l_last_index := p_ship_lines.count;
+     select count(1)
+       into l_count 
+       from CUX_OE_SHIP_LINES_V col
+      where col.request_number = l_request_number;
+     
+     if (l_count <> l_last_index) then
+         x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
+         x_Error_Msg := '交易行数: ' || l_last_index || ' 不等于原始单据行数: ' || l_count;
+         RAISE Fnd_Api.g_Exc_Error;
+     end if; 
+     
+     -- 1.3 发运单号信息
+     begin
+        select * 
+          from CUX_OE_SHIP_HEADERS_V coh 
+         where coh.request_number = l_request_number;
+     exception
+       when others then
+          x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
+          x_Error_Msg := '获取单号出错：' || SQLERRM;
+          RAISE Fnd_Api.g_Exc_Error;
+     end;
+     
+  end;           
+                            
+                            
   FUNCTION is_inv_wms_sub(p_header_id       number,
                       p_organization_id number,
                       p_doc_number      varchar2,
