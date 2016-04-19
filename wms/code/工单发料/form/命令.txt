@@ -1,1 +1,1 @@
-frmcmp_batch module=$CUX_TOP/forms/ZHS/CUXWIPMR.fmb userid=apps/apps102 output_file=$CUX_TOP/forms/ZHS/CUXWIPMR.fmx
+frmcmp_batch module=$CUX_TOP/forms/ZHS/CUX_OVER_ITEM.fmb userid=apps/apps102 output_file=$CUX_TOP/forms/ZHS/CUX_OVER_ITEM.fmx

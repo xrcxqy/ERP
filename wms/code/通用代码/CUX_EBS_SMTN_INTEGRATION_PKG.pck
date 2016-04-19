@@ -5188,14 +5188,25 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
                             x_Ret_Sts    OUT VARCHAR2,
                             x_Error_Msg  OUT VARCHAR2)IS
      
-     l_request_number VARCHAR2(100); 
-     l_last_index     number;   
-     l_count          number; 
+     l_request_number  VARCHAR2(100); 
+     l_organization_id number;
+     l_last_index      number;   
+     l_count           number; 
      
-     l_header_id      number;                  
+     l_header_id       number;        
+     
+     l_inv_sys_flag    VARCHAR2(1);  
+     
+     l_inter_flag        VARCHAR2(1);  
+     
+     p_result          varchar2(1);
+     p_msg             varchar2(1000);   
+     l_post            varchar2(10);    
   begin
      --1.0 必要信息初始化
-     l_request_number := p_ship_header.trx_order_number;
+     x_Ret_Sts := 'S';
+     l_request_number  := p_ship_header.trx_order_number;
+     l_organization_id := p_ship_header.organization_id;
      
      -- 1.1 检查是否过账
      begin
@@ -5220,16 +5231,55 @@ CREATE OR REPLACE PACKAGE BODY CUX_EBS_SMTN_INTEGRATION_PKG IS
      
      -- 1.3 发运单号信息
      begin
-        select * 
-          from CUX_OE_SHIP_HEADERS_V coh 
-         where coh.request_number = l_request_number;
+         select distinct  
+                psd.req_header_id,
+                psd.inter_flag,
+                attribute1
+           into l_header_id,
+                l_inter_flag,
+                l_post
+           from cux.cux_pick_sub_doc psd
+          where psd.request_number = l_request_number;
      exception
        when others then
           x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
-          x_Error_Msg := '获取单号出错：' || SQLERRM;
+          x_Error_Msg := '获取发运单信息出错：' || SQLERRM;
           RAISE Fnd_Api.g_Exc_Error;
      end;
      
+     if l_post is not null then
+        x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
+        x_Error_Msg := '贸易已转移,请确认';
+        RAISE Fnd_Api.g_Exc_Error;
+     end if;
+     
+     -- 1.4 判断是手动过账还是自动过账
+     l_inv_sys_flag := CUX_EBS_SMTN_INTEGRATION_PKG.is_inv_sys(l_header_id,'',null,'OE_SHIP',p_result,p_msg);
+	   if l_inv_sys_flag = 'N' then
+	 		  x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
+        x_Error_Msg := '该单据需要手动过账,无法自动过账,请确认';
+        RAISE Fnd_Api.g_Exc_Error;
+	   end if;
+     
+     -- 判断是三角贸易还是单角贸易
+     if l_inter_flag = 'Y' then
+        cux_oe_ship_pkg.main_new_dj(p_header_id =>l_header_id,
+                       			        p_organization_id => l_organization_id,
+                       				      p_flag => p_result,
+                       				      p_txt =>  p_msg,
+                       				      p_request_number => l_request_number);
+     else
+        cux_oe_ship_pkg.main_new_jj(p_header_id =>l_header_id,
+                       			        p_organization_id => l_organization_id,
+                       				      p_flag => p_result,
+                       				      p_txt =>  p_msg,
+                       				      p_request_number => l_request_number);
+     end if;
+     
+     if p_result <> 'S' then
+        x_Ret_Sts   := fnd_api.G_RET_STS_ERROR;
+        x_Error_Msg := '发放失败,原因 : '|| p_msg;
+     end if;    
   end;           
                             
                             

@@ -224,6 +224,7 @@
                                 p_Now_Qty         NUMBER,
                                 p_Sub             VARCHAR2,
                                 p_Loc             VARCHAR2,
+                                p_param           CUX_DOC_CLASS_TYPE,
                                 p_Return_Status   OUT VARCHAR2,
                                 p_Return_Msg      OUT VARCHAR2);
   /*===============================================================
@@ -3735,6 +3736,7 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
                                 p_Now_Qty         NUMBER,
                                 p_Sub             VARCHAR2,
                                 p_Loc             VARCHAR2,
+                                p_param           CUX_DOC_CLASS_TYPE,
                                 p_Return_Status   OUT VARCHAR2,
                                 p_Return_Msg      OUT VARCHAR2) AS
     l_lot              varchar2(100);
@@ -3906,9 +3908,11 @@ CREATE OR REPLACE PACKAGE BODY Cux_Wip_Trans_Pkg AS
         l_Cux_Ready_Item.Create_Lot             := C1.Create_Lot;
         l_lot                                   := C1.Create_Lot; --ADDED BY BRUCE ON 20151030
         l_Cux_Ready_Item.Transfer_Status        := 'WAITING';
+        
+        l_Cux_Ready_Item.Empty_Return_Flag      := p_param.EMPTY_RETURN_FLAG;
       
-        l_Cux_Ready_Item.Ready_Qty     := p_Now_Qty;              -- 本次完工数量
-        l_Cux_Ready_Item.Iss_Ready_Qty := C1.Quantity_Issued;     -- 已完工数量
+        l_Cux_Ready_Item.Ready_Qty              := p_Now_Qty;              -- 本次完工数量
+        l_Cux_Ready_Item.Iss_Ready_Qty          := C1.Quantity_Issued;     -- 已完工数量
       
         IF l_Cux_Ready_Item.Ready_Qty <= 0 THEN
            l_Count := l_Count - 1;

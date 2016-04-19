@@ -493,6 +493,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
       and wdd.split_from_delivery_detail_id = p_delivery_detail_id;*/
     return v_qty_1;
   end;
+  
   procedure main(x_errbuf          OUT NOCOPY VARCHAR2,
                  x_retcode         OUT NOCOPY NUMBER,
                  p_header_id       in number,
@@ -516,20 +517,6 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
     v_count_subinv      number;
     v_current_subinv    varchar2(10);
     v_count_mv_line     number;
-    /* CURSOR CUR_DUP_ITEM(p_source_org_id number) IS
-    SELECT col.inventory_item_id,
-           cpd.pick_subinv,
-           sum(col.quantity) total_req_qty
-      FROM cux.cux_oe_ship_lines     col,
-           cux_pick_sub_doc          cpd,
-           mtl_secondary_inventories msi
-     where col.header_id = p_header_id
-       and cpd.cux_pick_line_id = col.line_id
-       and cpd.pick_subinv = msi.secondary_inventory_name
-       and msi.organization_id = p_source_org_id
-       and msi.attribute5 = 'B'
-     group by col.inventory_item_id, cpd.pick_subinv
-    having count(*) > 1;*/
   
     cursor cur_req_subinv is
       select distinct cpd.pick_subinv
@@ -540,6 +527,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
   
     --start of add by bruce on 20150925
     v_order_item varchar2(2000);
+    
     cursor cur_order_item(p_subinv varchar2) is
       select msib.segment1
         from cux.cux_oe_ship_lines col,
@@ -734,6 +722,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
       raise form_trigger_failure;
     end if;
   
+    -- 清楚未勾选的数据
     delete from cux_pick_sub_doc cpd
      where cpd.cux_pick_header_id = p_header_id
        and cpd.cux_pick_line_id in
@@ -745,47 +734,53 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
     delete from cux.cux_oe_ship_lines a
      where a.header_id = p_header_id
        and nvl(a.flag, 'N') = 'N';
+       
     fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK FLAG');
-    select count(1) --modified on 20151020
+    
+    -- 是否有选择数据
+    select count(1) 
       into v_count
-    /*from cux_oe_ship_lines_v b*/ --modified on 20151020
       from cux.cux_oe_ship_lines b
      where b.HEADER_ID = p_header_id
        and b.FLAG = 'Y';
+       
     if v_count = 0 then
       v_err_txt := '未勾选记录';
       raise form_trigger_failure;
     end if;
   
+    -- 校验组织架构
     fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK ORG');
     select count(distinct NVL(b.sources_of_products, 'NA'))
       into v_count
-    /*from cux_oe_ship_lines_v a, cux_om_line_interface \*_v*\ b*/ --modified on 20151020
-      from cux.cux_oe_ship_lines a, cux_om_line_interface b
+      from cux.cux_oe_ship_lines a, 
+           cux_om_line_interface b
      where a.oe_line_id = b.order_line_id
        and a.header_id = p_header_id
        and a.flag = 'Y';
+       
     if v_count > 1 then
       v_err_txt := '勾选物料存在两个组织的产品';
       raise form_trigger_failure;
     end if;
+    
+    -- 校验货运属性是否一致
     fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK FREIGHT');
     select count(distinct nvl(b.FREIGHT_ATTRIBUTE, 'NA'))
       into v_count
-    /*from cux_oe_ship_lines_v a, cux_om_line_interface \*_v*\ b*/ --modified on 20151020
       from cux.cux_oe_ship_lines a, cux_om_line_interface b
      where a.oe_line_id = b.order_line_id
        and a.header_id = p_header_id
        and a.flag = 'Y';
     if v_count > 1 then
       v_err_txt := '勾选物料存在两个不同货运属性';
-    
       raise form_trigger_failure;
     end if;
+    
+    -- 校验联系人是否一致
     fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK CONTACT');
     select count(distinct nvl(b.INVOICE_TO_CONTACT_ID, -1))
       into v_count
-    /*from cux_oe_ship_lines_v a, oe_order_lines_all b*/ --modified on 20151020
       from cux.cux_oe_ship_lines a, oe_order_lines_all b
      where a.oe_line_id = b.line_id
        and a.header_id = p_header_id
@@ -795,10 +790,10 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
       raise form_trigger_failure;
     end if;
   
+    -- 校验收货地址是否一致
     fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK SHIP TO ORG');
     select count(distinct nvl(b.ship_to_org_id, -1))
       into v_count
-    /*from cux_oe_ship_lines_v a, oe_order_lines_all b*/ --modified on 20151020
       from cux.cux_oe_ship_lines a, oe_order_lines_all b
      where a.oe_line_id = b.line_id
        and a.header_id = p_header_id
@@ -809,8 +804,10 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
     end if;
   
     v_inter_flag := '';
+    
     for y in c_2 loop
     
+      -- 校验状态  
       fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK STATUS');
       select count(1)
         into v_count
@@ -822,6 +819,8 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
         v_error_line_id := y.line_id;
         raise form_trigger_failure;
       end if;
+      
+      -- 组织
       BEGIN
         SELECT decode(y.SOURCES_OF_PRODUCTS, 'JW', 83, 'FW', '84')
           INTO V_SHIP_FROM_ORG_ID
@@ -830,6 +829,8 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
         WHEN OTHERS THEN
           V_SHIP_FROM_ORG_ID := p_ORGANIZATION_ID;
       END;
+      
+      --行
       fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK ATTACHED LINE');
       SELECT COUNT(1)
         INTO V_COUNT
@@ -840,6 +841,8 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
         v_error_line_id := y.line_id;
         raise form_trigger_failure;
       END IF;
+      
+      -- 产品来源
       fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK shipping instruc');
       if (y.shipping_instructions is not null) then
         --modified by bruce on 20150810
@@ -903,6 +906,8 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
       end if;*/
     
       --validate inter-company, added by bruce on 20150810
+      
+      -- 判断是否是三角贸易
       fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK INTER COMPANY');
       if (v_inter_flag is null) then
       
@@ -915,11 +920,9 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
         v_shipping_org_code := y.SOURCES_OF_PRODUCTS;
       
         if V_SHIP_FROM_ORG_ID = v_order_org_id then
-        
-          v_inter_flag := 'N';
+           v_inter_flag := 'N';
         ELSE
-        
-          v_inter_flag := 'Y';
+           v_inter_flag := 'Y';
         end if;
       
         fnd_file.PUT_LINE(fnd_file.LOG, 'v_inter_flag:' || v_inter_flag);
@@ -966,7 +969,8 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
                  where col.inventory_item_id = y.inventory_item_id
                    and col.header_id = p_header_id);
       end if;*/
-    
+      
+      -- 子库校验
       fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK subinv exist');
     
       select count(1)
@@ -1194,28 +1198,30 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
       
       end loop;
     */
+    
+    -- 是否存在非软件物料
     select count(1)
       INTO v_exist_hardware
       from cux_pick_sub_doc cpd
      where cpd.cux_pick_header_id = p_header_id
        and nvl(cpd.software_flag, 'N') = 'N';
-  
+       
+    -- 如果存在非软件物料,将所有软件发货子库设置为随机要给非软件子库
     if (v_exist_hardware > 0) then
-      fnd_file.PUT_LINE(fnd_file.LOG, 'UPDATE SUBINV' || v_hardware_subinv);
-      select cpd.pick_subinv
-        INTO v_hardware_subinv
-        from cux_pick_sub_doc cpd
-       where cpd.cux_pick_header_id = p_header_id
-         and nvl(cpd.software_flag, 'N') = 'N'
-         and rownum = 1;
-    
-      update cux_pick_sub_doc cpd
-         set cpd.soft_subinv     = cpd.pick_subinv,
-             cpd.soft_locator_id = cpd.soft_locator_id,
-             cpd.pick_subinv     = v_hardware_subinv
-      --cpd.inter_flag      = v_inter_flag
-       where cpd.cux_pick_header_id = p_header_id
-         and cpd.software_flag = 'Y';
+        fnd_file.PUT_LINE(fnd_file.LOG, 'UPDATE SUBINV' || v_hardware_subinv);
+        select cpd.pick_subinv
+          INTO v_hardware_subinv
+          from cux_pick_sub_doc cpd
+         where cpd.cux_pick_header_id = p_header_id
+           and nvl(cpd.software_flag, 'N') = 'N'
+           and rownum = 1;
+      
+        update cux_pick_sub_doc cpd
+           set cpd.soft_subinv     = cpd.pick_subinv,
+               cpd.soft_locator_id = cpd.soft_locator_id,
+               cpd.pick_subinv     = v_hardware_subinv
+         where cpd.cux_pick_header_id = p_header_id
+           and cpd.software_flag = 'Y';
     
     end if;
   
@@ -1240,15 +1246,14 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
       end loop;
     
       --start of add by bruce on 20151008
+      -- 物料备注信息,同步更新到 搬运单中(基于子库)
       v_item_remark := null;
       for rec_item_remark in cur_item_remark(rec_subinv.pick_subinv) loop
-      
-        if (v_item_remark is null) then
-          v_item_remark := rec_item_remark.remark;
-        else
-          v_item_remark := v_item_remark || ';' || rec_item_remark.remark;
-        end if;
-      
+          if (v_item_remark is null) then
+              v_item_remark := rec_item_remark.remark;
+          else 
+              v_item_remark := v_item_remark || ';' || rec_item_remark.remark;
+          end if;
       end loop;
     
       IF (v_order_item IS NOT NULL or v_item_remark is not null) THEN
@@ -1268,6 +1273,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
         END;
       
       END IF;
+      -- 更新备注结束
       --end of add by bruce on 20151008  
       --end of add by bruce on 20150925                    
     
@@ -1298,6 +1304,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
       ------------准备拆行
       I               := 1;
       v_error_line_id := '';
+      
       for y in cur_req_line(rec_subinv.pick_subinv) loop
         fnd_file.PUT_LINE(fnd_file.LOG, 'PROCESS LINE' || Y.LINE_ID);
         fnd_file.PUT_LINE(fnd_file.LOG, 'CHECK QUANTITY');
@@ -1320,6 +1327,8 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
           goto next_loop;
         end if;
       
+        -- 如果发运需求数量大于本次发运量,则需要对系统标准发运进行拆行
+        -- 分多次发运
         if v_qty <> y.quantity then
           x_split_quantity := v_qty - y.quantity;
           fnd_file.PUT_LINE(fnd_file.LOG, 'SPLIT LINE');
@@ -1353,23 +1362,25 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
                                               x_msg_data         => x_msg_data,
                                               p_from_detail_id   => y.delivery_detail_id,
                                               x_new_detail_id    => x_new_detail_id,
-                                              x_split_quantity   => x_split_quantity,
+                                              x_split_quantity   => x_split_quantity, -- 剩余数量
                                               x_split_quantity2  => x_split_quantity2);
         
           IF (x_return_status = WSH_UTIL_CORE.G_RET_STS_SUCCESS) THEN
-            dbms_output.put_line('S');
+              dbms_output.put_line('S');
           ELSE
-            v_err_txt     := '拆行失败';
-            v_error_flag  := 'Y';
-            v_error_exist := 'Y';
-            fnd_file.PUT_LINE(fnd_file.LOG, '拆行失败');
-            --raise form_trigger_failure;
-            v_error_line_id := y.line_id;
-            goto next_loop;
+              v_err_txt     := '拆行失败';
+              v_error_flag  := 'Y';
+              v_error_exist := 'Y';
+              fnd_file.PUT_LINE(fnd_file.LOG, '拆行失败');
+              --raise form_trigger_failure;
+              v_error_line_id := y.line_id;
+              goto next_loop;
           END IF;
         end if;
+        
         p_line_rows(i) := y.delivery_detail_id;
         I := I + 1;
+        
         ----判断是否已经产生交货批
         fnd_file.PUT_LINE(fnd_file.LOG, 'UNASSIGN DELIVERY');
         begin
@@ -1405,6 +1416,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
           end if;
         end if;
       end loop;
+      
       ----重新创建交货批
       fnd_file.PUT_LINE(fnd_file.LOG, 'CREATE DELIVERY');
       wsh_delivery_details_pub.autocreate_deliveries(p_api_version_number => '1.0',
@@ -1415,6 +1427,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
                                                      x_msg_data           => x_msg_data,
                                                      p_line_rows          => p_line_rows,
                                                      x_del_rows           => x_del_rows);
+                                                     
       IF (x_return_status = WSH_UTIL_CORE.G_RET_STS_SUCCESS) THEN
         dbms_output.put_line('Return Status = ' ||
                              SUBSTR(x_return_status, 1, 255));
@@ -1431,6 +1444,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
         --raise form_trigger_failure;
         goto next_loop;
       end if;
+      
       -----开始创建物料搬运单
       fnd_file.PUT_LINE(fnd_file.LOG, 'CREATE move order');
       p_delivery_id := to_char(x_del_rows(1));
@@ -6866,54 +6880,33 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
     v_item_avail_qty    number;
     e_exception exception;
     cursor c_2 is
-      select --a.PICK_FROM_SUBINVENTORY,
-      --a.LOCATOR_ID,
-       b.INVENTORY_ITEM_ID,
-       -- msi.segment1,
-       -- b.LINE_NUMBER,
-       -- b.DELIVERY_DETAIL_ID,
-       ---  b.QUANTITY,
-       --a.SET_ID,
-       -- B.OE_LINE_ID,
-       --a.HEADER_ID,
-       b.LINE_ID,
-       --  a.OE_HEADER_ID,
-       --  B.SOFTWARE_FLAG,
-       --  msi.primary_uom_code,
-       c.SOURCES_OF_PRODUCTS
-      --   oola.SHIPPING_INSTRUCTIONS,
-      --   oola.packing_instructions,
-      --   b.QTY_DIFF
-        from --cux.cux_oe_ship_headers a,
-             cux.cux_oe_ship_lines b,
-             cux_om_line_interface c,
-             mtl_system_items_b    msi /*,
-                                                                                                                                                                                                                               oe_order_lines_all    oola*/
-       where b.header_id = p_header_id
-         and msi.inventory_item_id = b.INVENTORY_ITEM_ID
-         and msi.organization_id = p_ORGANIZATION_ID
-         and c.ORDER_LINE_ID = b.OE_LINE_ID
-            /* and b.OE_LINE_ID = oola.line_id*/
-         and b.FLAG = 'Y'
-         and msi.INVENTORY_ITEM_FLAG = 'Y'
-      --  and a.REAL_HEADER_ID = p_header_id
-      /* order by b.LINE_NUMBER*/
-      ;
+       select b.INVENTORY_ITEM_ID,
+              b.LINE_ID,
+              c.SOURCES_OF_PRODUCTS
+         from cux.cux_oe_ship_lines b,
+              cux_om_line_interface c,
+              mtl_system_items_b    msi                                                                                                                                                                                          oe_order_lines_all    oola*/
+        where b.header_id = p_header_id
+          and msi.inventory_item_id = b.INVENTORY_ITEM_ID
+          and msi.organization_id = p_ORGANIZATION_ID
+          and c.ORDER_LINE_ID = b.OE_LINE_ID
+          and b.FLAG = 'Y'
+          and msi.INVENTORY_ITEM_FLAG = 'Y';
   
     CURSOR CUR_DUP_ITEM(p_source_org_id number) IS
-      SELECT col.inventory_item_id,
-             cpd.pick_subinv,
-             sum(col.quantity) total_req_qty
-        FROM cux.cux_oe_ship_lines     col,
-             cux_pick_sub_doc          cpd,
-             mtl_secondary_inventories msi
-       where col.header_id = p_header_id
-         and cpd.cux_pick_line_id = col.line_id
-         and cpd.pick_subinv = msi.secondary_inventory_name
-         and msi.organization_id = p_source_org_id
-         and msi.attribute5 = 'B'
-       group by col.inventory_item_id, cpd.pick_subinv
-      having count(*) > 1;
+       SELECT col.inventory_item_id,
+              cpd.pick_subinv,
+              sum(col.quantity) total_req_qty
+         FROM cux.cux_oe_ship_lines     col,
+              cux_pick_sub_doc          cpd,
+              mtl_secondary_inventories msi
+        where col.header_id = p_header_id
+          and cpd.cux_pick_line_id = col.line_id
+          and cpd.pick_subinv = msi.secondary_inventory_name
+          and msi.organization_id = p_source_org_id
+          and msi.attribute5 = 'B'
+        group by col.inventory_item_id, cpd.pick_subinv
+       having count(*) > 1;
   begin
     x_ret_code := 'S';
     x_ret_msg  := '';
@@ -6921,19 +6914,20 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
     
       if (V_SHIP_FROM_ORG_ID = 0) then
       
-        BEGIN
-          SELECT decode(y.SOURCES_OF_PRODUCTS, 'JW', 83, 'FW', '84')
-            INTO V_SHIP_FROM_ORG_ID
-            FROM dual;
-        EXCEPTION
-          WHEN OTHERS THEN
-            x_ret_code := 'E';
-            x_ret_msg  := '获取发货组织ID出错' || sqlerrm;
-        END;
+         BEGIN
+           SELECT decode(y.SOURCES_OF_PRODUCTS, 'JW', 83, 'FW', '84')
+             INTO V_SHIP_FROM_ORG_ID
+             FROM dual;
+         EXCEPTION
+            WHEN OTHERS THEN
+               x_ret_code := 'E';
+               x_ret_msg  := '获取发货组织ID出错' || sqlerrm;
+         END;
       end if;
-    
-      v_shipping_org_code := y.SOURCES_OF_PRODUCTS;
+      
+      -- 产品来源
       --判断当前物料是否存在多个出货子库，如果存在，则统一改为151子库
+      v_shipping_org_code := y.SOURCES_OF_PRODUCTS;
       begin
         select cpd.pick_subinv
           into v_current_subinv
@@ -6960,10 +6954,8 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
                           'multiple subinv there, so update to 151 subinv');
         update CUX_PICK_SUB_DOC cpd
            set cpd.pick_subinv     = decode(v_shipping_org_code,
-                                            'FW',
-                                            'G151',
-                                            'JW',
-                                            'H151'),
+                                            'FW','G151',
+                                            'JW','H151'),
                cpd.pick_locator_id = '',
                cpd.attribute10     = 'Y'
          where cpd.cux_pick_header_id = p_header_id
@@ -6977,6 +6969,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
     
     end loop; --y loop
   
+    -- 判断物料在B库的总需求量是否大于可用量.
     for rec_dup_item in CUR_DUP_ITEM(V_SHIP_FROM_ORG_ID) loop
       fnd_file.PUT_LINE(fnd_file.LOG,
                         'duplicate item:' || rec_dup_item.inventory_item_id);
@@ -6984,7 +6977,8 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
       
         select nvl(cpd.avail_qty, 0)
           into v_item_avail_qty
-          from cux.cux_oe_ship_lines col, cux_pick_sub_doc cpd
+          from cux.cux_oe_ship_lines col, 
+               cux_pick_sub_doc cpd
          where col.header_id = p_header_id
            and col.line_id = cpd.cux_pick_line_id
            and col.inventory_item_id = rec_dup_item.inventory_item_id
@@ -7032,6 +7026,7 @@ CREATE OR REPLACE PACKAGE BODY cux_oe_ship_pkg IS
       x_ret_code := 'E';
       x_ret_msg  := '未定义错误：' || SQLERRM;
   end;
+  
   function get_ship_doc_status(p_line_id in number, p_ship_qty in number)
     return varchar2 is
     l_ship_status varchar2(100);

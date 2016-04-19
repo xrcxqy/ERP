@@ -1,0 +1,1 @@
+frmcmp_batch module=$CUX_TOP/forms/ZHS/CUXOESHIP_DJ.fmb userid=apps/apps102 output_file=$CUX_TOP/forms/ZHS/CUXOESHIP_DJ.fmx

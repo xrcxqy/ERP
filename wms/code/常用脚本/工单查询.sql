@@ -17,7 +17,8 @@ select wro.concatenated_segments 组件,
        -- wro.item_description,
        wro.* 
   from WIP_REQUIREMENT_OPERATIONS_V wro 
- where wro.wip_entity_id = 54146;
+ where wro.wip_entity_id = 54146
+ order by wip_supply_meaning;
 
 -- 工单需求
 select cri.line_id,
